@@ -1,5 +1,6 @@
 .day {
   overflow: visible;
+  position: relative;
 }
 
 .day__note-toggle {
@@ -16,14 +17,14 @@
 }
 
 .day__note-container {
-  position: relative;
+  /*position: relative;*/
 }
 
 .day__note-textarea {
   display: block;
   position: absolute;
-  top: 2rem;
-  left: -10px;
+  top: 0;
+  left: 0;
   width: 180px;
   height: 70px;
   padding: 0.5rem;
