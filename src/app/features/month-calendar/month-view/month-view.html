@@ -1,0 +1,49 @@
+<h2 class="month-view__title text-capitalize mb-3">{{ monthLabel() }}</h2>
+<div class="weeks d-flex flex-column">
+  @for (week of weeks(); track $index) {
+    <div class="week d-flex gap-2 mb-3">
+      @for (day of week; track day.date.getTime()) {
+        <div
+          class="day d-flex flex-column gap-1 p-2 border rounded position-relative"
+          [class.day--today]="day.isToday"
+          [class.day--past]="day.isPast"
+          [class.border-primary]="day.isToday"
+          [class.bg-primary-subtle]="day.isToday"
+          [class.text-primary]="day.isToday"
+          [class.bg-secondary-subtle]="day.isPast"
+        >
+          <span class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">{{
+            day.date.getDate()
+          }}</span>
+          <div class="day__inputs d-flex flex-column gap-1">
+            <input type="text" class="form-control form-control-sm" [value]="day.index" readonly />
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              [value]="limitForDay(day.index)"
+              readonly
+            />
+          </div>
+          <button
+            class="day__note-toggle btn btn-sm btn-light position-absolute"
+            aria-label="Edit note"
+            type="button"
+            (mouseenter)="activeNoteKey.set(day.date.toISOString())"
+            (focus)="activeNoteKey.set(day.date.toISOString())"
+          >
+            …
+          </button>
+          <div class="day__note-container" (mouseleave)="activeNoteKey.set(null)">
+            @if (activeNoteKey() === day.date.toISOString()) {
+              <textarea
+                class="day__note-textarea position-absolute"
+                [value]="noteFor(day.date)"
+                (input)="onNoteInput(day.date, $event)"
+              ></textarea>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { MonthCalendar } from './features/month-calendar/month-calendar/month-calendar';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [MonthCalendar],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('QuotaCopilotPWA');
-}
+export class App {}

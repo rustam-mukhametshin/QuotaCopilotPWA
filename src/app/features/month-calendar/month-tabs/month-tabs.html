@@ -1,0 +1,26 @@
+<div class="month-tabs d-flex gap-2 align-items-center">
+  @for (tab of store.tabs(); track tab.key) {
+    <button
+      class="month-tabs__tab btn btn-sm"
+      [class.btn-primary]="store.activeKey() === tab.key"
+      [class.btn-outline-secondary]="store.activeKey() !== tab.key"
+      (click)="onTabClick(tab.key)"
+    >
+      {{ tab.label }}▾
+    </button>
+  }
+  <button
+    class="month-tabs__add-btn btn btn-sm btn-outline-secondary"
+    (click)="togglePicker()"
+    type="button"
+  >
+    +
+  </button>
+  @if (showPicker()) {
+    <input
+      type="month"
+      class="month-tabs__picker form-control form-control-sm"
+      (change)="onPickerChange($event)"
+    />
+  }
+</div>

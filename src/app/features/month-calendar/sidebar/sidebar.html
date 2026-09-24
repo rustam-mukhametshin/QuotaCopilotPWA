@@ -1,0 +1,23 @@
+<div class="sidebar d-flex flex-column gap-3">
+  <div class="d-flex flex-column gap-1">
+    <label class="form-label" for="total-ai-credits">Total AI credits</label>
+    <input
+      id="total-ai-credits"
+      type="number"
+      class="form-control"
+      [value]="store.totalAiCredits() ?? ''"
+      (input)="onTotalAiCreditsInput($event)"
+    />
+  </div>
+  <div class="d-flex flex-column gap-1">
+    <label class="form-label" for="per-day-credits">Per day</label>
+    <input
+      id="per-day-credits"
+      type="text"
+      class="form-control"
+      [value]="store.perDayCreditsRounded() ?? '—'"
+      readonly
+    />
+  </div>
+  <button class="btn btn-primary" (click)="onSave()">Save</button>
+</div>

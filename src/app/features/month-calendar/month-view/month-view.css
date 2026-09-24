@@ -1,0 +1,47 @@
+.day {
+  overflow: visible;
+}
+
+.day__note-toggle {
+  top: 0.25rem;
+  right: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.day:hover .day__note-toggle {
+  opacity: 1;
+}
+
+.day__note-container {
+  position: relative;
+}
+
+.day__note-textarea {
+  display: block;
+  position: absolute;
+  top: 2rem;
+  left: -10px;
+  width: 180px;
+  height: 70px;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  font-size: 0.75rem;
+  font-family: inherit;
+  line-height: 1.3;
+  resize: none;
+}
+
+.day__note-textarea:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 0 3px rgba(13, 110, 253, 0.25);
+}
