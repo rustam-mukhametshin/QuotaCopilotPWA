@@ -3,6 +3,17 @@
   position: relative;
 }
 
+.day__number {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.day__index {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
 .day__note-toggle {
   top: 0.25rem;
   right: 0.25rem;
@@ -13,7 +24,9 @@
 }
 
 .day__note-toggle--active {
-  color: #5297ff;
+  background-color: #cfe2ff;
+  border-color: #0d6efd;
+  color: #0d6efd;
   opacity: 1;
 }
 

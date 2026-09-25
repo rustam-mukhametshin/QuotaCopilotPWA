@@ -12,11 +12,13 @@
           [class.text-primary]="day.isToday"
           [class.bg-secondary-subtle]="day.isPast"
         >
-          <span class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">{{
-            day.date.getDate()
-          }}</span>
+          <span class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">
+            {{ day.date.getDate() }}
+            <span class="day__index">
+              ({{ day.index }})
+            </span>
+          </span>
           <div class="day__inputs d-flex flex-column gap-1">
-            <input type="text" class="form-control form-control-sm" [value]="day.index" readonly />
             <input
               type="text"
               class="form-control form-control-sm"
