@@ -24,6 +24,10 @@ export class MonthView {
     return this.store.dayNotes()[key] ?? '';
   }
 
+  protected hasNote(date: Date): boolean {
+    return this.noteFor(date).trim().length > 0;
+  }
+
   protected setNote(date: Date, value: string): void {
     const key = dayKey(date);
     this.store.setDayNote(key, value);

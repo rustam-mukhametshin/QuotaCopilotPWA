@@ -26,6 +26,7 @@
           </div>
           <button
             class="day__note-toggle btn btn-sm btn-light position-absolute"
+            [class.day__note-toggle--active]="hasNote(day.date)"
             aria-label="Edit note"
             type="button"
             (mouseenter)="activeNoteKey.set(day.date.toISOString())"

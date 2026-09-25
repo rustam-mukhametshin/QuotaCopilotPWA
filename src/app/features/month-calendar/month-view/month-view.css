@@ -12,6 +12,11 @@
   transition: opacity 0.2s ease;
 }
 
+.day__note-toggle--active {
+  color: #5297ff;
+  opacity: 1;
+}
+
 .day:hover .day__note-toggle {
   opacity: 1;
 }
