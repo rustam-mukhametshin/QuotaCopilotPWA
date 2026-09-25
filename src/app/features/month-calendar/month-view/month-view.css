@@ -3,6 +3,10 @@
   position: relative;
 }
 
+.day--placeholder {
+  visibility: hidden;
+}
+
 .day__number {
   display: flex;
   align-items: baseline;
@@ -24,18 +28,12 @@
 }
 
 .day__note-toggle--active {
-  background-color: #cfe2ff;
-  border-color: #0d6efd;
   color: #0d6efd;
   opacity: 1;
 }
 
 .day:hover .day__note-toggle {
   opacity: 1;
-}
-
-.day__note-container {
-  /*position: relative;*/
 }
 
 .day__note-textarea {

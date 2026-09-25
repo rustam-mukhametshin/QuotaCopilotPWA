@@ -120,7 +120,9 @@ describe('MonthView', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const textareas = compiled.querySelectorAll('.day__note-textarea') as NodeListOf<HTMLTextAreaElement>;
+    const textareas = compiled.querySelectorAll(
+      '.day__note-textarea',
+    ) as NodeListOf<HTMLTextAreaElement>;
     if (textareas.length > 0) {
       const firstTextarea = textareas[0];
       firstTextarea.value = 'Test note for this day';
@@ -134,7 +136,7 @@ describe('MonthView', () => {
     }
   });
 
-  it('does not affect other days\' notes when editing one', async () => {
+  it("does not affect other days' notes when editing one", async () => {
     const fixture = TestBed.createComponent(MonthView);
     store.dayNotes.set({
       '2024-02-10': 'Note for day 10',
@@ -160,7 +162,7 @@ describe('MonthView', () => {
 
     if (dayContainers.length > 0) {
       const firstContainer = dayContainers[0] as HTMLElement;
-      
+
       // Simulate mouseleave on the container
       firstContainer.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
       fixture.detectChanges();

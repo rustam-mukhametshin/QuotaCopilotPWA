@@ -75,7 +75,10 @@ export class CalendarStore {
     }
 
     for (let i = 0; i < currentKeys.length; i++) {
-      if (currentKeys[i] !== draftKeys[i] || currentNotes[currentKeys[i]] !== draftNotes[draftKeys[i]]) {
+      if (
+        currentKeys[i] !== draftKeys[i] ||
+        currentNotes[currentKeys[i]] !== draftNotes[draftKeys[i]]
+      ) {
         return true;
       }
     }

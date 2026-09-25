@@ -37,4 +37,22 @@ export class MonthView {
     const value = (event.target as HTMLTextAreaElement).value;
     this.setNote(date, value);
   }
+
+  protected placeholdersBeforeWeek(week: any[], weekIndex: number): number[] {
+    if (weekIndex !== 0 || week.length === 0) {
+      return [];
+    }
+    const firstDayOfWeek = week[0].date.getDay(); // 1=Mon, 2=Tue, etc.
+    const placeholdersNeeded = firstDayOfWeek - 1;
+    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+  }
+
+  protected placeholdersAfterWeek(week: any[], weekIndex: number, totalWeeks: number): number[] {
+    if (weekIndex !== totalWeeks - 1 || week.length === 0) {
+      return [];
+    }
+    const lastDayOfWeek = week[week.length - 1].date.getDay();
+    const placeholdersNeeded = 5 - lastDayOfWeek;
+    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+  }
 }
