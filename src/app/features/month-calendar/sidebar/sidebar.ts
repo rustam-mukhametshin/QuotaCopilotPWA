@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 
 @Component({
@@ -8,13 +8,19 @@ import { CalendarStore } from '../calendar-store';
 })
 export class Sidebar {
   protected readonly store = inject(CalendarStore);
+  protected readonly isSaving = signal(false);
 
   protected onTotalAiCreditsInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.store.setTotalAiCredits(value);
   }
 
-  protected onSave(): void {
-    this.store.save();
+  protected async onSave(): Promise<void> {
+    this.isSaving.set(true);
+    try {
+      await this.store.save();
+    } finally {
+      this.isSaving.set(false);
+    }
   }
 }

@@ -4,7 +4,10 @@
 }
 
 .day--placeholder {
-  visibility: hidden;
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  pointer-events: none;
 }
 
 .day__number {
