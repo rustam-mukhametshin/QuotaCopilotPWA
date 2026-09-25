@@ -50,6 +50,39 @@ export class CalendarStore {
     this.reference().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
   );
 
+  readonly hasUnsavedChanges = computed<boolean>(() => {
+    const key = this.activeKey();
+    const draft = this.draftState.get(key);
+
+    // No draft means there are unsaved changes (new or uninitialized state)
+    if (!draft) {
+      return true;
+    }
+
+    // Compare totalAiCredits
+    if (this.totalAiCredits() !== draft.totalAiCredits) {
+      return true;
+    }
+
+    // Deep compare dayNotes: check keys and values
+    const currentNotes = this.dayNotes();
+    const draftNotes = draft.dayNotes;
+    const currentKeys = Object.keys(currentNotes).sort();
+    const draftKeys = Object.keys(draftNotes).sort();
+
+    if (currentKeys.length !== draftKeys.length) {
+      return true;
+    }
+
+    for (let i = 0; i < currentKeys.length; i++) {
+      if (currentKeys[i] !== draftKeys[i] || currentNotes[currentKeys[i]] !== draftNotes[draftKeys[i]]) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+
   setTotalAiCredits(value: string): void {
     const parsed = value.trim() === '' ? null : Number(value);
     this.totalAiCredits.set(parsed !== null && !Number.isNaN(parsed) ? parsed : null);
