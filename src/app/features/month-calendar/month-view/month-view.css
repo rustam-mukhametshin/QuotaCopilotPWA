@@ -1,13 +1,15 @@
 .day {
   overflow: visible;
   position: relative;
+  /* Flex children share equal width when parent uses flex-wrap or gap */
 }
 
 .day--placeholder {
-  border: none !important;
+  /* Match real day cells: transparent border (1px), no background, no pointer events */
+  border: 1px solid transparent !important;
   background-color: transparent !important;
-  padding: 0 !important;
   pointer-events: none;
+  /* Inherit p-2 (padding), d-flex (display), flex-column, gap-1, border (bootstrap), rounded from .day */
 }
 
 .day__number {

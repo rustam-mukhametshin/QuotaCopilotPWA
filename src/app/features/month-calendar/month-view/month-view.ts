@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
+import { Week } from '../working-days';
 
 @Component({
   selector: 'app-month-view',
@@ -38,21 +39,31 @@ export class MonthView {
     this.setNote(date, value);
   }
 
-  protected placeholdersBeforeWeek(week: any[], weekIndex: number): number[] {
+  protected placeholdersBeforeWeek(week: Week, weekIndex: number): number[] {
     if (weekIndex !== 0 || week.length === 0) {
       return [];
     }
     const firstDayOfWeek = week[0].date.getDay(); // 1=Mon, 2=Tue, etc.
     const placeholdersNeeded = firstDayOfWeek - 1;
-    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+    const result =
+      placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+    console.log(
+      `[placeholdersBeforeWeek] firstDay=${week[0].date.toDateString()}, dayOfWeek=${firstDayOfWeek}, needed=${placeholdersNeeded}, result.length=${result.length}`,
+    );
+    return result;
   }
 
-  protected placeholdersAfterWeek(week: any[], weekIndex: number, totalWeeks: number): number[] {
+  protected placeholdersAfterWeek(week: Week, weekIndex: number, totalWeeks: number): number[] {
     if (weekIndex !== totalWeeks - 1 || week.length === 0) {
       return [];
     }
     const lastDayOfWeek = week[week.length - 1].date.getDay();
     const placeholdersNeeded = 5 - lastDayOfWeek;
-    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+    const result =
+      placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+    console.log(
+      `[placeholdersAfterWeek] lastDay=${week[week.length - 1].date.toDateString()}, dayOfWeek=${lastDayOfWeek}, needed=${placeholdersNeeded}, result.length=${result.length}`,
+    );
+    return result;
   }
 }

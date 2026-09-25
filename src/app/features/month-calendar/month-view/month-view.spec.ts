@@ -172,4 +172,188 @@ describe('MonthView', () => {
       expect(component.activeNoteKey()).toBeNull();
     }
   });
+
+  describe('Placeholder logic for 5-day weeks', () => {
+    it('each week renders exactly 5 day cells (real + placeholders)', async () => {
+      // Feb 2024 has: 1st = Thu, 29th = Thu
+      // Week 1: Thu 1, Fri 2 (needs 3 before: Mon, Tue, Wed, and 0 after)
+      // Week 5: Mon 26, Tue 27, Wed 28, Thu 29 (needs 0 before and 1 after: Fri)
+      const fixture = TestBed.createComponent(MonthView);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const weekRows = compiled.querySelectorAll('.week');
+
+      expect(weekRows.length).toBeGreaterThan(0);
+
+      weekRows.forEach((weekRow) => {
+        const dayCells = weekRow.querySelectorAll('.day');
+        expect(dayCells.length).toBe(5); // Each week must have exactly 5 cells
+      });
+    });
+
+    it('Feb 2024 week 1 has 3 before-placeholders + 2 real days (Thu 1, Fri 2)', () => {
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+
+      const component = fixture.componentInstance as any;
+      const weeks = component.weeks();
+
+      const firstWeek = weeks[0];
+      const placeholders = component.placeholdersBeforeWeek(firstWeek, 0);
+
+      // Feb 1, 2024 is Thursday (4), so need 4 - 1 = 3 placeholders (Mon, Tue, Wed)
+      expect(firstWeek[0].date.getDate()).toBe(1);
+      expect(firstWeek[0].date.getDay()).toBe(4); // Thursday
+      expect(placeholders.length).toBe(3);
+      expect(firstWeek.length).toBe(2); // Thu 1, Fri 2
+    });
+
+    it('Feb 2024 week 5 has 4 real days (Mon 26–Thu 29) + 1 after-placeholder (Fri)', () => {
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+
+      const component = fixture.componentInstance as any;
+      const weeks = component.weeks();
+
+      const lastWeek = weeks[weeks.length - 1];
+      const placeholders = component.placeholdersAfterWeek(
+        lastWeek,
+        weeks.length - 1,
+        weeks.length,
+      );
+
+      // Feb 29, 2024 is Thursday (4), so need 5 - 4 = 1 placeholder (Fri)
+      expect(lastWeek[lastWeek.length - 1].date.getDate()).toBe(29);
+      expect(lastWeek[lastWeek.length - 1].date.getDay()).toBe(4); // Thursday
+      expect(placeholders.length).toBe(1);
+      expect(lastWeek.length).toBe(4); // Mon 26, Tue 27, Wed 28, Thu 29
+    });
+
+    it('placeholdersBeforeWeek returns 0 for non-first week', () => {
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+
+      const component = fixture.componentInstance as any;
+      const weeks = component.weeks();
+
+      if (weeks.length > 1) {
+        const secondWeek = weeks[1];
+        const placeholders = component.placeholdersBeforeWeek(secondWeek, 1);
+        expect(placeholders.length).toBe(0); // Only first week gets before-placeholders
+      }
+    });
+
+    it('placeholdersAfterWeek returns 0 for non-last week', () => {
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+
+      const component = fixture.componentInstance as any;
+      const weeks = component.weeks();
+
+      if (weeks.length > 1) {
+        const middleWeek = weeks[1];
+        const placeholders = component.placeholdersAfterWeek(middleWeek, 1, weeks.length);
+        expect(placeholders.length).toBe(0); // Only last week gets after-placeholders
+      }
+    });
+
+    it('placeholder cells render as day--placeholder with transparent border', async () => {
+      const fixture = TestBed.createComponent(MonthView);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const placeholders = compiled.querySelectorAll('.day--placeholder');
+
+      // Feb 2024 should have some placeholders (3 before week 1, 1 after week 5)
+      expect(placeholders.length).toBeGreaterThan(0);
+
+      // Each placeholder should be a flex container with gap and position-relative
+      placeholders.forEach((ph) => {
+        expect(ph.classList.contains('d-flex')).toBe(true);
+        expect(ph.classList.contains('position-relative')).toBe(true);
+      });
+    });
+
+    it('all days (real and placeholders) match the logic calculations', () => {
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+
+      const component = fixture.componentInstance as any;
+      const weeks = component.weeks();
+
+      weeks.forEach((week, weekIdx) => {
+        const before = component.placeholdersBeforeWeek(week, weekIdx);
+        const after = component.placeholdersAfterWeek(week, weekIdx, weeks.length);
+
+        // Total should be 5 (Mon-Fri)
+        const total = before.length + week.length + after.length;
+        expect(total).toBe(5);
+
+        // First week: before placeholders + real days
+        if (weekIdx === 0) {
+          expect(before.length + week.length).toBe(5);
+          expect(after.length).toBe(0); // No after-placeholders in first week
+        }
+
+        // Last week: real days + after placeholders
+        if (weekIdx === weeks.length - 1) {
+          expect(before.length).toBe(0); // No before-placeholders in last week
+          expect(week.length + after.length).toBe(5);
+        }
+
+        // Middle weeks: no placeholders
+        if (weekIdx > 0 && weekIdx < weeks.length - 1) {
+          expect(before.length).toBe(0);
+          expect(after.length).toBe(0);
+          expect(week.length).toBe(5); // All middle weeks have exactly 5 real days
+        }
+      });
+    });
+
+    it('placeholder and real day cells have identical CSS classes for alignment', async () => {
+      const fixture = TestBed.createComponent(MonthView);
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const realDays = compiled.querySelectorAll('.day:not(.day--placeholder)');
+      const placeholders = compiled.querySelectorAll('.day--placeholder');
+
+      expect(realDays.length).toBeGreaterThan(0);
+      expect(placeholders.length).toBeGreaterThan(0);
+
+      // Both should have the same flex layout classes
+      const requiredClasses = [
+        'd-flex',
+        'flex-column',
+        'gap-1',
+        'p-2',
+        'border',
+        'rounded',
+        'position-relative',
+      ];
+
+      realDays.forEach((day) => {
+        requiredClasses.forEach((cls) => {
+          expect(day.classList.contains(cls)).toBe(true);
+        });
+      });
+
+      placeholders.forEach((placeholder) => {
+        requiredClasses.forEach((cls) => {
+          expect(placeholder.classList.contains(cls)).toBe(true);
+        });
+      });
+
+      // Verify placeholder has transparent styling
+      placeholders.forEach((placeholder) => {
+        const computed = window.getComputedStyle(placeholder);
+        // Placeholder should have no background color (transparent)
+        expect(computed.backgroundColor).toMatch(/transparent|rgba\(0,\s*0,\s*0,\s*0\)/i);
+      });
+    });
+  });
 });
