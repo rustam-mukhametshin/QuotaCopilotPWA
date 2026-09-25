@@ -19,5 +19,5 @@
       readonly
     />
   </div>
-  <button class="btn btn-primary" (click)="onSave()">Save</button>
+  <button class="btn btn-primary" [disabled]="!store.hasUnsavedChanges()" (click)="onSave()">Save</button>
 </div>
