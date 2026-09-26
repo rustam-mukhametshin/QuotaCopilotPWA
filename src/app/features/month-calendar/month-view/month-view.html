@@ -34,12 +34,11 @@
             [class.day__note-toggle--active]="hasNote(day.date)"
             aria-label="Edit note"
             type="button"
-            (mouseenter)="activeNoteKey.set(day.date.toISOString())"
-            (focus)="activeNoteKey.set(day.date.toISOString())"
+            (click)="toggleNote(day.date.toISOString())"
           >
             …
           </button>
-          <div class="day__note-container" (mouseleave)="activeNoteKey.set(null)">
+          <div class="day__note-container">
             @if (activeNoteKey() === day.date.toISOString()) {
               <textarea
                 class="day__note-textarea position-absolute"

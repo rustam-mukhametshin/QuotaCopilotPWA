@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, HostListener } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
 import { Week } from '../working-days';
@@ -37,6 +37,25 @@ export class MonthView {
   protected onNoteInput(date: Date, event: Event): void {
     const value = (event.target as HTMLTextAreaElement).value;
     this.setNote(date, value);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    const isTextarea = target.classList.contains('day__note-textarea');
+    const isButton = target.classList.contains('day__note-toggle');
+
+    if (!isTextarea && !isButton) {
+      this.activeNoteKey.set(null);
+    }
+  }
+
+  protected toggleNote(dateKey: string): void {
+    if (this.activeNoteKey() === dateKey) {
+      this.activeNoteKey.set(null);
+    } else {
+      this.activeNoteKey.set(dateKey);
+    }
   }
 
   protected placeholdersBeforeWeek(week: Week, weekIndex: number): number[] {
