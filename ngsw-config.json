@@ -34,17 +34,6 @@
       }
     }
   ],
-  "dataGroups": [
-    {
-      "name": "quota-data",
-      "urls": ["/**"],
-      "cacheConfig": {
-        "strategy": "performance",
-        "maxSize": 50,
-        "maxAge": "30d"
-      }
-    }
-  ],
   "navigationUrls": [
     "/**",
     "!/**/*.*",
