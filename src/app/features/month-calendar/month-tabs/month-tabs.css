@@ -6,23 +6,14 @@
   gap: 0.5rem;
 }
 
-.month-tabs__tab {
-  white-space: nowrap;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-}
-
-.month-tabs__tab:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
+.month-tabs__tab,
 .month-tabs__add-btn {
   white-space: nowrap;
   font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
+.month-tabs__tab:hover,
 .month-tabs__add-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
