@@ -10,3 +10,11 @@
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
+
+.sidebar .form-label {
+  margin-bottom: .1rem;
+}
+
+.sidebar #per-day-credits {
+  background-color: var(--bs-secondary-bg);
+}

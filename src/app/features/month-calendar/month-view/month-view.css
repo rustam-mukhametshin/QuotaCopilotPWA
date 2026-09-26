@@ -12,6 +12,10 @@
   /* Inherit p-2 (padding), d-flex (display), flex-column, gap-1, border (bootstrap), rounded from .day */
 }
 
+.day--past input {
+  background-color: var(--bs-secondary-bg);
+}
+
 .day__number {
   display: flex;
   align-items: baseline;
@@ -25,8 +29,8 @@
 
 .day__note-toggle {
   top: 0.25rem;
-  right: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  right: 0.5rem;
+  padding: 0.15rem 0.25rem;
   font-size: 0.875rem;
   opacity: 0.6;
   transition: opacity 0.2s ease;
@@ -63,7 +67,6 @@
 .day__note-textarea:focus {
   outline: none;
   border-color: #0d6efd;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.2),
-    0 0 0 3px rgba(13, 110, 253, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+  0 0 0 3px rgba(13, 110, 253, 0.25);
 }
