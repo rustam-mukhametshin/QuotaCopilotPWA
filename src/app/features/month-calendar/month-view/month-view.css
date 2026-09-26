@@ -1,13 +1,15 @@
 .day {
   overflow: visible;
   position: relative;
-  /* Flex children share equal width when parent uses flex-wrap or gap */
+  /* Equal-width columns so placeholders reserve the same space as real day cells */
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .day--placeholder {
-  /* Match real day cells: transparent border (1px), no background, no pointer events */
+  /* Match real day cells: transparent border (1px), no pointer events; background is
+     driven by [class.bg-secondary-subtle] to match the adjacent day's past/future state */
   border: 1px solid transparent !important;
-  background-color: transparent !important;
   pointer-events: none;
   /* Inherit p-2 (padding), d-flex (display), flex-column, gap-1, border (bootstrap), rounded from .day */
 }

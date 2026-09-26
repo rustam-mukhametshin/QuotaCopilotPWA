@@ -5,6 +5,7 @@
       @for (ph of placeholdersBeforeWeek(week, $index); track 'before-' + $index + '-' + ph) {
         <div
           class="day day--placeholder d-flex flex-column gap-1 p-2 border rounded position-relative"
+          [class.bg-secondary-subtle]="week[0].isPast"
         ></div>
       }
       @for (day of week; track day.date.getTime()) {
@@ -56,6 +57,7 @@
       ) {
         <div
           class="day day--placeholder d-flex flex-column gap-1 p-2 border rounded position-relative"
+          [class.bg-secondary-subtle]="week[week.length - 1].isPast"
         ></div>
       }
     </div>
