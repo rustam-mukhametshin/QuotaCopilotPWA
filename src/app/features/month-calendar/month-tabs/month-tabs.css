@@ -7,16 +7,52 @@
 }
 
 .month-tabs__tab,
-.month-tabs__add-btn {
+.month-tabs__add-btn,
+.month-tabs__tab-actions-btn {
   white-space: nowrap;
   font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
 .month-tabs__tab:hover,
-.month-tabs__add-btn:hover {
+.month-tabs__add-btn:hover,
+.month-tabs__tab-actions-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.month-tabs__tab-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.month-tabs__tab-actions-btn {
+  padding: 0.25rem 0.4rem;
+  line-height: 1;
+}
+
+.month-tabs__actions-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  padding: 0.25rem;
+  margin-top: 0.25rem;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.month-tabs__delete-btn {
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .month-tabs__picker {
