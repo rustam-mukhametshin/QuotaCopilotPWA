@@ -257,7 +257,20 @@ export class CalendarStore {
       // Clear the active key first so selectTab does not re-create a draft for the deleted tab
       this.activeKey.set('');
       this.selectTab(remaining[0].key);
+      return;
     }
+
+    // Last tab was removed: fall back to an empty tab for the current month
+    const fallback = this.createFallbackTab();
+    this.tabs.set([fallback]);
+    this.draftState.set(fallback.key, {
+      totalAiCredits: null,
+      dayNotes: {},
+    });
+    this.activeKey.set(fallback.key);
+    this.reference.set(new Date(fallback.year, fallback.month - 1, 1));
+    this.totalAiCredits.set(null);
+    this.dayNotes.set({});
   }
 
   /**
