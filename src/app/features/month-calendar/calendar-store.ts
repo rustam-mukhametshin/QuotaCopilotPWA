@@ -247,6 +247,10 @@ export class CalendarStore {
     await calendarDb.months.delete(key);
     this.draftState.delete(key);
     this.tabs.update((tabs) => tabs.filter((t) => t.key !== key));
+
+    if (this.activeKey() !== key) {
+      return;
+    }
   }
 
   /**
