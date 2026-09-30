@@ -243,6 +243,10 @@ export class CalendarStore {
     if (!tab) {
       return;
     }
+
+    await calendarDb.months.delete(key);
+    this.draftState.delete(key);
+    this.tabs.update((tabs) => tabs.filter((t) => t.key !== key));
   }
 
   /**
