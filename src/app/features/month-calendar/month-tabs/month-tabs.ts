@@ -40,4 +40,13 @@ export class MonthTabs {
   protected togglePicker(): void {
     this.showPicker.update((val) => !val);
   }
+
+  protected toggleActionsMenu(key: string, event: Event): void {
+    event.stopPropagation();
+    this.openMenuKey.update((current) => (current === key ? null : key));
+  }
+
+  protected closeActionsMenu(): void {
+    this.openMenuKey.set(null);
+  }
 }
