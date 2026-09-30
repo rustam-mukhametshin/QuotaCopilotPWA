@@ -102,6 +102,23 @@ export class CalendarStore {
   }
 
   /**
+   * Build an unsaved fallback tab for the current month without mutating any state.
+   */
+  private createFallbackTab(): MonthTab {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+
+    return {
+      key: monthKey(year, month),
+      year,
+      month,
+      label: this.generateTabLabel(year, month),
+      saved: false,
+    };
+  }
+
+  /**
    * Initialize the store: load saved months from Dexie, set up tabs and draft state.
    */
   async initialize(): Promise<void> {
