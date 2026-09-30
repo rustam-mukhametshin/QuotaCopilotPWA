@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalendarStore, MonthTab } from '../calendar-store';
 import { monthKey } from '../calendar-db';
@@ -73,5 +73,10 @@ export class MonthTabs {
 
   protected onModalContentClick(event: Event): void {
     event.stopPropagation();
+  }
+
+  @HostListener('document:click')
+  protected onDocumentClick(): void {
+    this.closeActionsMenu();
   }
 }
