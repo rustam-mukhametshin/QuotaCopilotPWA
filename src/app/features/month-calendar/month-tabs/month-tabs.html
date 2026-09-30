@@ -43,4 +43,27 @@
       (change)="onPickerChange($event)"
     />
   }
+  @if (pendingDeleteTab(); as tab) {
+    <div class="month-tabs__confirm-overlay" (click)="cancelDelete()">
+      <div class="month-tabs__confirm-modal" (click)="onModalContentClick($event)">
+        <p class="month-tabs__confirm-text">Удалить вкладку {{ tab.label }}?</p>
+        <div class="month-tabs__confirm-actions">
+          <button
+            type="button"
+            class="month-tabs__confirm-cancel-btn btn btn-sm btn-outline-secondary"
+            (click)="cancelDelete()"
+          >
+            Отмена
+          </button>
+          <button
+            type="button"
+            class="month-tabs__confirm-delete-btn btn btn-sm btn-danger"
+            (click)="confirmDelete()"
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
