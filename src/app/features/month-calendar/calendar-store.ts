@@ -131,26 +131,15 @@ export class CalendarStore {
 
     if (records.length === 0) {
       // No saved records: create a fallback tab for today's month
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = today.getMonth() + 1;
-      const key = monthKey(year, month);
-
-      const fallbackTab: MonthTab = {
-        key,
-        year,
-        month,
-        label: this.generateTabLabel(year, month),
-        saved: false,
-      };
+      const fallbackTab = this.createFallbackTab();
 
       this.tabs.set([fallbackTab]);
-      this.draftState.set(key, {
+      this.draftState.set(fallbackTab.key, {
         totalAiCredits: null,
         dayNotes: {},
       });
-      this.activeKey.set(key);
-      this.reference.set(new Date(year, month - 1, 1));
+      this.activeKey.set(fallbackTab.key);
+      this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
       return;
     }
 
