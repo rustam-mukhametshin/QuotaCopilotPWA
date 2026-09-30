@@ -13,6 +13,7 @@ import { monthKey } from '../calendar-db';
 export class MonthTabs {
   protected readonly store = inject(CalendarStore);
   protected readonly showPicker = signal(false);
+  protected readonly openMenuKey = signal<string | null>(null);
 
   protected onTabClick(key: string): void {
     this.store.selectTab(key);
