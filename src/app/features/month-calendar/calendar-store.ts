@@ -251,6 +251,13 @@ export class CalendarStore {
     if (this.activeKey() !== key) {
       return;
     }
+
+    const remaining = this.tabs();
+    if (remaining.length > 0) {
+      // Clear the active key first so selectTab does not re-create a draft for the deleted tab
+      this.activeKey.set('');
+      this.selectTab(remaining[0].key);
+    }
   }
 
   /**
