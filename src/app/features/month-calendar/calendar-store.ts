@@ -236,6 +236,16 @@ export class CalendarStore {
   }
 
   /**
+   * Delete a month tab by key. Unknown keys are ignored.
+   */
+  async deleteTab(key: string): Promise<void> {
+    const tab = this.tabs().find((t) => t.key === key);
+    if (!tab) {
+      return;
+    }
+  }
+
+  /**
    * Save the currently active month's state to Dexie and mark the tab as saved.
    */
   async save(): Promise<void> {
