@@ -1,13 +1,22 @@
 <div class="month-tabs d-flex gap-2 align-items-center">
   @for (tab of store.tabs(); track tab.key) {
-    <button
-      class="month-tabs__tab btn btn-sm"
-      [class.btn-primary]="store.activeKey() === tab.key"
-      [class.btn-outline-secondary]="store.activeKey() !== tab.key"
-      (click)="onTabClick(tab.key)"
-    >
-      {{ tab.label }}▾
-    </button>
+    <div class="month-tabs__tab-wrapper">
+      <button
+        class="month-tabs__tab btn btn-sm"
+        [class.btn-primary]="store.activeKey() === tab.key"
+        [class.btn-outline-secondary]="store.activeKey() !== tab.key"
+        (click)="onTabClick(tab.key)"
+      >
+        {{ tab.label }}▾
+      </button>
+      <button
+        type="button"
+        class="month-tabs__tab-actions-btn btn btn-sm btn-outline-secondary"
+        (click)="toggleActionsMenu(tab.key, $event)"
+      >
+        ⋮
+      </button>
+    </div>
   }
   <button
     class="month-tabs__add-btn btn btn-sm btn-outline-secondary"
