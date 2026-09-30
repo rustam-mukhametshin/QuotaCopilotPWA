@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CalendarStore } from '../calendar-store';
+import { CalendarStore, MonthTab } from '../calendar-store';
 import { monthKey } from '../calendar-db';
 
 @Component({
@@ -14,6 +14,7 @@ export class MonthTabs {
   protected readonly store = inject(CalendarStore);
   protected readonly showPicker = signal(false);
   protected readonly openMenuKey = signal<string | null>(null);
+  protected readonly pendingDeleteTab = signal<MonthTab | null>(null);
 
   protected onTabClick(key: string): void {
     this.store.selectTab(key);
@@ -48,5 +49,11 @@ export class MonthTabs {
 
   protected closeActionsMenu(): void {
     this.openMenuKey.set(null);
+  }
+
+  protected onDeleteClick(tab: MonthTab, event: Event): void {
+    event.stopPropagation();
+    this.closeActionsMenu();
+    this.pendingDeleteTab.set(tab);
   }
 }
