@@ -56,4 +56,22 @@ export class MonthTabs {
     this.closeActionsMenu();
     this.pendingDeleteTab.set(tab);
   }
+
+  protected cancelDelete(): void {
+    this.pendingDeleteTab.set(null);
+  }
+
+  protected async confirmDelete(): Promise<void> {
+    const tab = this.pendingDeleteTab();
+    if (!tab) {
+      return;
+    }
+
+    await this.store.deleteTab(tab.key);
+    this.pendingDeleteTab.set(null);
+  }
+
+  protected onModalContentClick(event: Event): void {
+    event.stopPropagation();
+  }
 }
