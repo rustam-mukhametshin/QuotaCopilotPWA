@@ -1,5 +1,5 @@
 .sidebar {
-  min-width: 200px;
+  width: 100%;
 }
 
 .sidebar button {
@@ -18,3 +18,10 @@
 .sidebar #per-day-credits {
   background-color: var(--bs-secondary-bg);
 }
+
+@media (min-width: 768px) {
+  .sidebar {
+    min-width: 200px;
+  }
+}
+

@@ -6,7 +6,7 @@ import { CalendarStore } from '../calendar-store';
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
   host: {
-    class: 'mt-5',
+    class: 'mt-0 mt-md-5',
   }
 })
 export class Sidebar {
