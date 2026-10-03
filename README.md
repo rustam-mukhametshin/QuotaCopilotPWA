@@ -5,6 +5,7 @@ Plan your monthly AI credit usage across working days with automatic calculation
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/releases)
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-informational)](./CHANGELOG.md)
+[![Tests](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml)
 
 ## 🚀 Open the App
 
@@ -64,6 +65,12 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ```bash
 ng test
 ```
+
+## Continuous Integration
+
+Tests run automatically on every push and pull request via GitHub Actions. The test suite is executed on Node.js versions 18.x and 20.x to ensure compatibility across different environments.
+
+You can view the CI status and logs in the [GitHub Actions](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions) tab.
 
 ## Running end-to-end tests
 
