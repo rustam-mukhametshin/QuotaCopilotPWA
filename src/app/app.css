@@ -1,7 +1,23 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+app-month-calendar {
+  flex: 1 0 auto;
+}
+
 .app-footer {
-  margin-top: 1rem;
+  margin-top: auto;
+  margin-inline: auto;
+  flex-shrink: 0;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
   color: #6c757d;
   text-align: right;
+  border-top: 1px solid #e0e0e0;
+  max-width: 1320px;
+  width: 100%;
 }

@@ -20,7 +20,11 @@
 }
 
 @media (min-width: 768px) {
+  :host {
+    flex: 0 0 220px;
+  }
+
   .sidebar {
-    min-width: 200px;
+    width: 220px;
   }
 }

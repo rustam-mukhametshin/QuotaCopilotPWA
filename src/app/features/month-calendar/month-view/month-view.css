@@ -1,3 +1,9 @@
+.month-view-host {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .day {
   overflow: visible;
   position: relative;

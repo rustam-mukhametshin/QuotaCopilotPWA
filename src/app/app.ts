@@ -7,6 +7,7 @@ import { APP_VERSION } from './version';
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
+  host: { class: 'app-shell' },
 })
 export class App {
   protected readonly version = APP_VERSION;

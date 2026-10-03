@@ -7,6 +7,7 @@ import { Week } from '../working-days';
   selector: 'app-month-view',
   styleUrl: './month-view.css',
   templateUrl: './month-view.html',
+  host: { class: 'month-view-host' },
 })
 export class MonthView {
   private readonly store = inject(CalendarStore);
