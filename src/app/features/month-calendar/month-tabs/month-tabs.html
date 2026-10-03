@@ -1,8 +1,8 @@
 <div class="month-tabs d-flex gap-2 align-items-center">
   @for (tab of store.tabs(); track tab.key) {
-    <div class="month-tabs__tab-wrapper">
+    <div class="month-tabs__tab-wrapper btn-group btn-group-sm" role="group">
       <button
-        class="month-tabs__tab btn btn-sm"
+        class="month-tabs__tab btn"
         [class.btn-primary]="store.activeKey() === tab.key"
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
         (click)="onTabClick(tab.key)"
@@ -11,7 +11,10 @@
       </button>
       <button
         type="button"
-        class="month-tabs__tab-actions-btn btn btn-sm btn-outline-secondary"
+        class="month-tabs__tab-actions-btn btn"
+        [class.btn-primary]="store.activeKey() === tab.key"
+        [class.btn-outline-secondary]="store.activeKey() !== tab.key"
+        aria-label="Действия с вкладкой"
         (click)="toggleActionsMenu(tab.key, $event)"
       >
         ⋮
