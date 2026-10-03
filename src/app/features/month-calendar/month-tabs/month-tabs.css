@@ -14,23 +14,24 @@
   transition: all 0.2s ease;
 }
 
-.month-tabs__tab:hover,
-.month-tabs__add-btn:hover,
-.month-tabs__tab-actions-btn:hover {
+.month-tabs__add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.month-tabs__tab-wrapper:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .month-tabs__tab-wrapper {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 .month-tabs__tab-actions-btn {
-  padding: 0.25rem 0.4rem;
+  padding: 0.25rem 0.5rem;
   line-height: 1;
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .month-tabs__actions-menu {
