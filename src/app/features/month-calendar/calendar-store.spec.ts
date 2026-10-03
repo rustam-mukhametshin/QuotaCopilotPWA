@@ -1,17 +1,22 @@
-import { TestBed, flush } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CalendarStore } from './calendar-store';
+import { calendarDb, MonthRecord } from './calendar-db';
 import { vi } from 'vitest';
 
 describe('CalendarStore', () => {
   beforeEach(() => {
     // 2024-02-15 is a Thursday; February 2024 has 21 working days.
     vi.setSystemTime(new Date(2024, 1, 15));
+    // IndexedDB is not available in the test environment: stub Dexie table calls.
+    vi.spyOn(calendarDb.months, 'put').mockResolvedValue('');
+    vi.spyOn(calendarDb.months, 'delete').mockResolvedValue(undefined);
+    vi.spyOn(calendarDb.months, 'toArray').mockResolvedValue([]);
     TestBed.configureTestingModule({});
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   function createStore(): CalendarStore {
@@ -221,23 +226,196 @@ describe('CalendarStore', () => {
   });
 
   describe('save', () => {
-    it('should be callable without throwing errors', async () => {
+    function createStoreWithFebTab(): CalendarStore {
       const store = createStore();
-      store.tabs.set([
-        {
-          key: '2024-02',
-          year: 2024,
-          month: 2,
-          label: 'Feb24',
-          saved: false,
-        },
+      store.addMonthTab(2024, 2);
+      return store;
+    }
+
+    it('has no unsaved changes right after a new tab is added', () => {
+      const store = createStoreWithFebTab();
+
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('writes the active month record to Dexie and marks the tab as saved', async () => {
+      const store = createStoreWithFebTab();
+      store.totalAiCredits.set(150);
+      store.setDayNote('2024-02-01', 'Note');
+
+      await store.save();
+
+      expect(calendarDb.months.put).toHaveBeenCalledWith({
+        key: '2024-02',
+        year: 2024,
+        month: 2,
+        totalAiCredits: 150,
+        dayNotes: { '2024-02-01': 'Note' },
+      });
+      expect(store.tabs()[0].saved).toBe(true);
+    });
+
+    it('hasUnsavedChanges becomes false after save', async () => {
+      const store = createStoreWithFebTab();
+      store.totalAiCredits.set(150);
+      expect(store.hasUnsavedChanges()).toBe(true);
+
+      await store.save();
+
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('hasUnsavedChanges is true after a change following save and false after reverting', async () => {
+      const store = createStoreWithFebTab();
+      store.totalAiCredits.set(150);
+      await store.save();
+
+      store.totalAiCredits.set(200);
+      expect(store.hasUnsavedChanges()).toBe(true);
+
+      store.totalAiCredits.set(150);
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('hasUnsavedChanges becomes true after changing a day note following save', async () => {
+      const store = createStoreWithFebTab();
+      await store.save();
+      expect(store.hasUnsavedChanges()).toBe(false);
+
+      store.setDayNote('2024-02-01', 'Test note');
+
+      expect(store.hasUnsavedChanges()).toBe(true);
+    });
+
+    it('saved snapshot is not affected by later note edits', async () => {
+      const store = createStoreWithFebTab();
+      store.setDayNote('2024-02-01', 'A');
+      await store.save();
+
+      store.setDayNote('2024-02-01', 'B');
+      store.setDayNote('2024-02-01', 'A');
+
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('does nothing when there is no active tab', async () => {
+      const store = createStore();
+
+      await store.save();
+
+      expect(calendarDb.months.put).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('setTotalAiCredits', () => {
+    it('parses a numeric string', () => {
+      const store = createStore();
+
+      store.setTotalAiCredits('5000');
+
+      expect(store.totalAiCredits()).toBe(5000);
+    });
+
+    it('sets null for empty or non-numeric input', () => {
+      const store = createStore();
+      store.totalAiCredits.set(10);
+
+      store.setTotalAiCredits('  ');
+      expect(store.totalAiCredits()).toBeNull();
+
+      store.setTotalAiCredits('abc');
+      expect(store.totalAiCredits()).toBeNull();
+    });
+  });
+
+  describe('deleteTab', () => {
+    it('ignores unknown keys', async () => {
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+
+      await store.deleteTab('1999-01');
+
+      expect(calendarDb.months.delete).not.toHaveBeenCalled();
+      expect(store.tabs()).toHaveLength(1);
+    });
+
+    it('removes the tab from Dexie and switches to the first remaining tab when active', async () => {
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      store.addMonthTab(2024, 3);
+
+      await store.deleteTab('2024-03');
+
+      expect(calendarDb.months.delete).toHaveBeenCalledWith('2024-03');
+      expect(store.tabs().map((t) => t.key)).toEqual(['2024-01']);
+      expect(store.activeKey()).toBe('2024-01');
+    });
+
+    it('keeps the active tab when deleting an inactive one', async () => {
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      store.addMonthTab(2024, 3);
+
+      await store.deleteTab('2024-01');
+
+      expect(store.activeKey()).toBe('2024-03');
+    });
+
+    it('falls back to an empty current-month tab when the last tab is deleted', async () => {
+      const store = createStore();
+      store.addMonthTab(2023, 5);
+      store.totalAiCredits.set(100);
+
+      await store.deleteTab('2023-05');
+
+      expect(store.tabs()).toEqual([
+        { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
       ]);
+      expect(store.activeKey()).toBe('2024-02');
+      expect(store.totalAiCredits()).toBeNull();
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+  });
 
-      store.selectTab('2024-02');
+  describe('initialize', () => {
+    it('creates an unsaved current-month tab when Dexie is empty', async () => {
+      const store = createStore();
 
-      // Just test that save doesn't throw during store state update
-      // The actual Dexie writing is tested separately with integration tests
-      expect(() => store.totalAiCredits.set(3000)).not.toThrow();
+      await store.initialize();
+
+      expect(store.tabs()).toEqual([
+        { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
+      ]);
+      expect(store.activeKey()).toBe('2024-02');
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('loads saved records sorted newest first and activates the most recent', async () => {
+      const records: MonthRecord[] = [
+        { key: '2024-01', year: 2024, month: 1, totalAiCredits: 100, dayNotes: {} },
+        { key: '2024-03', year: 2024, month: 3, totalAiCredits: 300, dayNotes: { '2024-03-01': 'x' } },
+        { key: '2023-12', year: 2023, month: 12, totalAiCredits: null, dayNotes: {} },
+      ];
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue(records);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.tabs().map((t) => t.key)).toEqual(['2024-03', '2024-01', '2023-12']);
+      expect(store.tabs().every((t) => t.saved)).toBe(true);
+      expect(store.activeKey()).toBe('2024-03');
+      expect(store.totalAiCredits()).toBe(300);
+      expect(store.dayNotes()).toEqual({ '2024-03-01': 'x' });
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('runs only once', async () => {
+      const store = createStore();
+
+      await store.initialize();
+      await store.initialize();
+
+      expect(calendarDb.months.toArray).toHaveBeenCalledTimes(1);
     });
   });
 
