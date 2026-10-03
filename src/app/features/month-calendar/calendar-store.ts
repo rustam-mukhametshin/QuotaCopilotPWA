@@ -27,6 +27,7 @@ export class CalendarStore {
   readonly activeKey = signal<string>('');
 
   private draftState = new Map<string, DraftState>();
+  private draftVersion = signal(0);
   private initialized = false;
 
   readonly weeks = computed<Week[]>(() => getWorkingWeeksOfMonth(this.reference()));
@@ -51,6 +52,7 @@ export class CalendarStore {
   );
 
   readonly hasUnsavedChanges = computed<boolean>(() => {
+    this.draftVersion(); // Track draft state changes
     const key = this.activeKey();
     const draft = this.draftState.get(key);
 
@@ -89,6 +91,16 @@ export class CalendarStore {
   setTotalAiCredits(value: string): void {
     const parsed = value.trim() === '' ? null : Number(value);
     this.totalAiCredits.set(parsed !== null && !Number.isNaN(parsed) ? parsed : null);
+  }
+
+  private setDraft(key: string, state: DraftState): void {
+    this.draftState.set(key, state);
+    this.draftVersion.update((v) => v + 1);
+  }
+
+  private deleteDraft(key: string): void {
+    this.draftState.delete(key);
+    this.draftVersion.update((v) => v + 1);
   }
 
   /**
@@ -134,7 +146,7 @@ export class CalendarStore {
       const fallbackTab = this.createFallbackTab();
 
       this.tabs.set([fallbackTab]);
-      this.draftState.set(fallbackTab.key, {
+      this.setDraft(fallbackTab.key, {
         totalAiCredits: null,
         dayNotes: {},
       });
@@ -162,9 +174,9 @@ export class CalendarStore {
 
     // Seed draftState with persisted data for each tab
     records.forEach((record) => {
-      this.draftState.set(record.key, {
+      this.setDraft(record.key, {
         totalAiCredits: record.totalAiCredits,
-        dayNotes: record.dayNotes,
+        dayNotes: { ...record.dayNotes },
       });
     });
 
@@ -183,7 +195,7 @@ export class CalendarStore {
   selectTab(key: string): void {
     const currentKey = this.activeKey();
     if (currentKey) {
-      this.draftState.set(currentKey, {
+      this.setDraft(currentKey, {
         totalAiCredits: this.totalAiCredits(),
         dayNotes: { ...this.dayNotes() },
       });
@@ -201,7 +213,7 @@ export class CalendarStore {
     const draft = this.draftState.get(key);
     if (draft) {
       this.totalAiCredits.set(draft.totalAiCredits);
-      this.dayNotes.set(draft.dayNotes);
+      this.dayNotes.set({ ...draft.dayNotes });
     } else {
       this.totalAiCredits.set(null);
       this.dayNotes.set({});
@@ -228,7 +240,7 @@ export class CalendarStore {
     };
 
     this.tabs.update((tabs) => [...tabs, newTab]);
-    this.draftState.set(key, {
+    this.setDraft(key, {
       totalAiCredits: null,
       dayNotes: {},
     });
@@ -245,7 +257,7 @@ export class CalendarStore {
     }
 
     await calendarDb.months.delete(key);
-    this.draftState.delete(key);
+    this.deleteDraft(key);
     this.tabs.update((tabs) => tabs.filter((t) => t.key !== key));
 
     if (this.activeKey() !== key) {
@@ -263,7 +275,7 @@ export class CalendarStore {
     // Last tab was removed: fall back to an empty tab for the current month
     const fallback = this.createFallbackTab();
     this.tabs.set([fallback]);
-    this.draftState.set(fallback.key, {
+    this.setDraft(fallback.key, {
       totalAiCredits: null,
       dayNotes: {},
     });
@@ -300,7 +312,7 @@ export class CalendarStore {
     await calendarDb.months.put(record);
 
     // Update draftState to match what was just saved
-    this.draftState.set(activeKey, {
+    this.setDraft(activeKey, {
       totalAiCredits: record.totalAiCredits,
       dayNotes: record.dayNotes,
     });
