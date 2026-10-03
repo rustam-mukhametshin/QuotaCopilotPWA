@@ -103,7 +103,7 @@ describe('CalendarStore', () => {
       expect(store.reference().getMonth()).toBe(0); // January
     });
 
-    it('restores the target tab\'s totalAiCredits and dayNotes from draftState', () => {
+    it("restores the target tab's totalAiCredits and dayNotes from draftState", () => {
       const store = createStore();
       store.tabs.set([
         {
@@ -234,7 +234,7 @@ describe('CalendarStore', () => {
       ]);
 
       store.selectTab('2024-02');
-      
+
       // Just test that save doesn't throw during store state update
       // The actual Dexie writing is tested separately with integration tests
       expect(() => store.totalAiCredits.set(3000)).not.toThrow();

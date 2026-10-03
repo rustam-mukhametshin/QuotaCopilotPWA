@@ -1,11 +1,13 @@
 # AGENTS.md
 
 ## Project state
+
 This is an Angular v22 application scaffolded via `ng new` (standalone components, no NgModules).
 The app features a month-calendar interface with AI credit budgeting, persistent state via Dexie
 IndexedDB, and a responsive PWA architecture.
 
 ## Commands
+
 - `npm start` / `ng serve` — dev server at `http://localhost:4200/`
 - `npm run build` / `ng build` — production build to `dist/`
 - `npm run watch` / `ng build --watch --configuration development` — incremental dev build
@@ -19,6 +21,7 @@ IndexedDB, and a responsive PWA architecture.
   directly when formatting.
 
 ## Conventions
+
 - Components are standalone (`imports: [...]` on `@Component`, no `NgModule`).
 - Files follow Angular CLI naming: component class files have no `.component.ts` suffix
   (e.g. `app.ts`, `app.html`, `app.css`, `app.spec.ts` for the root `App` component) — this
@@ -30,6 +33,7 @@ IndexedDB, and a responsive PWA architecture.
 - 2-space indentation, single quotes in TS, per `.editorconfig`/`.prettierrc`.
 
 ## Versioning
+
 - **Conventional Commits:** all commits must follow the format: `type(scope): message`, where type is
   one of: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`, `perf`, etc.
   - `feat:` increments minor version (0.1.0 → 0.2.0)
@@ -44,5 +48,3 @@ IndexedDB, and a responsive PWA architecture.
   automatically during release. Do not edit version manually.
 - **Version in UI:** the footer displays the app version via `APP_VERSION` imported in
   `src/app/app.ts`.
-
-

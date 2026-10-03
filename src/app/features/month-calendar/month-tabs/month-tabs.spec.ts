@@ -78,9 +78,7 @@ describe('MonthTabs', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const tabButtons = compiled.querySelectorAll('.month-tabs__tab');
 
-    const activeTab = Array.from(tabButtons).find((btn) =>
-      btn.classList.contains('btn-primary'),
-    );
+    const activeTab = Array.from(tabButtons).find((btn) => btn.classList.contains('btn-primary'));
 
     expect(activeTab).toBeDefined();
   });

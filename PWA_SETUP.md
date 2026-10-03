@@ -9,6 +9,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ### Desktop Installation
 
 #### Google Chrome / Microsoft Edge / Chromium-based Browsers
+
 1. Open Quota Copilot in your browser
 2. Look for the **"Install" button** in the address bar (or browser menu)
 3. Click **"Install"** and confirm
@@ -16,6 +17,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 5. A launcher shortcut will be created (Windows: Start menu, macOS: Applications, Linux: depends on desktop environment)
 
 #### Manual Installation (Chrome/Edge)
+
 1. Open the browser menu (three dots or hamburger icon)
 2. Go to **More tools → Create shortcut**
 3. Check **"Open as window"**
@@ -24,6 +26,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ### Mobile Installation
 
 #### Android
+
 1. Open Quota Copilot in Chrome or Edge mobile browser
 2. Tap the **menu button** (three dots)
 3. Select **"Add to Home Screen"** (or "Install app")
@@ -31,6 +34,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 5. Launch the app from home screen - it will open in standalone mode
 
 #### iOS (Safari)
+
 1. Open Quota Copilot in Safari
 2. Tap the **Share button** (arrow pointing up)
 3. Scroll down and tap **"Add to Home Screen"**
@@ -56,11 +60,13 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ### Data Persistence
 
 #### Dexie Local Storage
+
 - All quota data, settings, and user-created content are stored locally using **Dexie** (IndexedDB)
 - Data persists even after app is closed or device is restarted
 - Data syncs between offline and online states automatically when connection is restored
 
 #### Service Worker Cache
+
 - Static assets (CSS, JS, images) are cached by the Service Worker
 - Cache expires after 30 days or when the app is updated
 - Old cache is automatically cleaned up
@@ -68,17 +74,20 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ## Features
 
 ### Installation Prompt
+
 - First visit: Browser may show "Install" prompt automatically
 - Second visit: If dismissed, use browser menu to install manually
 - The app is fully installable once added to home screen
 
 ### Theme & Branding
+
 - **App Name**: "Quota Copilot"
 - **Theme Color**: Professional blue (#0066CC)
 - **App Icon**: Displays on home screen and in app switcher
 - **Splash Screen**: Loading screen when app is launched
 
 ### Service Worker
+
 - Automatically registers on app load (production only)
 - Checks for updates every hour
 - Handles offline scenarios gracefully
@@ -87,6 +96,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ## Testing
 
 ### Chrome DevTools
+
 1. Open the app in Chrome/Edge
 2. Press **F12** to open DevTools
 3. Go to **Application tab**
@@ -95,6 +105,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 6. Check **Cache Storage**: View cached assets and data
 
 ### Testing Offline
+
 1. Open DevTools (F12)
 2. Go to **Network tab**
 3. Check **Offline** checkbox
@@ -103,6 +114,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 6. Check DevTools **Console** - no errors should appear
 
 ### Testing Installation
+
 1. Open app in Chrome/Edge
 2. Click **Install** button (address bar or menu)
 3. Confirm installation
@@ -112,14 +124,16 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ## Troubleshooting
 
 ### Service Worker Not Registering
+
 - **Issue**: Service Worker registration fails
-- **Solution**: 
+- **Solution**:
   - Check browser console (DevTools → Console tab)
   - Ensure app is served over HTTPS (required for production PWA)
   - Clear browser cache and reload
   - Check Service Workers in DevTools (Application → Service Workers)
 
 ### App Won't Install
+
 - **Issue**: No install prompt appears
 - **Solution**:
   - Must have valid manifest.webmanifest file
@@ -129,6 +143,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
   - Manual installation: Use browser menu "Create shortcut" or "Add to Home Screen"
 
 ### Offline Not Working
+
 - **Issue**: App doesn't work without network
 - **Solution**:
   - Check Service Worker status (DevTools → Application → Service Workers)
@@ -137,6 +152,7 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
   - Clear cache and reinstall app
 
 ### Data Not Persisting
+
 - **Issue**: Changes are lost after app closes
 - **Solution**:
   - Check Dexie database status (DevTools → Application → IndexedDB)
@@ -146,23 +162,28 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 ## Build & Deployment
 
 ### Production Build
+
 ```bash
 npm run build
 ```
+
 - Builds with optimization enabled
 - Service Worker is bundled with production configuration
 - Manifest is included in assets
 - Output is ready for deployment
 
 ### Local Testing
+
 ```bash
 npm start
 ```
+
 - Runs development server
 - Service Worker is NOT active in development (only production)
 - Hot reload enabled for development
 
 ### Deployment Requirements
+
 - **HTTPS Required**: Service workers only work over HTTPS
 - **Manifest Path**: Ensure `manifest.webmanifest` is accessible at root
 - **Icons Path**: Ensure `icons/` directory is accessible at root
@@ -171,6 +192,7 @@ npm start
 ## Support
 
 For more information about PWAs:
+
 - [MDN Web Docs - Progressive Web Apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - [Google Chrome - Web Apps](https://web.dev/progressive-web-apps/)
 - [Angular Service Worker Documentation](https://angular.io/guide/service-worker-intro)

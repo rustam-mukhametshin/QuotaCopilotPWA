@@ -1,5 +1,20 @@
 # QuotaCopilotPWA
 
+A month-calendar interface for AI credit budgeting with persistent state via Dexie IndexedDB.
+Plan your monthly AI credit usage across working days with automatic calculations and local storage.
+
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/releases)
+[![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-informational)](./CHANGELOG.md)
+
+## 🚀 Open the App
+
+**[Open QuotaCopilot PWA](https://quota-copilot-pwa.vercel.app/)** — running live on Vercel
+
+💡 **Tip:** This application is a PWA! Install it on your device for offline access:
+
+- On desktop: look for the "Install" button in your browser's address bar
+- On mobile: tap "Add to Home Screen"
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
 
 ## Development server
@@ -7,10 +22,16 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+or
+
+```bash
+ng serve --port 4201
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4201/`. The application will automatically reload whenever you modify any of the source files.
 
 ## Code scaffolding
 

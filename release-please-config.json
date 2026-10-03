@@ -5,10 +5,7 @@
       "package-name": "quota-copilot-pwa",
       "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": true,
-      "extra-files": [
-        "src/app/version.ts"
-      ]
+      "extra-files": ["src/app/version.ts"]
     }
   }
 }
-

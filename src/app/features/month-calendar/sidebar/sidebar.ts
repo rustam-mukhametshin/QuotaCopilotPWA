@@ -7,7 +7,7 @@ import { CalendarStore } from '../calendar-store';
   templateUrl: './sidebar.html',
   host: {
     class: 'mt-0 mt-md-5',
-  }
+  },
 })
 export class Sidebar {
   protected readonly store = inject(CalendarStore);
