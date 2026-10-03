@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MonthCalendar } from './features/month-calendar/month-calendar/month-calendar';
+import { APP_VERSION } from './version';
 
 @Component({
   imports: [MonthCalendar],
@@ -7,4 +8,6 @@ import { MonthCalendar } from './features/month-calendar/month-calendar/month-ca
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {}
+export class App {
+  protected readonly version = APP_VERSION;
+}
