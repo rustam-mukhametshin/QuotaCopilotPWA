@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.2.0...quota-copilot-pwa-v0.3.0) (2026-10-04)
+
+
+### Features
+
+* add CI build workflow for Node.js 24.x and update README with CI details ([bd24bab](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/bd24babfeed6a538f63a446ee18612037faf5ff7))
+
 ## [0.2.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.1.0...quota-copilot-pwa-v0.2.0) (2026-10-03)
 
 
