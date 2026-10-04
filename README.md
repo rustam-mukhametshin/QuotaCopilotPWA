@@ -7,6 +7,8 @@ Plan your monthly AI credit usage across working days with automatic calculation
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-informational)](./CHANGELOG.md)
 [![Build](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml)
 [![Tests](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml)
+[![Lint](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/lint.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/lint.yml)
+[![Format](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/format.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/format.yml)
 
 ## 🚀 Open the App
 
