@@ -3,7 +3,7 @@
 A month-calendar interface for AI credit budgeting with persistent state via Dexie IndexedDB.
 Plan your monthly AI credit usage across working days with automatic calculations and local storage.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/releases)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Frustam-mukhametshin%2FQuotaCopilotPWA%2Fmain%2Fpackage.json&query=version&label=version&color=blue)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/releases)
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-informational)](./CHANGELOG.md)
 [![Build](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml)
 [![Tests](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml)
