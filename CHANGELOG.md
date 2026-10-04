@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.3.0...quota-copilot-pwa-v0.4.0) (2026-10-04)
+
+
+### Features
+
+* add lint and format badges to README for CI workflows ([0f2e5b5](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/0f2e5b52e9fb5dbf81689f9a334fd70667424ae9))
+* add linting and formatting workflows with ESLint and Prettier ([bb824ce](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/bb824cefeb90e84380a9e52eaef98b55cd918e3c))
+
+
+### Bug Fixes
+
+* update test command in CI configuration to disable watch mode ([da966b0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/da966b08911d476719dd5938a0c8621916a8bf8c))
+
 ## [0.3.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.2.0...quota-copilot-pwa-v0.3.0) (2026-10-04)
 
 
