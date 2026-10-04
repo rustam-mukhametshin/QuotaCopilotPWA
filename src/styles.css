@@ -1,5 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f9f9f9;
+  --theme-text-primary: #212529;
+  --theme-text-secondary: #6c757d;
+  --theme-border-color: #e0e0e0;
+  --theme-card-bg: #ffffff;
+  --theme-input-bg: #ffffff;
+  --theme-input-text: #212529;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme='dark'] {
+  --theme-bg-primary: #212529;
+  --theme-bg-secondary: #343a40;
+  --theme-text-primary: #f8f9fa;
+  --theme-text-secondary: #adb5bd;
+  --theme-border-color: #495057;
+  --theme-card-bg: #2d3139;
+  --theme-input-bg: #343a40;
+  --theme-input-text: #f8f9fa;
+  --theme-shadow: rgba(0, 0, 0, 0.3);
+}
+
 html,
 body {
   height: 100%;
