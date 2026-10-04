@@ -1,17 +1,19 @@
 import { Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import type { MonthTab } from '../calendar-store';
 import { CalendarStore } from '../calendar-store';
 
 @Component({
   selector: 'app-month-tabs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   styleUrl: './month-tabs.css',
   templateUrl: './month-tabs.html',
 })
 export class MonthTabs implements OnDestroy {
   protected readonly store = inject(CalendarStore);
+  private readonly translate = inject(TranslateService);
   protected readonly showPicker = signal(false);
   protected readonly pendingDeleteTab = signal<MonthTab | null>(null);
 
@@ -87,7 +89,7 @@ export class MonthTabs implements OnDestroy {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'btn btn-sm btn-link text-danger text-decoration-none w-100 text-start';
-    button.textContent = 'Удалить';
+    button.textContent = this.translate.instant('monthTabs.delete');
     button.addEventListener('click', () => {
       this.closeActions();
       this.pendingDeleteTab.set(tab);

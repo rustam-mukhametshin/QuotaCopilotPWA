@@ -1,6 +1,12 @@
 <div class="sidebar d-flex flex-column gap-3">
   <div class="d-flex flex-column gap-1">
-    <label class="form-label" for="total-ai-credits">Total AI credits</label>
+    <label
+      class="form-label"
+      for="total-ai-credits"
+      [attr.data-bs-title]="'sidebar.totalAiCreditsTooltip' | translate"
+    >
+      {{ 'sidebar.totalAiCredits' | translate }}
+    </label>
     @if (isLoading()) {
       <div class="placeholder-glow">
         <div class="placeholder" style="height: 38px"></div>
@@ -16,7 +22,7 @@
     }
   </div>
   <div class="d-flex flex-column gap-1">
-    <label class="form-label" for="per-day-credits">Per day</label>
+    <label class="form-label" for="per-day-credits">{{ 'sidebar.perDay' | translate }}</label>
     @if (isLoading()) {
       <div class="placeholder-glow">
         <div class="placeholder" style="height: 38px"></div>
@@ -36,22 +42,22 @@
     [disabled]="!store.hasUnsavedChanges() || isSaving() || isLoading()"
     (click)="onSave()"
   >
-    {{ isSaving() ? 'Saving...' : 'Save' }}
+    {{ (isSaving() ? 'sidebar.saving' : 'sidebar.save') | translate }}
   </button>
 
   @if (showToast()) {
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
       <div class="toast show" role="alert">
         <div class="toast-header">
-          <strong class="me-auto">✓ Success</strong>
+          <strong class="me-auto">✓ {{ 'sidebar.savedSuccess' | translate }}</strong>
           <button
             type="button"
             class="btn-close"
             (click)="hideToast()"
-            aria-label="Close toast"
+            [attr.aria-label]="'sidebar.closeToast' | translate"
           ></button>
         </div>
-        <div class="toast-body">Data saved successfully</div>
+        <div class="toast-body">{{ 'sidebar.dataChanged' | translate }}</div>
       </div>
     </div>
   }

@@ -8,7 +8,7 @@ declare namespace bootstrap {
   }
 
   interface TooltipOptions {
-    title?: string;
+    title?: string | ((element: Element) => string);
     placement?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
     trigger?: string;
   }

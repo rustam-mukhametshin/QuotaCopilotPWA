@@ -14,7 +14,7 @@
         class="month-tabs__tab-actions-btn btn"
         [class.btn-primary]="store.activeKey() === tab.key"
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
-        aria-label="Действия с вкладкой"
+        [attr.aria-label]="'monthTabs.actions' | translate"
         (click)="toggleActions(tab, $event)"
       >
         ⋮
@@ -38,21 +38,23 @@
   @if (pendingDeleteTab(); as tab) {
     <div class="month-tabs__confirm-overlay" (click)="cancelDelete()">
       <div class="month-tabs__confirm-modal" (click)="onModalContentClick($event)">
-        <p class="month-tabs__confirm-text">Удалить вкладку {{ tab.label }}?</p>
+        <p class="month-tabs__confirm-text">
+          {{ 'monthTabs.confirmDelete' | translate: { label: tab.label } }}
+        </p>
         <div class="month-tabs__confirm-actions">
           <button
             type="button"
             class="month-tabs__confirm-cancel-btn btn btn-sm btn-outline-secondary"
             (click)="cancelDelete()"
           >
-            Отмена
+            {{ 'monthTabs.cancel' | translate }}
           </button>
           <button
             type="button"
             class="month-tabs__confirm-delete-btn btn btn-sm btn-danger"
             (click)="confirmDelete()"
           >
-            Удалить
+            {{ 'monthTabs.delete' | translate }}
           </button>
         </div>
       </div>

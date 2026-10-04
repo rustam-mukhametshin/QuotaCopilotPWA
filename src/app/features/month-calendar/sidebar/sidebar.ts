@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, inject, signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 
 @Component({
   selector: 'app-sidebar',
+  imports: [TranslatePipe],
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
   host: {
@@ -68,7 +70,7 @@ export class Sidebar implements AfterViewInit, OnDestroy {
 
     if (totalAiCreditsLabel) {
       const tooltip = new bootstrap.Tooltip(totalAiCreditsLabel, {
-        title: 'Total budget of AI credits per month',
+        title: (element) => element.getAttribute('data-bs-title') ?? '',
         placement: 'right',
         trigger: 'hover',
       });

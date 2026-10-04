@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
 import type { Week } from '../working-days';
 
 @Component({
   selector: 'app-month-view',
+  imports: [TranslatePipe],
   styleUrl: './month-view.css',
   templateUrl: './month-view.html',
   host: { class: 'month-view-host' },
@@ -35,7 +37,7 @@ export class MonthView implements AfterViewInit, OnDestroy {
     const dayInputs = document.querySelectorAll('[data-bs-toggle="tooltip"][id^="day-"]');
     dayInputs.forEach((input) => {
       const tooltip = new bootstrap.Tooltip(input, {
-        title: 'Maximum available tokens for this day based on your daily limit',
+        title: (element) => element.getAttribute('data-bs-title') ?? '',
         placement: 'top',
         trigger: 'hover',
       });
