@@ -31,9 +31,25 @@ async function waitForServer(port, maxAttempts = 30) {
 async function runScreenshot() {
   let serverProcess;
   try {
-    // Start dev server
-    console.log('Starting dev server...');
-    serverProcess = spawn('ng', ['serve', '--configuration', 'development'], {
+    // Build production
+    console.log('Building production...');
+    await new Promise((resolve, reject) => {
+      const buildProcess = spawn('npm', ['run', 'build'], {
+        stdio: 'inherit',
+        shell: true,
+      });
+      buildProcess.on('exit', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Build failed with exit code ${code}`));
+        }
+      });
+    });
+
+    // Start production server
+    console.log('Starting production server...');
+    serverProcess = spawn('npx', ['serve', 'dist', '-l', String(PORT)], {
       stdio: 'inherit',
       shell: true,
     });
@@ -42,7 +58,7 @@ async function runScreenshot() {
     await waitForServer(PORT);
 
     // Wait a bit more to ensure app is fully loaded
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 3000));
 
     // Run screenshot script
     console.log('Taking screenshot...');
@@ -68,7 +84,7 @@ async function runScreenshot() {
     process.exit(1);
   } finally {
     if (serverProcess) {
-      console.log('Stopping dev server...');
+      console.log('Stopping server...');
       serverProcess.kill('SIGTERM');
     }
   }

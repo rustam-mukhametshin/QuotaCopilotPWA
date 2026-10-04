@@ -25,7 +25,10 @@ async function takeScreenshot() {
     const page = await context.newPage();
 
     // Navigate to the app and wait for network to be idle
-    await page.goto(appUrl, { waitUntil: 'networkidle' });
+    await page.goto(appUrl, { waitUntil: 'load' });
+
+    // Wait for Angular initialization
+    await page.waitForTimeout(5000);
 
     // Take the screenshot
     await page.screenshot({ path: screenshotPath, fullPage: false });
