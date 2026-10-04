@@ -10,6 +10,13 @@ Plan your monthly AI credit usage across working days with automatic calculation
 [![Lint](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/lint.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/lint.yml)
 [![Format](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/format.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/format.yml)
 
+## 📸 Preview
+
+Here's how the application looks:
+
+![App Preview](public/screenshots/app-preview.png)
+
+
 ## 🚀 Open the App
 
 **[Open QuotaCopilot PWA](https://quota-copilot-pwa.vercel.app/)** — running live on Vercel
