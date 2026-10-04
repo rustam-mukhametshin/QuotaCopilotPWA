@@ -1,4 +1,5 @@
-import { Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
+import type { OnDestroy } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import type { MonthTab } from '../calendar-store';

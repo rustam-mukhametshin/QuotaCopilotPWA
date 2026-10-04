@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnDestroy, inject, signal } from '@angular/core';
+import type { AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 
