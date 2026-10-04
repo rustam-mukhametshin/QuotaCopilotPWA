@@ -5,6 +5,7 @@ Plan your monthly AI credit usage across working days with automatic calculation
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/releases)
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-informational)](./CHANGELOG.md)
+[![Build](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/build.yml)
 [![Tests](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml/badge.svg)](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions/workflows/test.yml)
 
 ## 🚀 Open the App
@@ -68,7 +69,10 @@ ng test
 
 ## Continuous Integration
 
-Tests run automatically on every push and pull request via GitHub Actions. The test suite is executed on Node.js versions 18.x and 20.x to ensure compatibility across different environments.
+The project runs automated checks on every push and pull request via GitHub Actions:
+
+- **Build** — compiles the project to ensure production readiness
+- **Tests** — runs the test suite on Node.js 24.x to ensure code quality
 
 You can view the CI status and logs in the [GitHub Actions](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/actions) tab.
 
