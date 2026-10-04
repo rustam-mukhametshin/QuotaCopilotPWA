@@ -1,4 +1,5 @@
-import { computed, DestroyRef, effect, inject, signal, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { MOTION_DURATION_MS, prefersReducedMotion } from './motion';
 
 interface TweenedNumberOptions {

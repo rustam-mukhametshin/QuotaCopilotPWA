@@ -1,4 +1,5 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import type { ComponentFixture } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { LanguageSwitcher } from './language-switcher';
 import { TranslateService, provideTranslateService, TranslatePipe } from '@ngx-translate/core';
