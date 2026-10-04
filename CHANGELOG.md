@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.8.0...quota-copilot-pwa-v0.9.0) (2026-10-04)
+
+
+### Features
+
+* implement animation transitions for month tabs and sidebar components ([a7df112](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/a7df1126fd31e8537a6a0b4294270eb963e86f61))
+
 ## [0.8.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.7.0...quota-copilot-pwa-v0.8.0) (2026-10-04)
 
 
