@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.7.0...quota-copilot-pwa-v0.8.0) (2026-10-04)
+
+
+### Features
+
+* add CSS variables for light and dark themes ([3a7fb6e](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/3a7fb6e86592fdb134c69949dda695f5c8a1c133))
+* add language synchronization to document and initialize on app start ([e13e18b](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/e13e18bb28ae2b4683c5c5d08ff5574ea13b263d))
+* add theme switcher component and update theme management ([85a2dbd](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/85a2dbdfe05105007cfc3dbd871c751c0ed70d55))
+
 ## [0.7.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.6.0...quota-copilot-pwa-v0.7.0) (2026-10-04)
 
 
