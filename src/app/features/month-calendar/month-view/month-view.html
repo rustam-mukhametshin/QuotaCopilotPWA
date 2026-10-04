@@ -19,14 +19,17 @@
               [class.text-primary]="day.isToday"
               [class.bg-secondary-subtle]="day.isPast"
             >
-              <div class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">
+              <div
+                class="day__number fw-bold tabular-nums"
+                [class.text-decoration-line-through]="day.isPast"
+              >
                 {{ day.date.getDate() }}
                 <span class="day__index"> ({{ day.index }}) </span>
               </div>
               <div class="day__inputs d-flex flex-column gap-1">
                 <input
                   type="text"
-                  class="form-control form-control-sm"
+                  class="form-control form-control-sm tabular-nums"
                   [value]="limitForDay(day.index)"
                   readonly
                   id="day-{{ day.index }}-limit"

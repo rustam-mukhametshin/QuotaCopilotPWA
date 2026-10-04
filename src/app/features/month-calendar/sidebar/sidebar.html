@@ -15,7 +15,7 @@
       <input
         id="total-ai-credits"
         type="number"
-        class="form-control"
+        class="form-control tabular-nums"
         [value]="store.totalAiCredits() ?? ''"
         (input)="onTotalAiCreditsInput($event)"
         animate.enter="anim-fade-in"
@@ -32,7 +32,7 @@
       <input
         id="per-day-credits"
         type="text"
-        class="form-control"
+        class="form-control tabular-nums"
         [value]="getPerDayCreditsDisplay()"
         readonly
         animate.enter="anim-fade-in"

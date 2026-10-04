@@ -10,6 +10,11 @@
   --theme-input-bg: #ffffff;
   --theme-input-text: #212529;
   --theme-shadow: rgba(0, 0, 0, 0.1);
+  /* Typography */
+  --app-font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --bs-font-sans-serif: var(--app-font-sans);
+  --bs-body-font-family: var(--app-font-sans);
   /* Motion tokens */
   --motion-duration-fast: 150ms;
   --motion-duration-base: 200ms;
@@ -51,6 +56,24 @@ body {
 
 body {
   margin: 0;
+  font-feature-settings: 'cv11', 'ss01';
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+}
+
+.tabular-nums,
+input[type='number'],
+input[readonly] {
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================================================

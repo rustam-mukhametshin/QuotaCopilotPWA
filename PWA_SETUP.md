@@ -71,6 +71,13 @@ Quota Copilot is now a fully functional Progressive Web App (PWA) that can be in
 - Cache expires after 30 days or when the app is updated
 - Old cache is automatically cleaned up
 
+#### Fonts (Inter)
+
+- The app uses the **Inter** font loaded from Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`)
+- Font requests are cached via the `google-fonts` entry in `dataGroups` of `ngsw-config.json`
+  (`performance` strategy, up to 30 entries, 365 days)
+- After the first online visit, Inter is available offline; before that, the system font stack is used as a fallback
+
 ## Features
 
 ### Installation Prompt

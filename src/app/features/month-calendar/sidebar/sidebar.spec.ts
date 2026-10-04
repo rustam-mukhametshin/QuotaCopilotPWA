@@ -143,11 +143,11 @@ describe('Sidebar', () => {
       const error = new Error('Save failed');
       vi.spyOn(store, 'save').mockRejectedValue(error);
 
-       try {
-         await component['onSave']();
-       } catch {
-         // Error is expected, we're testing that isSaving is set to false
-       }
+      try {
+        await component['onSave']();
+      } catch {
+        // Error is expected, we're testing that isSaving is set to false
+      }
 
       expect(component['isSaving']()).toBe(false);
     });

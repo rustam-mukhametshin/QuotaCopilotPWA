@@ -7,7 +7,7 @@
       animate.leave="anim-scale-out"
     >
       <button
-        class="month-tabs__tab btn"
+        class="month-tabs__tab btn tabular-nums"
         [class.btn-primary]="store.activeKey() === tab.key"
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
         (click)="onTabClick(tab.key)"
