@@ -153,39 +153,121 @@ describe('MonthView (logic)', () => {
     });
   });
 
-  describe('placeholdersAfterWeek', () => {
-    it('returns (last day + 1)..Fri placeholders for the last week', () => {
-      const week = [day(2024, 2, 26), day(2024, 2, 29)]; // Mon .. Thu
+   describe('placeholdersAfterWeek', () => {
+     it('returns (last day + 1)..Fri placeholders for the last week', () => {
+       const week = [day(2024, 2, 26), day(2024, 2, 29)]; // Mon .. Thu
 
-      expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(1);
-    });
+       expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(1);
+     });
 
-    it('returns none when the last week ends on Friday', () => {
-      const week = [day(2024, 5, 31)]; // Fri
+     it('returns none when the last week ends on Friday', () => {
+       const week = [day(2024, 5, 31)]; // Fri
 
-      expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(0);
-    });
+       expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(0);
+     });
 
-    it('returns none for non-last weeks', () => {
-      const week = [day(2024, 2, 5)]; // Mon
+     it('returns none for non-last weeks', () => {
+       const week = [day(2024, 2, 5)]; // Mon
 
-      expect(view.placeholdersAfterWeek(week, 1, 5)).toHaveLength(0);
-    });
+       expect(view.placeholdersAfterWeek(week, 1, 5)).toHaveLength(0);
+     });
 
-    it('returns none for an empty week', () => {
-      expect(view.placeholdersAfterWeek([], 0, 1)).toHaveLength(0);
-    });
+     it('returns none for an empty week', () => {
+       expect(view.placeholdersAfterWeek([], 0, 1)).toHaveLength(0);
+     });
 
-    it('pads every week of the store month to exactly 5 cells', () => {
-      const weeks = store.weeks();
+     it('pads every week of the store month to exactly 5 cells', () => {
+       const weeks = store.weeks();
 
-      weeks.forEach((week: Week, i: number) => {
-        const total =
-          view.placeholdersBeforeWeek(week, i).length +
-          week.length +
-          view.placeholdersAfterWeek(week, i, weeks.length).length;
-        expect(total).toBe(5);
-      });
-    });
-  });
-});
+       weeks.forEach((week: Week, i: number) => {
+         const total =
+           view.placeholdersBeforeWeek(week, i).length +
+           week.length +
+           view.placeholdersAfterWeek(week, i, weeks.length).length;
+         expect(total).toBe(5);
+       });
+     });
+   });
+
+   describe('tooltips', () => {
+     it('should initialize tooltips for day inputs on afterViewInit', () => {
+       const mockTooltip = { dispose: vi.fn() };
+       const TooltipMock = vi.fn(function (this: any) {
+         Object.assign(this, mockTooltip);
+       });
+       (globalThis as any).bootstrap = {
+         Tooltip: TooltipMock as any,
+       };
+
+       // Create mock day inputs
+       const input = document.createElement('input');
+       input.setAttribute('id', 'day-1-limit');
+       input.setAttribute('data-bs-toggle', 'tooltip');
+       input.setAttribute('data-bs-title', 'Test tooltip');
+       document.body.appendChild(input);
+
+       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
+       monthViewComponent.ngAfterViewInit();
+
+       expect(TooltipMock).toHaveBeenCalled();
+
+       document.body.removeChild(input);
+     });
+
+     it('should dispose tooltips on component destroy', () => {
+       const mockTooltip1 = { dispose: vi.fn() };
+       const mockTooltip2 = { dispose: vi.fn() };
+
+       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
+       (monthViewComponent as any).tooltips = [mockTooltip1, mockTooltip2];
+
+       monthViewComponent.ngOnDestroy();
+
+       expect(mockTooltip1.dispose).toHaveBeenCalled();
+       expect(mockTooltip2.dispose).toHaveBeenCalled();
+       expect((monthViewComponent as any).tooltips).toHaveLength(0);
+     });
+
+     it('should not crash if no day inputs are found', () => {
+       const TooltipMock = vi.fn();
+       (globalThis as any).bootstrap = {
+         Tooltip: TooltipMock as any,
+       };
+
+       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
+
+       expect(() => {
+         monthViewComponent.ngAfterViewInit();
+       }).not.toThrow();
+     });
+
+     it('should pass correct tooltip configuration', () => {
+       const mockTooltip = { dispose: vi.fn() };
+       const TooltipMock = vi.fn(function (this: any) {
+         Object.assign(this, mockTooltip);
+       });
+       (globalThis as any).bootstrap = {
+         Tooltip: TooltipMock as any,
+       };
+
+       const input = document.createElement('input');
+       input.setAttribute('id', 'day-1-limit');
+       input.setAttribute('data-bs-toggle', 'tooltip');
+       input.setAttribute('data-bs-title', 'Test tooltip');
+       document.body.appendChild(input);
+
+       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
+       monthViewComponent.ngAfterViewInit();
+
+       expect(TooltipMock).toHaveBeenCalledWith(
+         expect.any(HTMLElement),
+         expect.objectContaining({
+           placement: 'top',
+           trigger: 'hover',
+         }),
+       );
+
+       document.body.removeChild(input);
+     });
+   });
+ });
