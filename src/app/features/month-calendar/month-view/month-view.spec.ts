@@ -58,40 +58,40 @@ describe('MonthView (logic)', () => {
     vi.restoreAllMocks();
   });
 
-   describe('limitForDay', () => {
-     it('returns "—" when the credits budget is not set', () => {
-       store.totalAiCredits.set(null);
+  describe('limitForDay', () => {
+    it('returns "—" when the credits budget is not set', () => {
+      store.totalAiCredits.set(null);
 
-       expect(view.limitForDay(5)).toBe('—');
-     });
+      expect(view.limitForDay(5)).toBe('—');
+    });
 
-     it('returns cumulative limit when using per-day credits (computed value)', () => {
-       // Test that limitForDay uses the raw perDayCredits correctly
-       // Note: tweenedPerDayCredits is only for UI animations; for unit tests,
-       // we verify the calculation logic works with store.perDayCredits
-       store.totalAiCredits.set(2100); // 100 per day for 21 working days
+    it('returns cumulative limit when using per-day credits (computed value)', () => {
+      // Test that limitForDay uses the raw perDayCredits correctly
+      // Note: tweenedPerDayCredits is only for UI animations; for unit tests,
+      // we verify the calculation logic works with store.perDayCredits
+      store.totalAiCredits.set(2100); // 100 per day for 21 working days
 
-       // Since tweenedNumber animates the value, in tests we verify the logic
-       // by checking that store.perDayCredits() has the correct source value
-       const perDay = store.perDayCredits();
-       expect(perDay).toBe(100);
-       if (perDay !== null) {
-         expect(Math.round(perDay * 1)).toBe(100);
-         expect(Math.round(perDay * 21)).toBe(2100);
-       }
-     });
+      // Since tweenedNumber animates the value, in tests we verify the logic
+      // by checking that store.perDayCredits() has the correct source value
+      const perDay = store.perDayCredits();
+      expect(perDay).toBe(100);
+      if (perDay !== null) {
+        expect(Math.round(perDay * 1)).toBe(100);
+        expect(Math.round(perDay * 21)).toBe(2100);
+      }
+    });
 
-     it('rounds cumulative value correctly', () => {
-       store.totalAiCredits.set(1000); // 47.619... per day
+    it('rounds cumulative value correctly', () => {
+      store.totalAiCredits.set(1000); // 47.619... per day
 
-       const perDay = store.perDayCredits();
-       expect(perDay).toBeCloseTo(47.619, 2);
-       if (perDay !== null) {
-         expect(Math.round(perDay * 1)).toBe(48);
-         expect(Math.round(perDay * 2)).toBe(95);
-       }
-     });
-   });
+      const perDay = store.perDayCredits();
+      expect(perDay).toBeCloseTo(47.619, 2);
+      if (perDay !== null) {
+        expect(Math.round(perDay * 1)).toBe(48);
+        expect(Math.round(perDay * 2)).toBe(95);
+      }
+    });
+  });
 
   describe('notes', () => {
     const date = new Date(2024, 1, 15);

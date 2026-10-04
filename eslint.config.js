@@ -20,6 +20,13 @@ export default [
         document: 'readonly',
         window: 'readonly',
         navigator: 'readonly',
+        localStorage: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        performance: 'readonly',
+        bootstrap: 'readonly',
       },
     },
     plugins: {
