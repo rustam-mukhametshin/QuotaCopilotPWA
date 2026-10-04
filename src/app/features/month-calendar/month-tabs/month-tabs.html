@@ -15,21 +15,10 @@
         [class.btn-primary]="store.activeKey() === tab.key"
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
         aria-label="Действия с вкладкой"
-        (click)="toggleActionsMenu(tab.key, $event)"
+        [attr.data-tab-key]="tab.key"
       >
         ⋮
       </button>
-      @if (openMenuKey() === tab.key) {
-        <div class="month-tabs__actions-menu">
-          <button
-            type="button"
-            class="month-tabs__delete-btn btn btn-sm btn-link text-danger"
-            (click)="onDeleteClick(tab, $event)"
-          >
-            Удалить
-          </button>
-        </div>
-      }
     </div>
   }
   <button
