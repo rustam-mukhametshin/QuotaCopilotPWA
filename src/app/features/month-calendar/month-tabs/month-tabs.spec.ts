@@ -241,6 +241,24 @@ describe('MonthTabs', () => {
     });
   });
 
+  describe('tabular numerals', () => {
+    it('applies tabular-nums to every month tab label', () => {
+      store.tabs.set([
+        createMockTab(),
+        createMockTab({ key: '2024-02', label: 'Feb 2024', month: 2 }),
+      ]);
+      fixture.detectChanges();
+
+      const tabs = Array.from(
+        fixture.nativeElement.querySelectorAll('.month-tabs__tab') as NodeListOf<HTMLElement>,
+      );
+
+      expect(tabs).toHaveLength(2);
+      tabs.forEach((tab) => expect(tab.classList).toContain('tabular-nums'));
+      expect(tabs[0].textContent?.trim()).toBe('Jan 2024');
+    });
+  });
+
   describe('modal click handling', () => {
     it('should stop propagation when clicking inside modal', () => {
       const mockEvent = { stopPropagation: vi.fn() } as unknown as Event;

@@ -299,6 +299,32 @@ describe('Sidebar', () => {
     });
   });
 
+  describe('tabular numerals', () => {
+    beforeEach(() => {
+      (globalThis as any).bootstrap = {
+        Tooltip: vi.fn(function (this: any) {
+          this.dispose = vi.fn();
+        }),
+      };
+      store.totalAiCredits.set(5000);
+      fixture.detectChanges();
+    });
+
+    it('applies tabular-nums to the total AI credits input', () => {
+      const input = fixture.nativeElement.querySelector('#total-ai-credits') as HTMLInputElement;
+
+      expect(input).not.toBeNull();
+      expect(input.classList).toContain('tabular-nums');
+    });
+
+    it('applies tabular-nums to the per-day credits input', () => {
+      const input = fixture.nativeElement.querySelector('#per-day-credits') as HTMLInputElement;
+
+      expect(input).not.toBeNull();
+      expect(input.classList).toContain('tabular-nums');
+    });
+  });
+
   describe('loading state', () => {
     it('should show placeholders when isLoading is true', () => {
       component['isLoading'].set(true);

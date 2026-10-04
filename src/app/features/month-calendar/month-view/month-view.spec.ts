@@ -296,4 +296,47 @@ describe('MonthView (logic)', () => {
       document.body.removeChild(input);
     });
   });
+
+  describe('tabular numerals (template)', () => {
+    function render(): HTMLElement {
+      (globalThis as any).bootstrap = {
+        Tooltip: vi.fn(function (this: any) {
+          this.dispose = vi.fn();
+        }),
+      };
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('applies tabular-nums to every day number', () => {
+      const dayNumbers = Array.from(render().querySelectorAll('.day__number'));
+
+      expect(dayNumbers).toHaveLength(21);
+      dayNumbers.forEach((el) => expect(el.classList).toContain('tabular-nums'));
+    });
+
+    it('renders the day index inside the tabular-nums day number', () => {
+      const dayIndex = render().querySelector('.day__index');
+
+      expect(dayIndex).not.toBeNull();
+      expect(dayIndex!.closest('.day__number')?.classList).toContain('tabular-nums');
+    });
+
+    it('applies tabular-nums to every day limit input', () => {
+      const limits = Array.from(
+        render().querySelectorAll<HTMLInputElement>('input[id^="day-"][id$="-limit"]'),
+      );
+
+      expect(limits).toHaveLength(21);
+      limits.forEach((input) => expect(input.classList).toContain('tabular-nums'));
+    });
+
+    it('applies tabular-nums to the limit input of a specific day index', () => {
+      const input = render().querySelector<HTMLInputElement>('#day-5-limit');
+
+      expect(input).not.toBeNull();
+      expect(input!.classList).toContain('tabular-nums');
+    });
+  });
 });
