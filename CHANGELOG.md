@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.4.0...quota-copilot-pwa-v0.5.0) (2026-10-04)
+
+
+### Features
+
+* add GitHub Actions workflow for automated app screenshot updates ([043c9de](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/043c9de68a778e28e9b67f351ecbc0016bd1174b))
+* add playwright and serve dependencies to enhance testing and serving capabilities ([3318bb7](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/3318bb7bbb8aadb4e8174fd0f64e89c94753e52d))
+* add screenshot functionality using Playwright ([3da9aa5](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/3da9aa5ae0dc33a19c079f480f97de96b891c4ad))
+* add screenshot functionality with development server setup ([7ab4df1](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/7ab4df19fdbb467aefb814115c31febc3823434e))
+
+
+### Bug Fixes
+
+* update development server port and adjust screenshot scripts ([2c698e2](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/2c698e24747c3aef303662a6a0edd5f8a8f1fcd6))
+
 ## [0.4.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.3.0...quota-copilot-pwa-v0.4.0) (2026-10-04)
 
 ### Features
