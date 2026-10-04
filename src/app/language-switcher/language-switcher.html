@@ -1,0 +1,26 @@
+<div class="dropdown">
+  <button
+    type="button"
+    class="btn btn-sm btn-outline-secondary dropdown-toggle text-uppercase"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    [attr.aria-label]="'languageSwitcher.label' | translate"
+  >
+    {{ currentLang() }}
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    @for (language of languages; track language.code) {
+      <li>
+        <button
+          type="button"
+          class="dropdown-item"
+          [class.active]="currentLang() === language.code"
+          [attr.aria-current]="currentLang() === language.code"
+          (click)="selectLanguage(language.code)"
+        >
+          {{ language.label }}
+        </button>
+      </li>
+    }
+  </ul>
+</div>

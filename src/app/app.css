@@ -9,6 +9,14 @@ app-month-calendar {
   flex: 1 0 auto;
 }
 
+.app-header {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: 1rem 1rem 0;
+}
+
 .app-footer {
   margin-top: auto;
   margin-inline: auto;

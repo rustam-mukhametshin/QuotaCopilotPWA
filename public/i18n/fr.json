@@ -1,4 +1,7 @@
 {
+  "languageSwitcher": {
+    "label": "Changer de langue"
+  },
   "monthTabs": {
     "actions": "Actions de l'onglet",
     "delete": "Supprimer",
@@ -20,4 +23,3 @@
     "editNote": "Modifier la note"
   }
 }
-

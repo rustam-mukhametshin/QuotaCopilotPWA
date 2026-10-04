@@ -15,7 +15,6 @@ export class MonthView implements AfterViewInit, OnDestroy {
   private readonly store = inject(CalendarStore);
 
   protected readonly weeks = this.store.weeks;
-  protected readonly monthLabel = this.store.monthLabel;
   protected readonly activeNoteKey = signal<string | null>(null);
 
   private tooltips: bootstrap.Tooltip[] = [];

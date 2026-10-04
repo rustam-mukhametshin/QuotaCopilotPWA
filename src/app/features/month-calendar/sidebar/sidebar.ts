@@ -7,9 +7,6 @@ import { CalendarStore } from '../calendar-store';
   imports: [TranslatePipe],
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
-  host: {
-    class: 'mt-0 mt-md-5',
-  },
 })
 export class Sidebar implements AfterViewInit, OnDestroy {
   protected readonly store = inject(CalendarStore);
