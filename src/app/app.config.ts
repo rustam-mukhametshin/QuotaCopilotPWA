@@ -6,6 +6,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DEFAULT_LANGUAGE, resolveInitialLanguage } from './language-switcher/languages';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,8 +15,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideTranslateService({
       loader: provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
-      fallbackLang: 'en',
-      lang: 'en',
+      fallbackLang: DEFAULT_LANGUAGE,
+      lang: resolveInitialLanguage(),
     }),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

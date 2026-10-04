@@ -1,16 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-
-export const SUPPORTED_LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'es', label: 'Español' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'fr', label: 'Français' },
-] as const;
-
-export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]['code'];
-
-export const LANGUAGE_STORAGE_KEY = 'language';
+import { LANGUAGE_STORAGE_KEY, type LanguageCode, SUPPORTED_LANGUAGES } from './languages';
 
 @Component({
   selector: 'app-language-switcher',
