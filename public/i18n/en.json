@@ -2,6 +2,12 @@
   "languageSwitcher": {
     "label": "Change language"
   },
+  "themeSwitcher": {
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "Auto",
+    "tooltip": "Switch theme"
+  },
   "monthTabs": {
     "actions": "Tab actions",
     "delete": "Delete",

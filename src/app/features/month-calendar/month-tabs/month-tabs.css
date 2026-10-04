@@ -1,7 +1,7 @@
 .month-tabs {
   padding: 0.75rem 1rem;
-  border-top: 1px solid #e0e0e0;
-  background-color: #f9f9f9;
+  border-top: 1px solid var(--theme-border-color);
+  background-color: var(--theme-bg-secondary);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -16,12 +16,12 @@
 
 .month-tabs__add-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--theme-shadow);
 }
 
 .month-tabs__tab-wrapper:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--theme-shadow);
 }
 
 .month-tabs__tab-wrapper {
@@ -53,7 +53,8 @@
   min-width: 320px;
   max-width: 90vw;
   padding: 1.25rem;
-  background-color: #fff;
+  color: var(--theme-text-primary);
+  background-color: var(--theme-card-bg);
   border-radius: 0.5rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }

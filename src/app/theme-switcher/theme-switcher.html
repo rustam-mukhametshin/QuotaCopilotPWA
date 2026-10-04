@@ -1,0 +1,28 @@
+<div class="dropdown">
+  <button
+    type="button"
+    class="btn btn-sm btn-outline-secondary dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    [attr.aria-label]="'themeSwitcher.tooltip' | translate"
+    [attr.title]="'themeSwitcher.tooltip' | translate"
+  >
+    {{ currentIcon() }}
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    @for (mode of modes; track mode) {
+      <li>
+        <button
+          type="button"
+          class="dropdown-item"
+          [class.active]="currentTheme() === mode"
+          [attr.aria-current]="currentTheme() === mode"
+          (click)="setTheme(mode)"
+        >
+          <span aria-hidden="true">{{ icons[mode] }}</span>
+          {{ 'themeSwitcher.' + mode | translate }}
+        </button>
+      </li>
+    }
+  </ul>
+</div>

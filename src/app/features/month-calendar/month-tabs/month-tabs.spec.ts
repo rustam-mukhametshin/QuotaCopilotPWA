@@ -117,7 +117,10 @@ describe('MonthTabs', () => {
   describe('popover for delete actions', () => {
     it('should toggle popover open when actions button is clicked', () => {
       const element = document.createElement('button');
-      const mockEvent = { currentTarget: element, stopPropagation: () => {} } as unknown as MouseEvent;
+      const mockEvent = {
+        currentTarget: element,
+        stopPropagation: () => {},
+      } as unknown as MouseEvent;
       const tab = createMockTab();
 
       component['toggleActions'](tab, mockEvent);
@@ -128,7 +131,10 @@ describe('MonthTabs', () => {
 
     it('should close popover when actions button is clicked again', () => {
       const element = document.createElement('button');
-      const mockEvent = { currentTarget: element, stopPropagation: () => {} } as unknown as MouseEvent;
+      const mockEvent = {
+        currentTarget: element,
+        stopPropagation: () => {},
+      } as unknown as MouseEvent;
       const tab = createMockTab();
 
       component['toggleActions'](tab, mockEvent);
@@ -244,4 +250,3 @@ describe('MonthTabs', () => {
     });
   });
 });
-

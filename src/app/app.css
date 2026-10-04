@@ -23,9 +23,9 @@ app-month-calendar {
   flex-shrink: 0;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  color: #6c757d;
+  color: var(--theme-text-secondary);
   text-align: right;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--theme-border-color);
   max-width: 1320px;
   width: 100%;
 }

@@ -32,10 +32,19 @@
 
 .day__index {
   font-size: 0.75rem;
-  color: #6c757d;
+  color: var(--theme-text-secondary);
 }
 
 .day__note-toggle {
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-bg: var(--bs-tertiary-bg);
+  --bs-btn-border-color: var(--bs-tertiary-bg);
+  --bs-btn-hover-color: var(--bs-body-color);
+  --bs-btn-hover-bg: var(--bs-secondary-bg);
+  --bs-btn-hover-border-color: var(--bs-secondary-bg);
+  --bs-btn-active-color: var(--bs-body-color);
+  --bs-btn-active-bg: var(--bs-secondary-bg);
+  --bs-btn-active-border-color: var(--bs-secondary-bg);
   top: 0.25rem;
   right: 0.5rem;
   padding: 0.15rem 0.25rem;
@@ -45,7 +54,7 @@
 }
 
 .day__note-toggle--active {
-  color: #0d6efd;
+  color: var(--bs-primary);
   opacity: 1;
 }
 
@@ -61,9 +70,10 @@
   width: 180px;
   height: 70px;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--theme-border-color);
   border-radius: 4px;
-  background-color: white;
+  color: var(--theme-input-text);
+  background-color: var(--theme-input-bg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 10;
   font-size: 0.75rem;
@@ -74,10 +84,10 @@
 
 .day__note-textarea:focus {
   outline: none;
-  border-color: #0d6efd;
+  border-color: var(--bs-primary);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.2),
-    0 0 0 3px rgba(13, 110, 253, 0.25);
+    0 0 0 3px var(--bs-focus-ring-color);
 }
 
 /* Mobile layout: one column, no flex stretching */
