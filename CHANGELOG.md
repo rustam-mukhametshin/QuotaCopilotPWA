@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.5.0...quota-copilot-pwa-v0.6.0) (2026-10-04)
+
+
+### Features
+
+* update screenshot process to build production and wait for app initialization ([166a2e9](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/166a2e9e461884a03e19db5c61727d49997b67b8))
+
 ## [0.5.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.4.0...quota-copilot-pwa-v0.5.0) (2026-10-04)
 
 
