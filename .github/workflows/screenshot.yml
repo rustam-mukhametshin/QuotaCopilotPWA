@@ -42,4 +42,3 @@ jobs:
           file_pattern: public/screenshots/app-preview.png
           skip_fetch: false
           skip_checkout: false
-

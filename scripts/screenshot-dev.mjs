@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { createConnection } from 'net';
 
-const PORT = 4201;
+const PORT = 4200;
 const APP_URL = `http://localhost:${PORT}`;
 
 async function waitForServer(port, maxAttempts = 30) {
@@ -33,7 +33,7 @@ async function runScreenshot() {
   try {
     // Start dev server
     console.log('Starting dev server...');
-    serverProcess = spawn('ng', ['serve', '--port', String(PORT), '--configuration', 'development'], {
+    serverProcess = spawn('ng', ['serve', '--configuration', 'development'], {
       stdio: 'inherit',
       shell: true,
     });
@@ -75,4 +75,3 @@ async function runScreenshot() {
 }
 
 runScreenshot();
-

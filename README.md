@@ -16,7 +16,6 @@ Here's how the application looks:
 
 ![App Preview](public/screenshots/app-preview.png)
 
-
 ## 🚀 Open the App
 
 **[Open QuotaCopilot PWA](https://quota-copilot-pwa.vercel.app/)** — running live on Vercel

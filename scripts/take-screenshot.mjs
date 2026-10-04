@@ -7,20 +7,19 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const projectRoot = resolve(__dirname, '..');
 const screenshotDir = resolve(projectRoot, 'public', 'screenshots');
 const screenshotPath = resolve(screenshotDir, 'app-preview.png');
-const appUrl = process.env.APP_URL || 'http://localhost:4201';
+const appUrl = process.env.APP_URL || 'http://localhost:4200';
 
 // Ensure the screenshots directory exists
 if (!existsSync(screenshotDir)) {
   mkdirSync(screenshotDir, { recursive: true });
 }
 
-
 async function takeScreenshot() {
   let browser;
   try {
     console.log(`Taking screenshot of ${appUrl}...`);
     browser = await chromium.launch();
-    const context = await browser.createBrowserContext({
+    const context = await browser.newContext({
       viewport: { width: 1280, height: 720 },
     });
     const page = await context.newPage();
@@ -44,4 +43,3 @@ async function takeScreenshot() {
 }
 
 takeScreenshot();
-
