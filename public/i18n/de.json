@@ -1,0 +1,23 @@
+{
+  "monthTabs": {
+    "actions": "Tab-Aktionen",
+    "delete": "Löschen",
+    "cancel": "Abbrechen",
+    "confirmDelete": "Tab {{label}} löschen?"
+  },
+  "sidebar": {
+    "totalAiCredits": "KI-Credits gesamt",
+    "totalAiCreditsTooltip": "Gesamtbudget an KI-Credits pro Monat",
+    "perDay": "Pro Tag",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "savedSuccess": "Gespeichert",
+    "dataChanged": "Daten erfolgreich gespeichert",
+    "closeToast": "Benachrichtigung schließen"
+  },
+  "monthView": {
+    "dayTokensTooltip": "Maximal verfügbare Tokens für diesen Tag basierend auf deinem Tageslimit",
+    "editNote": "Notiz bearbeiten"
+  }
+}
+

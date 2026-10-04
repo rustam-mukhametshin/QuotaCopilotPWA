@@ -1,0 +1,23 @@
+{
+  "monthTabs": {
+    "actions": "Acciones de la pestaña",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "confirmDelete": "¿Eliminar la pestaña {{label}}?"
+  },
+  "sidebar": {
+    "totalAiCredits": "Créditos de IA totales",
+    "totalAiCreditsTooltip": "Presupuesto total de créditos de IA por mes",
+    "perDay": "Por día",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "savedSuccess": "Guardado",
+    "dataChanged": "Datos guardados correctamente",
+    "closeToast": "Cerrar notificación"
+  },
+  "monthView": {
+    "dayTokensTooltip": "Máximo de tokens disponibles para este día según tu límite diario",
+    "editNote": "Editar nota"
+  }
+}
+

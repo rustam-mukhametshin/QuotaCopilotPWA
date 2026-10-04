@@ -1,0 +1,23 @@
+{
+  "monthTabs": {
+    "actions": "Actions de l'onglet",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "confirmDelete": "Supprimer l'onglet {{label}} ?"
+  },
+  "sidebar": {
+    "totalAiCredits": "Crédits IA au total",
+    "totalAiCreditsTooltip": "Budget total de crédits IA par mois",
+    "perDay": "Par jour",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "savedSuccess": "Enregistré",
+    "dataChanged": "Données enregistrées avec succès",
+    "closeToast": "Fermer la notification"
+  },
+  "monthView": {
+    "dayTokensTooltip": "Nombre maximal de jetons disponibles pour ce jour selon votre limite quotidienne",
+    "editNote": "Modifier la note"
+  }
+}
+

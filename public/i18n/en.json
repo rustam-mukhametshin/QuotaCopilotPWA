@@ -1,0 +1,23 @@
+{
+  "monthTabs": {
+    "actions": "Tab actions",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete tab {{label}}?"
+  },
+  "sidebar": {
+    "totalAiCredits": "Total AI credits",
+    "totalAiCreditsTooltip": "Total budget of AI credits per month",
+    "perDay": "Per day",
+    "save": "Save",
+    "saving": "Saving...",
+    "savedSuccess": "Saved",
+    "dataChanged": "Data saved successfully",
+    "closeToast": "Close notification"
+  },
+  "monthView": {
+    "dayTokensTooltip": "Maximum available tokens for this day based on your daily limit",
+    "editNote": "Edit note"
+  }
+}
+
