@@ -1,3 +1,6 @@
+import { effect, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', label: 'English' },
   { code: 'es', label: 'Español' },
@@ -27,4 +30,12 @@ export function resolveInitialLanguage(): LanguageCode {
     .find(isSupportedLanguage);
 
   return browserLanguage ?? DEFAULT_LANGUAGE;
+}
+
+/** Keeps `<html lang>` in sync with the active translation language. Requires an injection context. */
+export function syncDocumentLanguage(): void {
+  const translate = inject(TranslateService);
+  effect(() => {
+    document.documentElement.lang = translate.currentLang() ?? DEFAULT_LANGUAGE;
+  });
 }
