@@ -1,0 +1,20 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progress {
+  height: 24px;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  transition: width var(--motion-duration-base) var(--motion-easing);
+}
+
+small {
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}

@@ -15,6 +15,38 @@ app-month-calendar {
   max-width: 1320px;
   margin-inline: auto;
   padding: 1rem 1rem 0;
+  flex-wrap: wrap;
+}
+
+.app-header h1 {
+  flex-shrink: 0;
+}
+
+.app-header app-credits-progress {
+  flex: 1 1 auto;
+  min-width: 200px;
+  max-width: 360px;
+}
+
+.app-header > div:last-child {
+  flex-shrink: 0;
+  order: 2;
+}
+
+@media (max-width: 767.98px) {
+  .app-header {
+    gap: 1rem;
+  }
+
+  .app-header app-credits-progress {
+    flex-basis: 100%;
+    max-width: 100%;
+    order: 1;
+  }
+
+  .app-header > div:last-child {
+    flex-basis: 100%;
+  }
 }
 
 .app-footer {

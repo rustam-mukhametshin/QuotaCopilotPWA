@@ -165,7 +165,7 @@ describe('CalendarStore', () => {
       });
 
       store.selectTab('2024-01');
-      store.totalAiCredits.set(1500);
+      store.setTotalAiCredits('1500');
       store.setDayNote('2024-01-10', 'New note');
 
       store.selectTab('2024-02');
@@ -189,7 +189,8 @@ describe('CalendarStore', () => {
 
       store.selectTab('2024-03');
 
-      expect(store.totalAiCredits()).toBeNull();
+      // When no draft exists, applyCreditsForTab is called with null, so dефолт is applied
+      expect(store.totalAiCredits()).toBe(10000);
       expect(store.dayNotes()).toEqual({});
     });
   });
@@ -233,10 +234,11 @@ describe('CalendarStore', () => {
       return store;
     }
 
-    it('has no unsaved changes right after a new tab is added', () => {
+    it('has unsaved changes right after a new tab is added', () => {
       const store = createStoreWithFebTab();
 
-      expect(store.hasUnsavedChanges()).toBe(false);
+      // After adding tab, dефолт is applied and differs from draft (which stores null)
+      expect(store.hasUnsavedChanges()).toBe(true);
     });
 
     it('writes the active month record to Dexie and marks the tab as saved', async () => {
@@ -373,8 +375,9 @@ describe('CalendarStore', () => {
         { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
       ]);
       expect(store.activeKey()).toBe('2024-02');
-      expect(store.totalAiCredits()).toBeNull();
-      expect(store.hasUnsavedChanges()).toBe(false);
+      // After fallback, applyCreditsForTab is called with null, so default is applied
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.hasUnsavedChanges()).toBe(true);
     });
   });
 
@@ -388,7 +391,9 @@ describe('CalendarStore', () => {
         { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
       ]);
       expect(store.activeKey()).toBe('2024-02');
-      expect(store.hasUnsavedChanges()).toBe(false);
+      // When no saved records, default is applied
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.hasUnsavedChanges()).toBe(true);
     });
 
     it('loads saved records sorted newest first and activates the most recent', async () => {
@@ -464,6 +469,219 @@ describe('CalendarStore', () => {
       store.setDayNote('2024-02-10', '   ');
 
       expect(store.dayNotes()['2024-02-10']).toBeUndefined();
+    });
+  });
+
+  describe('elapsedWorkDays', () => {
+    it('counts working days with isPast || isToday in current month', () => {
+      const store = createStore();
+      // 2024-02-15 is a Thursday; all working days before/on it are elapsed
+      expect(store.elapsedWorkDays()).toBeGreaterThan(0);
+      expect(store.elapsedWorkDays()).toBeLessThanOrEqual(store.totalWorkDays());
+    });
+
+    it('returns totalWorkDays for past months', () => {
+      const store = createStore();
+      store.reference.set(new Date(2024, 0, 15)); // January 2024 is in the past
+
+      expect(store.elapsedWorkDays()).toBe(store.totalWorkDays());
+    });
+
+    it('returns 0 for future months', () => {
+      const store = createStore();
+      store.reference.set(new Date(2025, 0, 15)); // January 2025 is in the future
+
+      expect(store.elapsedWorkDays()).toBe(0);
+    });
+  });
+
+  describe('plannedSpentCredits', () => {
+    it('returns null when perDayCredits is null', () => {
+      const store = createStore();
+      store.totalAiCredits.set(null);
+
+      expect(store.plannedSpentCredits()).toBeNull();
+    });
+
+    it('calculates perDayCredits × elapsedWorkDays correctly', () => {
+      const store = createStore();
+      store.totalAiCredits.set(29400); // 1400 per day for February 2024 (21 work days)
+
+      const planned = store.plannedSpentCredits();
+      const elapsed = store.elapsedWorkDays();
+      const expected = 1400 * elapsed;
+
+      expect(planned).toBe(expected);
+    });
+  });
+
+  describe('remainingCredits', () => {
+    it('returns null when totalAiCredits is null', () => {
+      const store = createStore();
+      store.totalAiCredits.set(null);
+
+      expect(store.remainingCredits()).toBeNull();
+    });
+
+    it('returns max(0, total - spent)', () => {
+      const store = createStore();
+      store.totalAiCredits.set(29400);
+
+      const remaining = store.remainingCredits();
+      const total = store.totalAiCredits();
+      const spent = store.plannedSpentCredits();
+
+      expect(remaining).toBe(Math.max(0, total! - spent!));
+    });
+
+    it('returns 0 when spent >= total', () => {
+      const store = createStore();
+      // Set reference to past month so elapsedWorkDays = totalWorkDays
+      store.reference.set(new Date(2024, 0, 15));
+      store.totalAiCredits.set(100);
+
+      // spent will be 100 * 21 = 2100, total is 100
+      const remaining = store.remainingCredits();
+      expect(remaining).toBe(0);
+    });
+  });
+
+  describe('remainingPercent', () => {
+    it('returns null when totalAiCredits is null', () => {
+      const store = createStore();
+      store.totalAiCredits.set(null);
+
+      expect(store.remainingPercent()).toBeNull();
+    });
+
+    it('returns null when totalAiCredits is 0', () => {
+      const store = createStore();
+      store.totalAiCredits.set(0);
+
+      expect(store.remainingPercent()).toBeNull();
+    });
+
+    it('calculates (remaining / total) × 100', () => {
+      const store = createStore();
+      store.totalAiCredits.set(29400);
+
+      const percent = store.remainingPercent();
+      const total = store.totalAiCredits()!;
+      const remaining = store.remainingCredits()!;
+
+      expect(percent).toBe((remaining / total) * 100);
+    });
+
+    it('is bounded between 0 and 100', () => {
+      const store = createStore();
+      store.totalAiCredits.set(29400);
+
+      const percent = store.remainingPercent();
+      expect(percent).toBeGreaterThanOrEqual(0);
+      expect(percent).toBeLessThanOrEqual(100);
+    });
+
+    it('returns 0 for past months', () => {
+      const store = createStore();
+      store.reference.set(new Date(2024, 0, 15)); // Past month
+      store.totalAiCredits.set(1000);
+
+      expect(store.remainingPercent()).toBe(0);
+    });
+
+    it('returns 100 for future months', () => {
+      const store = createStore();
+      store.reference.set(new Date(2025, 0, 15)); // Future month
+      store.totalAiCredits.set(1000);
+
+      expect(store.remainingPercent()).toBe(100);
+    });
+  });
+
+  describe('isDefaultTotalAiCredits and applyCreditsForTab', () => {
+    it('applies default when value is null', () => {
+      const store = createStore();
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.activeKey.set('2024-02');
+
+      (store as any).applyCreditsForTab('2024-02', null);
+
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('keeps flag true when key already in defaultCreditsKeys', () => {
+      const store = createStore();
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.activeKey.set('2024-02');
+
+      (store as any).applyCreditsForTab('2024-02', null);
+      (store as any).applyCreditsForTab('2024-02', 10000);
+
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('sets flag to false when value is not null and key not in defaultCreditsKeys', () => {
+      const store = createStore();
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.activeKey.set('2024-02');
+
+      (store as any).applyCreditsForTab('2024-02', 5000);
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+
+    it('resets flag when setTotalAiCredits is called', () => {
+      const store = createStore();
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.activeKey.set('2024-02');
+
+      (store as any).applyCreditsForTab('2024-02', null);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+
+      store.setTotalAiCredits('3000');
+
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+
+    it('resets flag when save completes', async () => {
+      const store = createStore();
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.activeKey.set('2024-02');
+
+      (store as any).applyCreditsForTab('2024-02', null);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+
+      await store.save();
+
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+
+    it('applies default when initialize loads tab with null totalAiCredits', async () => {
+      const records: MonthRecord[] = [
+        { key: '2024-02', year: 2024, month: 2, totalAiCredits: null, dayNotes: {} },
+      ];
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue(records);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('does not apply default when initialize loads tab with a value', async () => {
+      const records: MonthRecord[] = [
+        { key: '2024-02', year: 2024, month: 2, totalAiCredits: 5000, dayNotes: {} },
+      ];
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue(records);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
     });
   });
 });

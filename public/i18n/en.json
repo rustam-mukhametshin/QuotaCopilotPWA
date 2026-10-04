@@ -14,11 +14,11 @@
     "cancel": "Cancel",
     "confirmDelete": "Delete tab {{label}}?"
   },
-   "sidebar": {
-     "totalAiCredits": "Total AI credits",
-     "totalAiCreditsTooltip": "Total budget of AI credits per month",
-     "defaultCreditsHint": "Default value — update it if needed",
-     "perDay": "Per day",
+  "sidebar": {
+    "totalAiCredits": "Total AI credits",
+    "totalAiCreditsTooltip": "Total budget of AI credits per month",
+    "defaultCreditsHint": "Default value — update it if needed",
+    "perDay": "Per day",
     "save": "Save",
     "saving": "Saving...",
     "savedSuccess": "Saved",
@@ -28,5 +28,9 @@
   "monthView": {
     "dayTokensTooltip": "Maximum available tokens for this day based on your daily limit",
     "editNote": "Edit note"
+  },
+  "creditsProgress": {
+    "remaining": "Remaining {{remaining}} of {{total}}",
+    "ariaLabel": "AI credits progress"
   }
 }

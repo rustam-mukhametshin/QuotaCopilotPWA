@@ -49,10 +49,14 @@ async function runScreenshot() {
 
     // Start production server
     console.log('Starting production server...');
-    serverProcess = spawn('npx', ['serve', 'dist/QuotaCopilotPWA/browser', '-s', '-l', String(PORT)], {
-      stdio: 'inherit',
-      shell: true,
-    });
+    serverProcess = spawn(
+      'npx',
+      ['serve', 'dist/QuotaCopilotPWA/browser', '-s', '-l', String(PORT)],
+      {
+        stdio: 'inherit',
+        shell: true,
+      },
+    );
 
     // Wait for server to be ready
     await waitForServer(PORT);

@@ -1,0 +1,23 @@
+@if (store.remainingPercent() !== null) {
+  <div class="d-flex flex-column gap-2">
+    <div
+      class="progress"
+      role="progressbar"
+      [attr.aria-valuenow]="store.remainingCredits()"
+      aria-valuemin="0"
+      [attr.aria-valuemax]="store.totalAiCredits()"
+      [attr.aria-label]="'creditsProgress.ariaLabel' | translate"
+    >
+      <div
+        class="progress-bar"
+        [ngClass]="progressBarClass()"
+        [style.width.%]="getProgressPercent()"
+      ></div>
+    </div>
+    <small class="text-muted tabular-nums">
+      {{
+        'creditsProgress.remaining' | translate: { remaining: getRemaining(), total: getTotal() }
+      }}
+    </small>
+  </div>
+}

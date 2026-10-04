@@ -123,14 +123,14 @@ export class CalendarStore {
     return false;
   });
 
-   setTotalAiCredits(value: string): void {
-     const parsed = value.trim() === '' ? null : Number(value);
-     this.totalAiCredits.set(parsed !== null && !Number.isNaN(parsed) ? parsed : null);
-     // User changed the value: remove from default credits and mark flag as false
-     const activeKey = this.activeKey();
-     this.defaultCreditsKeys.delete(activeKey);
-     this.isDefaultTotalAiCredits.set(false);
-   }
+  setTotalAiCredits(value: string): void {
+    const parsed = value.trim() === '' ? null : Number(value);
+    this.totalAiCredits.set(parsed !== null && !Number.isNaN(parsed) ? parsed : null);
+    // User changed the value: remove from default credits and mark flag as false
+    const activeKey = this.activeKey();
+    this.defaultCreditsKeys.delete(activeKey);
+    this.isDefaultTotalAiCredits.set(false);
+  }
 
   private setDraft(key: string, state: DraftState): void {
     this.draftState.set(key, state);
@@ -199,20 +199,20 @@ export class CalendarStore {
 
     const records = await calendarDb.months.toArray();
 
-     if (records.length === 0) {
-       // No saved records: create a fallback tab for today's month
-       const fallbackTab = this.createFallbackTab();
+    if (records.length === 0) {
+      // No saved records: create a fallback tab for today's month
+      const fallbackTab = this.createFallbackTab();
 
-       this.tabs.set([fallbackTab]);
-       this.setDraft(fallbackTab.key, {
-         totalAiCredits: null,
-         dayNotes: {},
-       });
-       this.activeKey.set(fallbackTab.key);
-       this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
-       this.applyCreditsForTab(fallbackTab.key, null);
-       return;
-     }
+      this.tabs.set([fallbackTab]);
+      this.setDraft(fallbackTab.key, {
+        totalAiCredits: null,
+        dayNotes: {},
+      });
+      this.activeKey.set(fallbackTab.key);
+      this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
+      this.applyCreditsForTab(fallbackTab.key, null);
+      return;
+    }
 
     // Sort records by year/month chronologically (descending, most recent first)
     records.sort((a, b) => {
@@ -239,42 +239,42 @@ export class CalendarStore {
       });
     });
 
-     // Activate the most recent tab (first in sorted array)
-     const mostRecentKey = newTabs[0].key;
-     this.activeKey.set(mostRecentKey);
-     const mostRecentRecord = records[0];
-     this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
-     this.dayNotes.set({ ...mostRecentRecord.dayNotes });
-     this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
+    // Activate the most recent tab (first in sorted array)
+    const mostRecentKey = newTabs[0].key;
+    this.activeKey.set(mostRecentKey);
+    const mostRecentRecord = records[0];
+    this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
+    this.dayNotes.set({ ...mostRecentRecord.dayNotes });
+    this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
   }
 
-   /**
-    * Switch to an existing tab, persisting current tab's state and loading target tab's state.
-    */
-   selectTab(key: string): void {
-     const currentKey = this.activeKey();
-     if (currentKey) {
-       // When saving the departing tab: if it's marked as default, save null (not 10000)
-       const creditsValue = this.defaultCreditsKeys.has(currentKey) ? null : this.totalAiCredits();
-       this.setDraft(currentKey, {
-         totalAiCredits: creditsValue,
-         dayNotes: { ...this.dayNotes() },
-       });
-     }
+  /**
+   * Switch to an existing tab, persisting current tab's state and loading target tab's state.
+   */
+  selectTab(key: string): void {
+    const currentKey = this.activeKey();
+    if (currentKey) {
+      // When saving the departing tab: if it's marked as default, save null (not 10000)
+      const creditsValue = this.defaultCreditsKeys.has(currentKey) ? null : this.totalAiCredits();
+      this.setDraft(currentKey, {
+        totalAiCredits: creditsValue,
+        dayNotes: { ...this.dayNotes() },
+      });
+    }
 
-     const tab = this.tabs().find((t) => t.key === key);
-     if (!tab) {
-       return;
-     }
+    const tab = this.tabs().find((t) => t.key === key);
+    if (!tab) {
+      return;
+    }
 
-     this.activeKey.set(key);
-     const firstDay = new Date(tab.year, tab.month - 1, 1);
-     this.reference.set(firstDay);
+    this.activeKey.set(key);
+    const firstDay = new Date(tab.year, tab.month - 1, 1);
+    this.reference.set(firstDay);
 
-     const draft = this.draftState.get(key);
-     this.applyCreditsForTab(key, draft?.totalAiCredits ?? null);
-     this.dayNotes.set(draft ? { ...draft.dayNotes } : {});
-   }
+    const draft = this.draftState.get(key);
+    this.applyCreditsForTab(key, draft?.totalAiCredits ?? null);
+    this.dayNotes.set(draft ? { ...draft.dayNotes } : {});
+  }
 
   /**
    * Add a new unsaved month tab (or switch to existing if already present).
@@ -303,44 +303,44 @@ export class CalendarStore {
     this.selectTab(key);
   }
 
-   /**
-    * Delete a month tab by key. Unknown keys are ignored.
-    */
-   async deleteTab(key: string): Promise<void> {
-     const tab = this.tabs().find((t) => t.key === key);
-     if (!tab) {
-       return;
-     }
+  /**
+   * Delete a month tab by key. Unknown keys are ignored.
+   */
+  async deleteTab(key: string): Promise<void> {
+    const tab = this.tabs().find((t) => t.key === key);
+    if (!tab) {
+      return;
+    }
 
-     await calendarDb.months.delete(key);
-     this.deleteDraft(key);
-     this.defaultCreditsKeys.delete(key);
-     this.tabs.update((tabs) => tabs.filter((t) => t.key !== key));
+    await calendarDb.months.delete(key);
+    this.deleteDraft(key);
+    this.defaultCreditsKeys.delete(key);
+    this.tabs.update((tabs) => tabs.filter((t) => t.key !== key));
 
-     if (this.activeKey() !== key) {
-       return;
-     }
+    if (this.activeKey() !== key) {
+      return;
+    }
 
-     const remaining = this.tabs();
-     if (remaining.length > 0) {
-       // Clear the active key first so selectTab does not re-create a draft for the deleted tab
-       this.activeKey.set('');
-       this.selectTab(remaining[0].key);
-       return;
-     }
+    const remaining = this.tabs();
+    if (remaining.length > 0) {
+      // Clear the active key first so selectTab does not re-create a draft for the deleted tab
+      this.activeKey.set('');
+      this.selectTab(remaining[0].key);
+      return;
+    }
 
-     // Last tab was removed: fall back to an empty tab for the current month
-     const fallback = this.createFallbackTab();
-     this.tabs.set([fallback]);
-     this.setDraft(fallback.key, {
-       totalAiCredits: null,
-       dayNotes: {},
-     });
-     this.activeKey.set(fallback.key);
-     this.reference.set(new Date(fallback.year, fallback.month - 1, 1));
-     this.dayNotes.set({});
-     this.applyCreditsForTab(fallback.key, null);
-   }
+    // Last tab was removed: fall back to an empty tab for the current month
+    const fallback = this.createFallbackTab();
+    this.tabs.set([fallback]);
+    this.setDraft(fallback.key, {
+      totalAiCredits: null,
+      dayNotes: {},
+    });
+    this.activeKey.set(fallback.key);
+    this.reference.set(new Date(fallback.year, fallback.month - 1, 1));
+    this.dayNotes.set({});
+    this.applyCreditsForTab(fallback.key, null);
+  }
 
   /**
    * Save the currently active month's state to Dexie and mark the tab as saved.
@@ -368,19 +368,19 @@ export class CalendarStore {
     // Write to Dexie
     await calendarDb.months.put(record);
 
-     // Update draftState to match what was just saved
-     this.setDraft(activeKey, {
-       totalAiCredits: record.totalAiCredits,
-       dayNotes: record.dayNotes,
-     });
+    // Update draftState to match what was just saved
+    this.setDraft(activeKey, {
+      totalAiCredits: record.totalAiCredits,
+      dayNotes: record.dayNotes,
+    });
 
-     // Mark the tab as saved
-     this.tabs.update((tabs) => tabs.map((t) => (t.key === activeKey ? { ...t, saved: true } : t)));
+    // Mark the tab as saved
+    this.tabs.update((tabs) => tabs.map((t) => (t.key === activeKey ? { ...t, saved: true } : t)));
 
-     // After saving, the value is no longer considered default
-     this.defaultCreditsKeys.delete(activeKey);
-     this.isDefaultTotalAiCredits.set(false);
-   }
+    // After saving, the value is no longer considered default
+    this.defaultCreditsKeys.delete(activeKey);
+    this.isDefaultTotalAiCredits.set(false);
+  }
 
   /**
    * Set or update a note for a specific day (identified by date key YYYY-MM-DD).

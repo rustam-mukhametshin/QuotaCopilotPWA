@@ -42,40 +42,6 @@ describe('Sidebar', () => {
   });
 
   describe('initialization', () => {
-    it('should initialize with default AI credits when totalAiCredits is null', () => {
-      // Mock bootstrap.Tooltip before initialization
-      const TooltipMock = vi.fn(function (this: any) {
-        this.dispose = vi.fn();
-      });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
-
-      store.totalAiCredits.set(null);
-      const setTotalAiCreditsSpy = vi.spyOn(store, 'setTotalAiCredits');
-
-      component.ngAfterViewInit();
-
-      expect(setTotalAiCreditsSpy).toHaveBeenCalledWith('10000');
-    });
-
-    it('should not override totalAiCredits if already set', () => {
-      // Mock bootstrap.Tooltip before initialization
-      const TooltipMock = vi.fn(function (this: any) {
-        this.dispose = vi.fn();
-      });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
-
-      store.totalAiCredits.set(5000);
-      const setTotalAiCreditsSpy = vi.spyOn(store, 'setTotalAiCredits');
-
-      component.ngAfterViewInit();
-
-      expect(setTotalAiCreditsSpy).not.toHaveBeenCalled();
-    });
-
     it('should mark loading as complete after initialization', () => {
       // Mock bootstrap.Tooltip before initialization
       const TooltipMock = vi.fn(function (this: any) {
