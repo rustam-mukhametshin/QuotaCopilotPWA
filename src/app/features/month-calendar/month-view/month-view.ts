@@ -94,9 +94,6 @@ export class MonthView implements AfterViewInit, OnDestroy {
     const placeholdersNeeded = firstDayOfWeek - 1;
     const result =
       placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
-    console.log(
-      `[placeholdersBeforeWeek] firstDay=${week[0].date.toDateString()}, dayOfWeek=${firstDayOfWeek}, needed=${placeholdersNeeded}, result.length=${result.length}`,
-    );
     return result;
   }
 
@@ -106,11 +103,6 @@ export class MonthView implements AfterViewInit, OnDestroy {
     }
     const lastDayOfWeek = week[week.length - 1].date.getDay();
     const placeholdersNeeded = 5 - lastDayOfWeek;
-    const result =
-      placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
-    console.log(
-      `[placeholdersAfterWeek] lastDay=${week[week.length - 1].date.toDateString()}, dayOfWeek=${lastDayOfWeek}, needed=${placeholdersNeeded}, result.length=${result.length}`,
-    );
-    return result;
+    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
   }
 }
