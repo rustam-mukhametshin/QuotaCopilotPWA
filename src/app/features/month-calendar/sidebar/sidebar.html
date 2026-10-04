@@ -18,6 +18,7 @@
         class="form-control"
         [value]="store.totalAiCredits() ?? ''"
         (input)="onTotalAiCreditsInput($event)"
+        animate.enter="anim-fade-in"
       />
     }
   </div>
@@ -32,8 +33,9 @@
         id="per-day-credits"
         type="text"
         class="form-control"
-        [value]="store.perDayCreditsRounded() ?? '—'"
+        [value]="getPerDayCreditsDisplay()"
         readonly
+        animate.enter="anim-fade-in"
       />
     }
   </div>
@@ -46,7 +48,12 @@
   </button>
 
   @if (showToast()) {
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div
+      class="toast-container position-fixed top-0 end-0 p-3"
+      style="z-index: 11"
+      animate.enter="anim-slide-in-right"
+      animate.leave="anim-slide-out-right"
+    >
       <div class="toast show" role="alert">
         <div class="toast-header">
           <strong class="me-auto">✓ {{ 'sidebar.savedSuccess' | translate }}</strong>

@@ -1,6 +1,11 @@
 <div class="month-tabs d-flex gap-2 align-items-center">
   @for (tab of store.tabs(); track tab.key) {
-    <div class="month-tabs__tab-wrapper btn-group btn-group-sm" role="group">
+    <div
+      class="month-tabs__tab-wrapper btn-group btn-group-sm"
+      role="group"
+      animate.enter="anim-scale-in"
+      animate.leave="anim-scale-out"
+    >
       <button
         class="month-tabs__tab btn"
         [class.btn-primary]="store.activeKey() === tab.key"
@@ -33,11 +38,23 @@
       type="month"
       class="month-tabs__picker form-control form-control-sm"
       (change)="onPickerChange($event)"
+      animate.enter="anim-fade-in"
+      animate.leave="anim-fade-out"
     />
   }
   @if (pendingDeleteTab(); as tab) {
-    <div class="month-tabs__confirm-overlay" (click)="cancelDelete()">
-      <div class="month-tabs__confirm-modal" (click)="onModalContentClick($event)">
+    <div
+      class="month-tabs__confirm-overlay"
+      (click)="cancelDelete()"
+      animate.enter="anim-fade-in"
+      animate.leave="anim-fade-out"
+    >
+      <div
+        class="month-tabs__confirm-modal"
+        (click)="onModalContentClick($event)"
+        animate.enter="anim-scale-in"
+        animate.leave="anim-scale-out"
+      >
         <p class="month-tabs__confirm-text">
           {{ 'monthTabs.confirmDelete' | translate: { label: tab.label } }}
         </p>

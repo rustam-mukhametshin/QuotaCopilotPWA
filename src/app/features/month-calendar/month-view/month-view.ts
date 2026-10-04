@@ -1,9 +1,10 @@
 import type { AfterViewInit, OnDestroy } from '@angular/core';
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
 import type { Week } from '../working-days';
+import { tweenedNumber } from '../../../shared/motion/tweened-number';
 
 @Component({
   selector: 'app-month-view',
@@ -18,10 +19,19 @@ export class MonthView implements AfterViewInit, OnDestroy {
   protected readonly weeks = this.store.weeks;
   protected readonly activeNoteKey = signal<string | null>(null);
 
+  protected readonly monthKey = computed(() => {
+    const ref = this.store.reference();
+    const year = ref.getFullYear();
+    const month = String(ref.getMonth() + 1).padStart(2, '0');
+    return `${year}-${month}`;
+  });
+
+  protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
+
   private tooltips: bootstrap.Tooltip[] = [];
 
   protected limitForDay(index: number): string {
-    const perDay = this.store.perDayCredits();
+    const perDay = this.tweenedPerDayCredits();
     return perDay === null ? '—' : Math.round(perDay * index).toString();
   }
 

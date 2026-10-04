@@ -11,7 +11,10 @@
 .month-tabs__tab-actions-btn {
   white-space: nowrap;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .month-tabs__add-btn:hover {
@@ -64,4 +67,8 @@
   justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 1rem;
+}
+
+.anim-fade-out .month-tabs__confirm-modal {
+  animation: scaleOut var(--motion-duration-base) var(--motion-easing) forwards;
 }

@@ -1,65 +1,72 @@
 <div class="weeks d-flex flex-column">
-  @for (week of weeks(); track $index) {
-    <div class="week d-flex flex-column flex-md-row gap-2 mb-3">
-      @for (ph of placeholdersBeforeWeek(week, $index); track 'before-' + $index + '-' + ph) {
-        <div
-          class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
-          [class.bg-secondary-subtle]="week[0].isPast"
-        ></div>
-      }
-      @for (day of week; track day.date.getTime()) {
-        <div
-          class="day d-flex flex-column gap-1 p-2 border rounded position-relative"
-          [class.day--today]="day.isToday"
-          [class.day--past]="day.isPast"
-          [class.border-primary]="day.isToday"
-          [class.bg-primary-subtle]="day.isToday"
-          [class.text-primary]="day.isToday"
-          [class.bg-secondary-subtle]="day.isPast"
-        >
-          <div class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">
-            {{ day.date.getDate() }}
-            <span class="day__index"> ({{ day.index }}) </span>
-          </div>
-          <div class="day__inputs d-flex flex-column gap-1">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              [value]="limitForDay(day.index)"
-              readonly
-              id="day-{{ day.index }}-limit"
-              data-bs-toggle="tooltip"
-              [attr.data-bs-title]="'monthView.dayTokensTooltip' | translate"
-            />
-          </div>
-          <button
-            class="day__note-toggle btn btn-sm position-absolute"
-            [class.day__note-toggle--active]="hasNote(day.date)"
-            [attr.aria-label]="'monthView.editNote' | translate"
-            type="button"
-            (click)="toggleNote(day.date.toISOString())"
-          >
-            …
-          </button>
-          <div class="day__note-container">
-            @if (activeNoteKey() === day.date.toISOString()) {
-              <textarea
-                class="day__note-textarea position-absolute"
-                [value]="noteFor(day.date)"
-                (input)="onNoteInput(day.date, $event)"
-              ></textarea>
-            }
-          </div>
+  @for (key of [monthKey()]; track key) {
+    <div animate.enter="anim-fade-slide-up-in">
+      @for (week of weeks(); track $index) {
+        <div class="week d-flex flex-column flex-md-row gap-2 mb-3">
+          @for (ph of placeholdersBeforeWeek(week, $index); track 'before-' + $index + '-' + ph) {
+            <div
+              class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
+              [class.bg-secondary-subtle]="week[0].isPast"
+            ></div>
+          }
+          @for (day of week; track day.date.getTime()) {
+            <div
+              class="day d-flex flex-column gap-1 p-2 border rounded position-relative"
+              [class.day--today]="day.isToday"
+              [class.day--past]="day.isPast"
+              [class.border-primary]="day.isToday"
+              [class.bg-primary-subtle]="day.isToday"
+              [class.text-primary]="day.isToday"
+              [class.bg-secondary-subtle]="day.isPast"
+            >
+              <div class="day__number fw-bold" [class.text-decoration-line-through]="day.isPast">
+                {{ day.date.getDate() }}
+                <span class="day__index"> ({{ day.index }}) </span>
+              </div>
+              <div class="day__inputs d-flex flex-column gap-1">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  [value]="limitForDay(day.index)"
+                  readonly
+                  id="day-{{ day.index }}-limit"
+                  data-bs-toggle="tooltip"
+                  [attr.data-bs-title]="'monthView.dayTokensTooltip' | translate"
+                />
+              </div>
+              <button
+                class="day__note-toggle btn btn-sm position-absolute"
+                [class.day__note-toggle--active]="hasNote(day.date)"
+                [attr.aria-label]="'monthView.editNote' | translate"
+                type="button"
+                (click)="toggleNote(day.date.toISOString())"
+              >
+                …
+              </button>
+              <div class="day__note-container">
+                @if (activeNoteKey() === day.date.toISOString()) {
+                  <textarea
+                    class="day__note-textarea position-absolute"
+                    id="day-{{ day.index }}-note"
+                    [value]="noteFor(day.date)"
+                    (input)="onNoteInput(day.date, $event)"
+                    animate.enter="anim-scale-in"
+                    animate.leave="anim-scale-out"
+                  ></textarea>
+                }
+              </div>
+            </div>
+          }
+          @for (
+            ph of placeholdersAfterWeek(week, $index, weeks().length);
+            track 'after-' + $index + '-' + ph
+          ) {
+            <div
+              class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
+              [class.bg-secondary-subtle]="week[week.length - 1].isPast"
+            ></div>
+          }
         </div>
-      }
-      @for (
-        ph of placeholdersAfterWeek(week, $index, weeks().length);
-        track 'after-' + $index + '-' + ph
-      ) {
-        <div
-          class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
-          [class.bg-secondary-subtle]="week[week.length - 1].isPast"
-        ></div>
       }
     </div>
   }

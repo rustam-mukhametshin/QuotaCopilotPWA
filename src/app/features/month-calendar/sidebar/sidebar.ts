@@ -2,6 +2,7 @@ import type { AfterViewInit, OnDestroy } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
+import { tweenedNumber } from '../../../shared/motion/tweened-number';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,10 +16,17 @@ export class Sidebar implements AfterViewInit, OnDestroy {
   protected readonly showToast = signal(false);
   protected readonly isLoading = signal(true);
 
+  protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
+
   private toastTimeout: ReturnType<typeof setTimeout> | null = null;
   private tooltips: bootstrap.Tooltip[] = [];
   private readonly TOAST_DURATION_MS = 3000;
   private readonly DEFAULT_AI_CREDITS = 10000;
+
+  protected getPerDayCreditsDisplay(): string {
+    const value = this.tweenedPerDayCredits();
+    return value === null ? '—' : Math.round(value).toString();
+  }
 
   protected onTotalAiCreditsInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;

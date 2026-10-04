@@ -10,6 +10,26 @@
   --theme-input-bg: #ffffff;
   --theme-input-text: #212529;
   --theme-shadow: rgba(0, 0, 0, 0.1);
+  /* Motion tokens */
+  --motion-duration-fast: 150ms;
+  --motion-duration-base: 200ms;
+  --motion-duration-slow: 250ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0ms;
+    --motion-duration-base: 0ms;
+    --motion-duration-slow: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 [data-bs-theme='dark'] {
@@ -31,4 +51,158 @@ body {
 
 body {
   margin: 0;
+}
+
+/* ============================================================================
+   Keyframes for animations
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideDownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadeSlideUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   Animation utility classes for animate.enter/animate.leave
+   ============================================================================ */
+
+.anim-fade-in {
+  animation: fadeIn var(--motion-duration-fast) var(--motion-easing) forwards;
+}
+
+.anim-fade-out {
+  animation: fadeOut var(--motion-duration-fast) var(--motion-easing) forwards;
+}
+
+.anim-scale-in {
+  animation: scaleIn var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-scale-out {
+  animation: scaleOut var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-slide-in-right {
+  animation: slideInRight var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-slide-out-right {
+  animation: slideOutRight var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-slide-down-in {
+  animation: slideDownIn var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-slide-up-out {
+  animation: slideUpOut var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+.anim-fade-slide-up-in {
+  animation: fadeSlideUpIn var(--motion-duration-base) var(--motion-easing) forwards;
+}
+
+/* ============================================================================
+   Theme transition: smooth color changes when switching theme
+   ============================================================================ */
+
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color var(--motion-duration-slow) var(--motion-easing),
+    color var(--motion-duration-slow) var(--motion-easing),
+    border-color var(--motion-duration-slow) var(--motion-easing),
+    box-shadow var(--motion-duration-slow) var(--motion-easing) !important;
 }
