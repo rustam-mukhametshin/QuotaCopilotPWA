@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { CalendarStore } from './calendar-store';
-import { calendarDb, MonthRecord } from './calendar-db';
+import type { MonthRecord } from './calendar-db';
+import { calendarDb } from './calendar-db';
 import { vi } from 'vitest';
 
 describe('CalendarStore', () => {
@@ -393,7 +394,13 @@ describe('CalendarStore', () => {
     it('loads saved records sorted newest first and activates the most recent', async () => {
       const records: MonthRecord[] = [
         { key: '2024-01', year: 2024, month: 1, totalAiCredits: 100, dayNotes: {} },
-        { key: '2024-03', year: 2024, month: 3, totalAiCredits: 300, dayNotes: { '2024-03-01': 'x' } },
+        {
+          key: '2024-03',
+          year: 2024,
+          month: 3,
+          totalAiCredits: 300,
+          dayNotes: { '2024-03-01': 'x' },
+        },
         { key: '2023-12', year: 2023, month: 12, totalAiCredits: null, dayNotes: {} },
       ];
       vi.mocked(calendarDb.months.toArray).mockResolvedValue(records);

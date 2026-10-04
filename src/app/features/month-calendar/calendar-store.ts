@@ -1,5 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { getWorkingWeeksOfMonth, Week } from './working-days';
+import type { Week } from './working-days';
+import { getWorkingWeeksOfMonth } from './working-days';
 import { monthKey, calendarDb } from './calendar-db';
 
 export interface MonthTab {

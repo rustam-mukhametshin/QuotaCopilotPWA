@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { MonthView } from './month-view';
 import { CalendarStore } from '../calendar-store';
-import { DayInfo, Week } from '../working-days';
+import type { DayInfo, Week } from '../working-days';
 
 /** Access to protected members of MonthView for logic-only tests (template is never rendered). */
 interface MonthViewLogic {
@@ -189,4 +189,3 @@ describe('MonthView (logic)', () => {
     });
   });
 });
-

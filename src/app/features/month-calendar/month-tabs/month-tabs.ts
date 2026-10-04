@@ -1,7 +1,7 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CalendarStore, MonthTab } from '../calendar-store';
-import { monthKey } from '../calendar-db';
+import type { MonthTab } from '../calendar-store';
+import { CalendarStore } from '../calendar-store';
 
 @Component({
   selector: 'app-month-tabs',

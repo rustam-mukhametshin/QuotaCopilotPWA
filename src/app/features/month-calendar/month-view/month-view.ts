@@ -1,7 +1,7 @@
 import { Component, inject, signal, HostListener } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
-import { Week } from '../working-days';
+import type { Week } from '../working-days';
 
 @Component({
   selector: 'app-month-view',

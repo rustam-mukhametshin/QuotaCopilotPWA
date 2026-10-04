@@ -64,4 +64,3 @@ describe('getWorkingWeeksOfMonth', () => {
     expect(weeks.flat()).toHaveLength(23);
   });
 });
-

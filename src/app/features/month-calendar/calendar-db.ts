@@ -1,4 +1,5 @@
-import Dexie, { Table } from 'dexie';
+import type { Table } from 'dexie';
+import Dexie from 'dexie';
 
 export interface MonthRecord {
   key: string; // YYYY-MM format (zero-padded)
