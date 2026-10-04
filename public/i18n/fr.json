@@ -14,10 +14,11 @@
     "cancel": "Annuler",
     "confirmDelete": "Supprimer l'onglet {{label}} ?"
   },
-  "sidebar": {
-    "totalAiCredits": "Crédits IA au total",
-    "totalAiCreditsTooltip": "Budget total de crédits IA par mois",
-    "perDay": "Par jour",
+   "sidebar": {
+     "totalAiCredits": "Crédits IA au total",
+     "totalAiCreditsTooltip": "Budget total de crédits IA par mois",
+     "defaultCreditsHint": "Valeur par défaut — mettez-la à jour si nécessaire",
+     "perDay": "Par jour",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "savedSuccess": "Enregistré",

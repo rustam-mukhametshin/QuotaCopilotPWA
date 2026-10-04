@@ -12,14 +12,25 @@
         <div class="placeholder" style="height: 38px"></div>
       </div>
     } @else {
-      <input
-        id="total-ai-credits"
-        type="number"
-        class="form-control tabular-nums"
-        [value]="store.totalAiCredits() ?? ''"
-        (input)="onTotalAiCreditsInput($event)"
-        animate.enter="anim-fade-in"
-      />
+       <input
+         id="total-ai-credits"
+         type="number"
+         class="form-control tabular-nums"
+         [class.is-default-value]="store.isDefaultTotalAiCredits()"
+         [value]="store.totalAiCredits() ?? ''"
+         (input)="onTotalAiCreditsInput($event)"
+         [attr.aria-describedby]="store.isDefaultTotalAiCredits() ? 'total-ai-credits-hint' : null"
+         animate.enter="anim-fade-in"
+       />
+       @if (store.isDefaultTotalAiCredits()) {
+         <small
+           id="total-ai-credits-hint"
+           class="form-text text-success"
+           animate.enter="anim-fade-in"
+         >
+           {{ 'sidebar.defaultCreditsHint' | translate }}
+         </small>
+       }
     }
   </div>
   <div class="d-flex flex-column gap-1">

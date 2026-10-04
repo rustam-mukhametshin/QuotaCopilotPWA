@@ -21,7 +21,6 @@ export class Sidebar implements AfterViewInit, OnDestroy {
   private toastTimeout: ReturnType<typeof setTimeout> | null = null;
   private tooltips: bootstrap.Tooltip[] = [];
   private readonly TOAST_DURATION_MS = 3000;
-  private readonly DEFAULT_AI_CREDITS = 10000;
 
   protected getPerDayCreditsDisplay(): string {
     const value = this.tweenedPerDayCredits();
@@ -58,10 +57,6 @@ export class Sidebar implements AfterViewInit, OnDestroy {
   }
 
   private initializeData(): void {
-    // Initialize default credits if null
-    if (this.store.totalAiCredits() === null) {
-      this.store.setTotalAiCredits(String(this.DEFAULT_AI_CREDITS));
-    }
     // Mark loading as complete once data is available
     this.isLoading.set(false);
   }

@@ -14,10 +14,11 @@
     "cancel": "Cancelar",
     "confirmDelete": "¿Eliminar la pestaña {{label}}?"
   },
-  "sidebar": {
-    "totalAiCredits": "Créditos de IA totales",
-    "totalAiCreditsTooltip": "Presupuesto total de créditos de IA por mes",
-    "perDay": "Por día",
+   "sidebar": {
+     "totalAiCredits": "Créditos de IA totales",
+     "totalAiCreditsTooltip": "Presupuesto total de créditos de IA por mes",
+     "defaultCreditsHint": "Valor por defecto — actualícelo si es necesario",
+     "perDay": "Por día",
     "save": "Guardar",
     "saving": "Guardando...",
     "savedSuccess": "Guardado",

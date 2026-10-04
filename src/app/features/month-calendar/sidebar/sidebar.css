@@ -22,6 +22,29 @@
   background-color: var(--bs-secondary-bg);
 }
 
+.sidebar #total-ai-credits.is-default-value {
+  border-color: var(--bs-success);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);
+  transition:
+    border-color var(--motion-duration-base) var(--motion-easing),
+    box-shadow var(--motion-duration-base) var(--motion-easing);
+}
+
+.sidebar #total-ai-credits.is-default-value:focus {
+  border-color: var(--bs-success);
+  box-shadow:
+    0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar #total-ai-credits.is-default-value:focus {
+    box-shadow:
+      0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25),
+      inset 0 1px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
 @media (min-width: 768px) {
   :host {
     flex: 0 0 220px;

@@ -14,10 +14,11 @@
     "cancel": "Abbrechen",
     "confirmDelete": "Tab {{label}} löschen?"
   },
-  "sidebar": {
-    "totalAiCredits": "KI-Credits gesamt",
-    "totalAiCreditsTooltip": "Gesamtbudget an KI-Credits pro Monat",
-    "perDay": "Pro Tag",
+   "sidebar": {
+     "totalAiCredits": "KI-Credits gesamt",
+     "totalAiCreditsTooltip": "Gesamtbudget an KI-Credits pro Monat",
+     "defaultCreditsHint": "Standardwert — passen Sie ihn nach Bedarf an",
+     "perDay": "Pro Tag",
     "save": "Speichern",
     "saving": "Speichern...",
     "savedSuccess": "Gespeichert",
