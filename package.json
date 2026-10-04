@@ -9,9 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write src/",
     "format:check": "prettier --check src/",
+    "format": "prettier --write src/ && eslint src/ --fix",
     "screenshot": "node scripts/screenshot-dev.mjs"
   },
   "private": true,
