@@ -11,7 +11,8 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write src/",
-    "format:check": "prettier --check src/"
+    "format:check": "prettier --check src/",
+    "screenshot": "node scripts/screenshot-dev.mjs"
   },
   "private": true,
   "packageManager": "npm@12.2.0",

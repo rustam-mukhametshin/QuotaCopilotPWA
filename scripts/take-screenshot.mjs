@@ -7,13 +7,13 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const projectRoot = resolve(__dirname, '..');
 const screenshotDir = resolve(projectRoot, 'public', 'screenshots');
 const screenshotPath = resolve(screenshotDir, 'app-preview.png');
+const appUrl = process.env.APP_URL || 'http://localhost:4201';
 
 // Ensure the screenshots directory exists
 if (!existsSync(screenshotDir)) {
   mkdirSync(screenshotDir, { recursive: true });
 }
 
-const appUrl = process.env.APP_URL || 'http://localhost:4201';
 
 async function takeScreenshot() {
   let browser;
