@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.9.0...quota-copilot-pwa-v0.10.0) (2026-10-04)
+
+
+### Features
+
+* add credits progress component with responsive design and integration ([041d5ff](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/041d5ff730b4d4395a22ac60b857730b8949d4f0))
+* implement AI credits management with default handling and UI updates ([d2e021a](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/d2e021a2e53d1447c22c8005810054b4dac28241))
+
 ## [0.9.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.8.0...quota-copilot-pwa-v0.9.0) (2026-10-04)
 
 
