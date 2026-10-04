@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.6.0...quota-copilot-pwa-v0.7.0) (2026-10-04)
+
+
+### Features
+
+* add Bootstrap integration to main application entry point ([b18eaa8](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/b18eaa80893481ceafb2a33d4c4489bd3cce0d59))
+* add language switcher component and update localization support ([f501653](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/f5016538d62db5582c25a9df3e1d88582b7b10ba))
+* add localization files for German, English, Spanish, and French ([0af65eb](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/0af65eb5a8db36dee5e5cdb6ebc7e9aecca7c08e))
+* add ngx-translate for internationalization support ([35c0ba7](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/35c0ba7594651ffe50fe7de6d8f4b5cd20e6b099))
+* add success toast notification for data saving in sidebar ([487f444](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/487f44454ba7da8a6dec7abf4dd8b389d8c985e9))
+* add unit tests for language switcher, month tabs, sidebar, and month view components ([ecc2437](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/ecc243756f05c459f905d0cc51c867a0d03d57da))
+* implement language resolution and refactor language management ([39c69ef](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/39c69efc87397c73f6865af7c6cf081c3f30acfc))
+* implement popover for tab actions and remove legacy actions menu ([7f4c1c7](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/7f4c1c7d68f5b4379008b8346a238705ed712923))
+* implement translation support for tooltips and sidebar labels ([e71fbf0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/e71fbf06305cee857a7f498efd96f1dfee29fa1f))
+* integrate Bootstrap tooltips and popovers for enhanced UI interactions ([d2c9938](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/d2c9938168dd765c448d487985f4c2ba41775cbf))
+
 ## [0.6.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.5.0...quota-copilot-pwa-v0.6.0) (2026-10-04)
 
 
