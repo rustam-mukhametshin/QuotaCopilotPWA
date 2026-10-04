@@ -1,4 +1,4 @@
-import { Component, inject, signal, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
 import type { Week } from '../working-days';
@@ -9,16 +9,43 @@ import type { Week } from '../working-days';
   templateUrl: './month-view.html',
   host: { class: 'month-view-host' },
 })
-export class MonthView {
+export class MonthView implements AfterViewInit, OnDestroy {
   private readonly store = inject(CalendarStore);
 
   protected readonly weeks = this.store.weeks;
   protected readonly monthLabel = this.store.monthLabel;
   protected readonly activeNoteKey = signal<string | null>(null);
 
+  private tooltips: bootstrap.Tooltip[] = [];
+
   protected limitForDay(index: number): string {
     const perDay = this.store.perDayCredits();
     return perDay === null ? '—' : Math.round(perDay * index).toString();
+  }
+
+  ngAfterViewInit(): void {
+    this.initializeTooltips();
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupTooltips();
+  }
+
+  private initializeTooltips(): void {
+    const dayInputs = document.querySelectorAll('[data-bs-toggle="tooltip"][id^="day-"]');
+    dayInputs.forEach((input) => {
+      const tooltip = new bootstrap.Tooltip(input, {
+        title: 'Maximum available tokens for this day based on your daily limit',
+        placement: 'top',
+        trigger: 'hover',
+      });
+      this.tooltips.push(tooltip);
+    });
+  }
+
+  private cleanupTooltips(): void {
+    this.tooltips.forEach((tooltip) => tooltip.dispose());
+    this.tooltips = [];
   }
 
   protected noteFor(date: Date): string {

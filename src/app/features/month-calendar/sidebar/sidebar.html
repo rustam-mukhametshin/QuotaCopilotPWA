@@ -1,27 +1,39 @@
 <div class="sidebar d-flex flex-column gap-3">
   <div class="d-flex flex-column gap-1">
     <label class="form-label" for="total-ai-credits">Total AI credits</label>
-    <input
-      id="total-ai-credits"
-      type="number"
-      class="form-control"
-      [value]="store.totalAiCredits() ?? ''"
-      (input)="onTotalAiCreditsInput($event)"
-    />
+    @if (isLoading()) {
+      <div class="placeholder-glow">
+        <div class="placeholder" style="height: 38px"></div>
+      </div>
+    } @else {
+      <input
+        id="total-ai-credits"
+        type="number"
+        class="form-control"
+        [value]="store.totalAiCredits() ?? ''"
+        (input)="onTotalAiCreditsInput($event)"
+      />
+    }
   </div>
   <div class="d-flex flex-column gap-1">
     <label class="form-label" for="per-day-credits">Per day</label>
-    <input
-      id="per-day-credits"
-      type="text"
-      class="form-control"
-      [value]="store.perDayCreditsRounded() ?? '—'"
-      readonly
-    />
+    @if (isLoading()) {
+      <div class="placeholder-glow">
+        <div class="placeholder" style="height: 38px"></div>
+      </div>
+    } @else {
+      <input
+        id="per-day-credits"
+        type="text"
+        class="form-control"
+        [value]="store.perDayCreditsRounded() ?? '—'"
+        readonly
+      />
+    }
   </div>
   <button
     class="btn btn-primary"
-    [disabled]="!store.hasUnsavedChanges() || isSaving()"
+    [disabled]="!store.hasUnsavedChanges() || isSaving() || isLoading()"
     (click)="onSave()"
   >
     {{ isSaving() ? 'Saving...' : 'Save' }}

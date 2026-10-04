@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, inject, signal } from '@angular/core';
 import { CalendarStore } from '../calendar-store';
 
 @Component({
@@ -9,13 +9,16 @@ import { CalendarStore } from '../calendar-store';
     class: 'mt-0 mt-md-5',
   },
 })
-export class Sidebar implements OnDestroy {
+export class Sidebar implements AfterViewInit, OnDestroy {
   protected readonly store = inject(CalendarStore);
   protected readonly isSaving = signal(false);
   protected readonly showToast = signal(false);
+  protected readonly isLoading = signal(true);
 
   private toastTimeout: ReturnType<typeof setTimeout> | null = null;
+  private tooltips: bootstrap.Tooltip[] = [];
   private readonly TOAST_DURATION_MS = 3000;
+  private readonly DEFAULT_AI_CREDITS = 10000;
 
   protected onTotalAiCreditsInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
@@ -36,9 +39,41 @@ export class Sidebar implements OnDestroy {
     this.showToast.set(false);
   }
 
+  ngAfterViewInit(): void {
+    this.initializeData();
+    this.initializeTooltips();
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupToastTimeout();
+    this.cleanupTooltips();
+  }
+
+  private initializeData(): void {
+    // Initialize default credits if null
+    if (this.store.totalAiCredits() === null) {
+      this.store.setTotalAiCredits(String(this.DEFAULT_AI_CREDITS));
+    }
+    // Mark loading as complete once data is available
+    this.isLoading.set(false);
+  }
+
   private showSuccessToast(): void {
     this.showToast.set(true);
     this.scheduleToastHide();
+  }
+
+  private initializeTooltips(): void {
+    const totalAiCreditsLabel = document.querySelector('label[for="total-ai-credits"]');
+
+    if (totalAiCreditsLabel) {
+      const tooltip = new bootstrap.Tooltip(totalAiCreditsLabel, {
+        title: 'Total budget of AI credits per month',
+        placement: 'right',
+        trigger: 'hover',
+      });
+      this.tooltips.push(tooltip);
+    }
   }
 
   private scheduleToastHide(): void {
@@ -52,15 +87,15 @@ export class Sidebar implements OnDestroy {
       this.toastTimeout = null;
     }, this.TOAST_DURATION_MS);
   }
-
-  ngOnDestroy(): void {
-    this.cleanupToastTimeout();
-  }
-
   private cleanupToastTimeout(): void {
     if (this.toastTimeout) {
       clearTimeout(this.toastTimeout);
       this.toastTimeout = null;
     }
+  }
+
+  private cleanupTooltips(): void {
+    this.tooltips.forEach((tooltip) => tooltip.dispose());
+    this.tooltips = [];
   }
 }

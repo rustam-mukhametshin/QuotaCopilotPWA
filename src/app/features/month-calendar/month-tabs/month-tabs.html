@@ -15,7 +15,7 @@
         [class.btn-primary]="store.activeKey() === tab.key"
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
         aria-label="Действия с вкладкой"
-        [attr.data-tab-key]="tab.key"
+        (click)="toggleActions(tab, $event)"
       >
         ⋮
       </button>

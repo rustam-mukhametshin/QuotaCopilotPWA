@@ -1,19 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, inject, signal } from '@angular/core';
+import { Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import type { MonthTab } from '../calendar-store';
 import { CalendarStore } from '../calendar-store';
-
-declare global {
-  namespace bootstrap {
-    class Popover {
-      constructor(element: Element, options?: Record<string, unknown>);
-      show(): void;
-      hide(): void;
-      dispose(): void;
-      static getInstance(element: Element): Popover | null;
-    }
-  }
-}
 
 @Component({
   selector: 'app-month-tabs',
@@ -22,14 +10,13 @@ declare global {
   styleUrl: './month-tabs.css',
   templateUrl: './month-tabs.html',
 })
-export class MonthTabs implements AfterViewInit, OnDestroy {
+export class MonthTabs implements OnDestroy {
   protected readonly store = inject(CalendarStore);
   protected readonly showPicker = signal(false);
   protected readonly pendingDeleteTab = signal<MonthTab | null>(null);
 
-  private popoverMap = new WeakMap<HTMLElement, MonthTab>();
-  private deleteButtonHandler: ((event: Event) => void) | null = null;
-  private actionButtons: NodeListOf<Element> | null = null;
+  private actionsPopover: bootstrap.Popover | null = null;
+  private actionsTrigger: HTMLElement | null = null;
 
   protected onTabClick(key: string): void {
     this.store.selectTab(key);
@@ -57,112 +44,55 @@ export class MonthTabs implements AfterViewInit, OnDestroy {
     this.showPicker.update((val) => !val);
   }
 
-  ngAfterViewInit(): void {
-    // Small delay to ensure DOM is fully rendered and Angular change detection is complete
-    setTimeout(() => {
-      this.initializePopovers();
-    }, 100);
+  protected toggleActions(tab: MonthTab, event: MouseEvent): void {
+    event.stopPropagation();
+    const trigger = event.currentTarget as HTMLElement;
+    const isAlreadyOpen = this.actionsTrigger === trigger;
+
+    this.closeActions();
+    if (!isAlreadyOpen) {
+      this.openActions(trigger, tab);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  protected onDocumentClick(event: MouseEvent): void {
+    if (!(event.target as Element).closest('.popover')) {
+      this.closeActions();
+    }
   }
 
   ngOnDestroy(): void {
-    this.cleanupEventListeners();
+    this.closeActions();
   }
 
-  private initializePopovers(): void {
-    this.actionButtons = document.querySelectorAll('.month-tabs__tab-actions-btn');
-
-    this.actionButtons.forEach((btn) => {
-      const tabKey = (btn as HTMLElement).getAttribute('data-tab-key');
-      const tab = this.store.tabs().find((t) => t.key === tabKey);
-
-      if (tab) {
-        this.popoverMap.set(btn as HTMLElement, tab);
-        new bootstrap.Popover(btn, {
-          trigger: 'click',
-          html: true,
-          content: this.getDeleteButtonContent(),
-        });
-      }
+  private openActions(trigger: HTMLElement, tab: MonthTab): void {
+    this.actionsPopover = new bootstrap.Popover(trigger, {
+      content: this.createDeleteButton(tab),
+      html: true,
+      placement: 'bottom',
+      trigger: 'manual',
     });
-
-    this.setupDeleteButtonListener();
+    this.actionsTrigger = trigger;
+    this.actionsPopover.show();
   }
 
-  private getDeleteButtonContent(): string {
-    return `<button type="button" class="btn btn-sm btn-link text-danger w-100 text-start" data-action="delete">Удалить</button>`;
+  private closeActions(): void {
+    this.actionsPopover?.dispose();
+    this.actionsPopover = null;
+    this.actionsTrigger = null;
   }
 
-  private setupDeleteButtonListener(): void {
-    this.deleteButtonHandler = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const deleteBtn = target.closest('[data-action="delete"]');
-
-      if (!deleteBtn) {
-        return;
-      }
-
-      const popoverContainer = deleteBtn.closest('.popover');
-      if (!popoverContainer) {
-        return;
-      }
-
-      const triggerTab = this.findTabFromPopover(deleteBtn);
-      if (triggerTab) {
-        this.pendingDeleteTab.set(triggerTab);
-        this.hideAllPopovers();
-      }
-    };
-
-    document.addEventListener('click', this.deleteButtonHandler);
-  }
-
-  private findTabFromPopover(deleteBtn: Element): MonthTab | null {
-    if (!this.actionButtons) {
-      return null;
-    }
-
-    for (const btn of this.actionButtons) {
-      const currentTab = this.popoverMap.get(btn as HTMLElement);
-      if (!currentTab) {
-        continue;
-      }
-
-      const popoverInstance = bootstrap.Popover.getInstance(btn);
-      if (!popoverInstance) {
-        continue;
-      }
-
-      const tipElement = (popoverInstance as any)?._tip;
-      if (tipElement && tipElement.contains(deleteBtn)) {
-        return currentTab;
-      }
-    }
-
-    return null;
-  }
-
-  private hideAllPopovers(): void {
-    if (!this.actionButtons) {
-      return;
-    }
-
-    this.actionButtons.forEach((btn) => {
-      bootstrap.Popover.getInstance(btn)?.hide();
+  private createDeleteButton(tab: MonthTab): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn btn-sm btn-link text-danger text-decoration-none w-100 text-start';
+    button.textContent = 'Удалить';
+    button.addEventListener('click', () => {
+      this.closeActions();
+      this.pendingDeleteTab.set(tab);
     });
-  }
-
-  private cleanupEventListeners(): void {
-    if (this.deleteButtonHandler) {
-      document.removeEventListener('click', this.deleteButtonHandler);
-      this.deleteButtonHandler = null;
-    }
-
-    if (this.actionButtons) {
-      this.actionButtons.forEach((btn) => {
-        bootstrap.Popover.getInstance(btn)?.dispose();
-      });
-      this.actionButtons = null;
-    }
+    return button;
   }
 
   protected cancelDelete(): void {
