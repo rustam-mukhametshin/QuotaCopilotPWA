@@ -31,9 +31,9 @@ jobs:
 
       - name: Serve build and take screenshot
         run: |
-          npx serve dist -l 4200 &
-          sleep 3
-          npx node scripts/take-screenshot.mjs
+          npx -y serve dist/QuotaCopilotPWA/browser -s -l 4200 &
+          npx -y wait-on http://localhost:4200 --timeout 60000
+          node scripts/take-screenshot.mjs
 
       - name: Commit and push screenshot
         uses: stefanzweifel/git-auto-commit-action@v5
