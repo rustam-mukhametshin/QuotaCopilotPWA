@@ -25,7 +25,7 @@ app-month-calendar {
 .app-header app-credits-progress {
   flex: 1 1 auto;
   min-width: 200px;
-  max-width: 360px;
+  max-width: 70%;
 }
 
 .app-header > div:last-child {
