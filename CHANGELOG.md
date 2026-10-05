@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.10.0...quota-copilot-pwa-v0.11.0) (2026-10-05)
+
+
+### Features
+
+* update credits progress component styles for improved responsiveness ([ddc5646](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/ddc5646f752453531f40de4300dc7ced58ccf75e))
+
 ## [0.10.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.9.0...quota-copilot-pwa-v0.10.0) (2026-10-04)
 
 
