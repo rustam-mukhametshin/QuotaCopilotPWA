@@ -33,6 +33,21 @@ app-month-calendar {
   order: 2;
 }
 
+@media (min-width: 768px) {
+  .app-header {
+    gap: 1rem !important;
+  }
+
+  .app-header h1 {
+    min-width: 220px;
+  }
+
+  .app-header app-credits-progress {
+    flex: 1 1 0;
+    max-width: none;
+  }
+}
+
 @media (max-width: 767.98px) {
   .app-header {
     gap: 1rem;
