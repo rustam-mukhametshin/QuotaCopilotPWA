@@ -41,6 +41,10 @@
   background-color: var(--bs-tertiary-bg);
 }
 
+.day__inputs-spacer {
+  visibility: hidden;
+}
+
 .day--past input {
   background-color: var(--bs-secondary-bg);
 }
