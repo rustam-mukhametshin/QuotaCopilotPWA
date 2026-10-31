@@ -5,13 +5,13 @@
         <div class="week d-flex flex-column flex-md-row gap-2 mb-3">
           @for (ph of placeholdersBeforeWeek(week, $index); track 'before-' + $index + '-' + ph) {
             <div
-              class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
+              class="day day--placeholder d-none d-md-flex flex-column gap-2 p-2 border rounded position-relative"
               [class.bg-secondary-subtle]="week[0].isPast"
             ></div>
           }
           @for (day of week; track day.date.getTime()) {
             <div
-              class="day d-flex flex-column gap-1 p-2 border rounded position-relative"
+              class="day d-flex flex-column gap-2 p-2 border rounded position-relative"
               [class.day--today]="day.isToday"
               [class.day--past]="day.isPast"
               [class.day--weekend]="day.isWeekend"
@@ -20,10 +20,7 @@
               [class.text-primary]="day.isToday"
               [class.bg-secondary-subtle]="day.isPast"
             >
-              <div
-                class="day__number fw-bold tabular-nums"
-                [class.text-decoration-line-through]="day.isPast"
-              >
+              <div class="day__number fw-bold tabular-nums">
                 {{ day.date.getDate() }}
                 @if (day.index !== null) {
                   <span class="day__index"> ({{ day.index }}) </span>
@@ -70,7 +67,7 @@
             track 'after-' + $index + '-' + ph
           ) {
             <div
-              class="day day--placeholder d-none d-md-flex flex-column gap-1 p-2 border rounded position-relative"
+              class="day day--placeholder d-none d-md-flex flex-column gap-2 p-2 border rounded position-relative"
               [class.bg-secondary-subtle]="week[week.length - 1].isPast"
             ></div>
           }

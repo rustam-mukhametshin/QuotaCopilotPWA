@@ -17,7 +17,7 @@
      driven by [class.bg-secondary-subtle] to match the adjacent day's past/future state */
   border: 1px solid transparent !important;
   pointer-events: none;
-  /* Inherit p-2 (padding), d-flex (display), flex-column, gap-1, border (bootstrap), rounded from .day */
+  /* Inherit p-2 (padding), d-flex (display), flex-column, gap-2, border (bootstrap), rounded from .day */
 }
 
 .day--weekend:not(.day--past):not(.day--today) {
@@ -26,6 +26,16 @@
 
 .day--past input {
   background-color: var(--bs-secondary-bg);
+}
+
+.day--past .day__number,
+.day--past input {
+  color: var(--bs-secondary-color);
+}
+
+.day--past .day__number,
+.day--past .day__inputs {
+  opacity: 0.7;
 }
 
 .day__number {
@@ -49,7 +59,7 @@
   --bs-btn-active-color: var(--bs-body-color);
   --bs-btn-active-bg: var(--bs-secondary-bg);
   --bs-btn-active-border-color: var(--bs-secondary-bg);
-  top: 0.25rem;
+  top: 0.5rem;
   right: 0.5rem;
   padding: 0.15rem 0.25rem;
   font-size: 0.875rem;
@@ -64,6 +74,11 @@
 
 .day:hover .day__note-toggle {
   opacity: 1;
+}
+
+/* Keeps the empty wrapper out of the flex flow so it adds no extra gap below the inputs */
+.day__note-container {
+  display: contents;
 }
 
 .day__note-textarea {
