@@ -383,9 +383,7 @@ describe('CalendarStore', () => {
 
       await store.deleteTab('2023-05');
 
-      expect(store.tabs()).toEqual([
-        { key: '2024-02', year: 2024, month: 2, saved: false },
-      ]);
+      expect(store.tabs()).toEqual([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       expect(store.activeKey()).toBe('2024-02');
       // After fallback, applyCreditsForTab is called with null, so default is applied
       expect(store.totalAiCredits()).toBe(10000);
@@ -399,9 +397,7 @@ describe('CalendarStore', () => {
 
       await store.initialize();
 
-      expect(store.tabs()).toEqual([
-        { key: '2024-02', year: 2024, month: 2, saved: false },
-      ]);
+      expect(store.tabs()).toEqual([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       expect(store.activeKey()).toBe('2024-02');
       // When no saved records, default is applied
       expect(store.totalAiCredits()).toBe(10000);
@@ -892,11 +888,23 @@ describe('CalendarStore', () => {
       store.reference.set(new Date(2024, 1, 1));
       today.date.set(new Date(2024, 1, 15));
 
-      expect(store.weeks().flat().find((day) => day.isToday)?.date.getDate()).toBe(15);
+      expect(
+        store
+          .weeks()
+          .flat()
+          .find((day) => day.isToday)
+          ?.date.getDate(),
+      ).toBe(15);
 
       today.date.set(new Date(2024, 1, 16));
 
-      expect(store.weeks().flat().find((day) => day.isToday)?.date.getDate()).toBe(16);
+      expect(
+        store
+          .weeks()
+          .flat()
+          .find((day) => day.isToday)
+          ?.date.getDate(),
+      ).toBe(16);
     });
 
     it('setIncludeWeekends changes the active flag, leaves it unsaved and updates the default', async () => {

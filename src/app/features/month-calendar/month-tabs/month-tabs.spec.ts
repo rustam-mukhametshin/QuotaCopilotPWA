@@ -240,5 +240,4 @@ describe('MonthTabs', () => {
       expect(tabs[0].textContent?.trim()).toBe('Jan24');
     });
   });
-
 });

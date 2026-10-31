@@ -107,11 +107,7 @@ describe('getMonthWeeks', () => {
   });
 
   it('uses the explicit today date for isToday and isPast flags', () => {
-    const days = getMonthWeeks(
-      new Date(2024, 1, 1),
-      false,
-      new Date(2024, 1, 20, 23, 45),
-    ).flat();
+    const days = getMonthWeeks(new Date(2024, 1, 1), false, new Date(2024, 1, 20, 23, 45)).flat();
 
     expect(days.find((day) => day.isToday)?.date.getDate()).toBe(20);
     expect(days.find((day) => day.date.getDate() === 19)?.isPast).toBe(true);
