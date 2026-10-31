@@ -3,7 +3,8 @@
     <label
       class="form-label"
       for="total-ai-credits"
-      [attr.data-bs-title]="'sidebar.totalAiCreditsTooltip' | translate"
+      [appTooltip]="'sidebar.totalAiCreditsTooltip' | translate"
+      tooltipPlacement="right"
     >
       {{ 'sidebar.totalAiCredits' | translate }}
     </label>

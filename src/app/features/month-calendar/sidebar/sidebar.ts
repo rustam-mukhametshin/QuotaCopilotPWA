@@ -3,10 +3,11 @@ import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
+import { Tooltip } from '../../../shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, Tooltip],
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
 })
@@ -19,7 +20,6 @@ export class Sidebar implements AfterViewInit, OnDestroy {
   protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
 
   private toastTimeout: ReturnType<typeof setTimeout> | null = null;
-  private tooltips: bootstrap.Tooltip[] = [];
   private readonly TOAST_DURATION_MS = 3000;
 
   protected getPerDayCreditsDisplay(): string {
@@ -48,12 +48,10 @@ export class Sidebar implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initializeData();
-    this.initializeTooltips();
   }
 
   ngOnDestroy(): void {
     this.cleanupToastTimeout();
-    this.cleanupTooltips();
   }
 
   private initializeData(): void {
@@ -64,19 +62,6 @@ export class Sidebar implements AfterViewInit, OnDestroy {
   private showSuccessToast(): void {
     this.showToast.set(true);
     this.scheduleToastHide();
-  }
-
-  private initializeTooltips(): void {
-    const totalAiCreditsLabel = document.querySelector('label[for="total-ai-credits"]');
-
-    if (totalAiCreditsLabel) {
-      const tooltip = new bootstrap.Tooltip(totalAiCreditsLabel, {
-        title: (element) => element.getAttribute('data-bs-title') ?? '',
-        placement: 'right',
-        trigger: 'hover',
-      });
-      this.tooltips.push(tooltip);
-    }
   }
 
   private scheduleToastHide(): void {
@@ -95,10 +80,5 @@ export class Sidebar implements AfterViewInit, OnDestroy {
       clearTimeout(this.toastTimeout);
       this.toastTimeout = null;
     }
-  }
-
-  private cleanupTooltips(): void {
-    this.tooltips.forEach((tooltip) => tooltip.dispose());
-    this.tooltips = [];
   }
 }
