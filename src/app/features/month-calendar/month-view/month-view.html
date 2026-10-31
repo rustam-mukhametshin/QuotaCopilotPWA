@@ -49,12 +49,12 @@
                 [class.day__note-toggle--active]="hasNote(day.date)"
                 [attr.aria-label]="'monthView.editNote' | translate"
                 type="button"
-                (click)="toggleNote(day.date.toISOString())"
+                (click)="toggleNote(dayKey(day.date))"
               >
                 …
               </button>
               <div class="day__note-container">
-                @if (activeNoteKey() === day.date.toISOString()) {
+                @if (activeNoteKey() === dayKey(day.date)) {
                   <textarea
                     class="day__note-textarea position-absolute"
                     id="day-{{ dayKey(day.date) }}-note"

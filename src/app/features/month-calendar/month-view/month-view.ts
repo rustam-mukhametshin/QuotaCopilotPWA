@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
-import { dayKey } from '../calendar-db';
+import { dayKey, monthKey as monthKeyHelper } from '../calendar-db';
 import type { Week } from '../working-days';
 import { weekdayColumn } from '../working-days';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
@@ -27,9 +27,7 @@ export class MonthView {
 
   protected readonly monthKey = computed(() => {
     const ref = this.store.reference();
-    const year = ref.getFullYear();
-    const month = String(ref.getMonth() + 1).padStart(2, '0');
-    return `${year}-${month}`;
+    return monthKeyHelper(ref.getFullYear(), ref.getMonth() + 1);
   });
 
   protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
