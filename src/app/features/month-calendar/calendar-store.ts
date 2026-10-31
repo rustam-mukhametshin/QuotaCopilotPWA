@@ -9,6 +9,26 @@ import { Today } from '../../shared/clock/today';
 
 export const DEFAULT_TOTAL_AI_CREDITS = 10000;
 
+/**
+ * Deep equality check for day notes objects: compares keys and values.
+ */
+export function notesEqual(a: Record<string, string>, b: Record<string, string>): boolean {
+  const keysA = Object.keys(a).sort();
+  const keysB = Object.keys(b).sort();
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  for (let i = 0; i < keysA.length; i++) {
+    if (keysA[i] !== keysB[i] || a[keysA[i]] !== b[keysB[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export interface MonthTab {
   key: string; // YYYY-MM format
   year: number;
@@ -136,23 +156,9 @@ export class CalendarStore {
       return true;
     }
 
-    // Deep compare dayNotes: check keys and values
-    const currentNotes = this.dayNotes();
-    const draftNotes = draft.dayNotes;
-    const currentKeys = Object.keys(currentNotes).sort();
-    const draftKeys = Object.keys(draftNotes).sort();
-
-    if (currentKeys.length !== draftKeys.length) {
+    // Deep compare dayNotes using notesEqual
+    if (!notesEqual(this.dayNotes(), draft.dayNotes)) {
       return true;
-    }
-
-    for (let i = 0; i < currentKeys.length; i++) {
-      if (
-        currentKeys[i] !== draftKeys[i] ||
-        currentNotes[currentKeys[i]] !== draftNotes[draftKeys[i]]
-      ) {
-        return true;
-      }
     }
 
     return false;
@@ -233,6 +239,45 @@ export class CalendarStore {
   }
 
   /**
+   * Get the first day of a month from a tab (used instead of inline `new Date(tab.year, tab.month - 1, 1)`).
+   */
+  private firstDayOf(tab: MonthTab): Date {
+    return new Date(tab.year, tab.month - 1, 1);
+  }
+
+  /**
+   * Activate the fallback tab for the current month: set it as the only tab, active,
+   * load its state (empty notes, default credits, default weekends preference).
+   */
+  private activateFallbackTab(): void {
+    const fallback = this.createFallbackTab();
+    const includeWeekends = this.preferences.defaultIncludeWeekends();
+
+    this.tabs.set([fallback]);
+    this.setDraft(fallback.key, {
+      totalAiCredits: null,
+      dayNotes: {},
+      includeWeekends,
+    });
+    this.activeKey.set(fallback.key);
+    this.reference.set(this.firstDayOf(fallback));
+    this.includeWeekends.set(includeWeekends);
+    this.applyCreditsForTab(fallback.key, null);
+  }
+
+  /**
+   * Load a tab's state from its draft: set activeKey, reference, credits, notes, weekends preference.
+   * draft can be undefined (for new tabs without a saved draft yet).
+   */
+  private loadTabState(tab: MonthTab, draft: DraftState | undefined): void {
+    this.activeKey.set(tab.key);
+    this.reference.set(this.firstDayOf(tab));
+    this.applyCreditsForTab(tab.key, draft?.totalAiCredits ?? null);
+    this.dayNotes.set(draft ? { ...draft.dayNotes } : {});
+    this.includeWeekends.set(draft?.includeWeekends ?? this.preferences.defaultIncludeWeekends());
+  }
+
+  /**
    * Generate Excel-style label from year and month (e.g., "Sep26").
    */
   /**
@@ -265,19 +310,7 @@ export class CalendarStore {
 
       if (records.length === 0) {
         // No saved records: create a fallback tab for today's month
-        const fallbackTab = this.createFallbackTab();
-        const includeWeekends = this.preferences.defaultIncludeWeekends();
-
-        this.tabs.set([fallbackTab]);
-        this.setDraft(fallbackTab.key, {
-          totalAiCredits: null,
-          dayNotes: {},
-          includeWeekends,
-        });
-        this.activeKey.set(fallbackTab.key);
-        this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
-        this.includeWeekends.set(includeWeekends);
-        this.applyCreditsForTab(fallbackTab.key, null);
+        this.activateFallbackTab();
         return;
       }
 
@@ -307,13 +340,13 @@ export class CalendarStore {
       });
 
       // Activate the most recent tab (first in sorted array)
-      const mostRecentKey = newTabs[0].key;
-      this.activeKey.set(mostRecentKey);
+      const mostRecentTab = newTabs[0];
       const mostRecentRecord = records[0];
-      this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
-      this.dayNotes.set({ ...mostRecentRecord.dayNotes });
-      this.includeWeekends.set(mostRecentRecord.includeWeekends ?? false);
-      this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
+      this.loadTabState(mostRecentTab, {
+        totalAiCredits: mostRecentRecord.totalAiCredits,
+        dayNotes: { ...mostRecentRecord.dayNotes },
+        includeWeekends: mostRecentRecord.includeWeekends ?? false,
+      });
     } finally {
       this.ready.set(true);
     }
@@ -339,14 +372,8 @@ export class CalendarStore {
       return;
     }
 
-    this.activeKey.set(key);
-    const firstDay = new Date(tab.year, tab.month - 1, 1);
-    this.reference.set(firstDay);
-
     const draft = this.draftState.get(key);
-    this.applyCreditsForTab(key, draft?.totalAiCredits ?? null);
-    this.dayNotes.set(draft ? { ...draft.dayNotes } : {});
-    this.includeWeekends.set(draft?.includeWeekends ?? this.preferences.defaultIncludeWeekends());
+    this.loadTabState(tab, draft);
   }
 
   /**
@@ -403,19 +430,7 @@ export class CalendarStore {
     }
 
     // Last tab was removed: fall back to an empty tab for the current month
-    const fallback = this.createFallbackTab();
-    const includeWeekends = this.preferences.defaultIncludeWeekends();
-    this.tabs.set([fallback]);
-    this.setDraft(fallback.key, {
-      totalAiCredits: null,
-      dayNotes: {},
-      includeWeekends,
-    });
-    this.activeKey.set(fallback.key);
-    this.reference.set(new Date(fallback.year, fallback.month - 1, 1));
-    this.dayNotes.set({});
-    this.includeWeekends.set(includeWeekends);
-    this.applyCreditsForTab(fallback.key, null);
+    this.activateFallbackTab();
   }
 
   /**
