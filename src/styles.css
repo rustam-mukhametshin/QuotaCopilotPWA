@@ -408,6 +408,95 @@
   --bs-focus-ring-color: rgba(38, 139, 210, 0.25);
 }
 
+[data-app-theme='solarized'] .btn-primary {
+  --bs-btn-color: #fdf6e3;
+  --bs-btn-bg: #268bd2;
+  --bs-btn-border-color: #268bd2;
+  --bs-btn-hover-color: #fdf6e3;
+  --bs-btn-hover-bg: #2079b8;
+  --bs-btn-hover-border-color: #2079b8;
+  --bs-btn-active-color: #fdf6e3;
+  --bs-btn-active-bg: #1c6aa1;
+  --bs-btn-active-border-color: #1c6aa1;
+  --bs-btn-disabled-color: #fdf6e3;
+  --bs-btn-disabled-bg: #268bd2;
+  --bs-btn-disabled-border-color: #268bd2;
+  --bs-btn-focus-shadow-rgb: 38, 139, 210;
+}
+
+[data-app-theme='solarized'] .btn-secondary {
+  --bs-btn-color: #073642;
+  --bs-btn-bg: #e6dfc8;
+  --bs-btn-border-color: #d3cbb3;
+  --bs-btn-hover-color: #073642;
+  --bs-btn-hover-bg: #ddd5bc;
+  --bs-btn-hover-border-color: #c9c0a5;
+  --bs-btn-active-color: #073642;
+  --bs-btn-active-bg: #d3cbb3;
+  --bs-btn-active-border-color: #c9c0a5;
+  --bs-btn-focus-shadow-rgb: 147, 161, 161;
+}
+
+[data-app-theme='solarized'] .btn-outline-secondary {
+  --bs-btn-color: #586e75;
+  --bs-btn-border-color: #93a1a1;
+  --bs-btn-hover-color: #073642;
+  --bs-btn-hover-bg: #eee8d5;
+  --bs-btn-hover-border-color: #93a1a1;
+  --bs-btn-active-color: #073642;
+  --bs-btn-active-bg: #e6dfc8;
+  --bs-btn-active-border-color: #93a1a1;
+  --bs-btn-focus-shadow-rgb: 147, 161, 161;
+}
+
+[data-app-theme='solarized'] .btn-danger {
+  --bs-btn-color: #fdf6e3;
+  --bs-btn-bg: #dc322f;
+  --bs-btn-border-color: #dc322f;
+  --bs-btn-hover-color: #fdf6e3;
+  --bs-btn-hover-bg: #c42b28;
+  --bs-btn-hover-border-color: #c42b28;
+  --bs-btn-active-color: #fdf6e3;
+  --bs-btn-active-bg: #ad2523;
+  --bs-btn-active-border-color: #ad2523;
+  --bs-btn-focus-shadow-rgb: 220, 50, 47;
+}
+
+[data-app-theme='solarized'] .dropdown-menu {
+  --bs-dropdown-bg: #fdf6e3;
+  --bs-dropdown-border-color: #ddd6c1;
+  --bs-dropdown-link-color: #586e75;
+  --bs-dropdown-link-hover-color: #073642;
+  --bs-dropdown-link-hover-bg: #eee8d5;
+  --bs-dropdown-link-active-color: #fdf6e3;
+  --bs-dropdown-link-active-bg: #268bd2;
+}
+
+[data-app-theme='solarized'] .form-control:focus,
+[data-app-theme='solarized'] .form-check-input:focus {
+  border-color: #268bd2;
+  box-shadow: 0 0 0 0.25rem rgba(38, 139, 210, 0.25);
+}
+
+[data-app-theme='solarized'] .form-check-input:checked {
+  background-color: #268bd2;
+  border-color: #268bd2;
+}
+
+[data-app-theme='solarized'] .form-switch .form-check-input:focus:not(:checked) {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23268bd2'/%3e%3c/svg%3e");
+}
+
+/* The progress track defaults to --bs-secondary-bg, which equals the page background here */
+[data-app-theme='solarized'] .progress {
+  --bs-progress-bg: #ddd6c1;
+}
+
+/* Solarized green (#859900) is ~3:1 on base3, too low for the small hint text in the sidebar */
+[data-app-theme='solarized'] .text-success {
+  --bs-success-rgb: 104, 120, 0;
+}
+
 html,
 body {
   height: 100%;
