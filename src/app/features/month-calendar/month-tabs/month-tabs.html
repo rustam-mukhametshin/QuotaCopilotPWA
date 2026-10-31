@@ -12,7 +12,7 @@
         [class.btn-outline-secondary]="store.activeKey() !== tab.key"
         (click)="onTabClick(tab.key)"
       >
-        {{ tab.label }}
+        {{ labelFor(tab) }}
       </button>
       <button
         type="button"
@@ -56,7 +56,7 @@
         animate.leave="anim-scale-out"
       >
         <p class="month-tabs__confirm-text">
-          {{ 'monthTabs.confirmDelete' | translate: { label: tab.label } }}
+          {{ 'monthTabs.confirmDelete' | translate: { label: labelFor(tab) } }}
         </p>
         <div class="month-tabs__confirm-actions">
           <button

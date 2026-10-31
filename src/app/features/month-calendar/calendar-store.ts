@@ -12,7 +12,6 @@ export interface MonthTab {
   key: string; // YYYY-MM format
   year: number;
   month: number; // 1-12
-  label: string; // e.g. "Sep26"
   saved: boolean;
 }
 
@@ -214,13 +213,6 @@ export class CalendarStore {
   /**
    * Generate Excel-style label from year and month (e.g., "Sep26").
    */
-  private generateTabLabel(year: number, month: number): string {
-    const date = new Date(year, month - 1, 1);
-    const monthStr = date.toLocaleDateString('en-US', { month: 'short' });
-    const yearStr = String(year).slice(-2);
-    return `${monthStr}${yearStr}`;
-  }
-
   /**
    * Build an unsaved fallback tab for the current month without mutating any state.
    */
@@ -233,7 +225,6 @@ export class CalendarStore {
       key: monthKey(year, month),
       year,
       month,
-      label: this.generateTabLabel(year, month),
       saved: false,
     };
   }
@@ -279,7 +270,6 @@ export class CalendarStore {
         key: record.key,
         year: record.year,
         month: record.month,
-        label: this.generateTabLabel(record.year, record.month),
         saved: true,
       }));
 
@@ -352,7 +342,6 @@ export class CalendarStore {
       key,
       year,
       month,
-      label: this.generateTabLabel(year, month),
       saved: false,
     };
 

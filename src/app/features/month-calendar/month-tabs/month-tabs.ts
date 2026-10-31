@@ -1,7 +1,8 @@
-import type { OnDestroy } from '@angular/core';
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { formatTabLabel } from '../month-labels';
+import { DEFAULT_LANGUAGE } from '../../../language-switcher/languages';
 import type { MonthTab } from '../calendar-store';
 import { CalendarStore } from '../calendar-store';
 
@@ -12,14 +13,20 @@ import { CalendarStore } from '../calendar-store';
   styleUrl: './month-tabs.css',
   templateUrl: './month-tabs.html',
 })
-export class MonthTabs implements OnDestroy {
+export class MonthTabs {
   protected readonly store = inject(CalendarStore);
   private readonly translate = inject(TranslateService);
   protected readonly showPicker = signal(false);
   protected readonly pendingDeleteTab = signal<MonthTab | null>(null);
 
+  protected readonly locale = computed(() => this.translate.currentLang() ?? DEFAULT_LANGUAGE);
+
   private actionsPopover: bootstrap.Popover | null = null;
   private actionsTrigger: HTMLElement | null = null;
+
+  protected labelFor(tab: MonthTab): string {
+    return formatTabLabel(tab.year, tab.month, this.locale());
+  }
 
   protected onTabClick(key: string): void {
     this.store.selectTab(key);
@@ -63,10 +70,6 @@ export class MonthTabs implements OnDestroy {
     if (!(event.target as Element).closest('.popover')) {
       this.closeActions();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.closeActions();
   }
 
   private openActions(trigger: HTMLElement, tab: MonthTab): void {
