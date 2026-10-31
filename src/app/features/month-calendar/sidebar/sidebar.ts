@@ -1,4 +1,3 @@
-import type { AfterViewInit, OnDestroy } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
@@ -11,11 +10,10 @@ import { Tooltip } from '../../../shared/tooltip/tooltip';
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
 })
-export class Sidebar implements AfterViewInit, OnDestroy {
+export class Sidebar {
   protected readonly store = inject(CalendarStore);
   protected readonly isSaving = signal(false);
   protected readonly showToast = signal(false);
-  protected readonly isLoading = signal(true);
 
   protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
 
@@ -44,19 +42,6 @@ export class Sidebar implements AfterViewInit, OnDestroy {
 
   protected hideToast(): void {
     this.showToast.set(false);
-  }
-
-  ngAfterViewInit(): void {
-    this.initializeData();
-  }
-
-  ngOnDestroy(): void {
-    this.cleanupToastTimeout();
-  }
-
-  private initializeData(): void {
-    // Mark loading as complete once data is available
-    this.isLoading.set(false);
   }
 
   private showSuccessToast(): void {

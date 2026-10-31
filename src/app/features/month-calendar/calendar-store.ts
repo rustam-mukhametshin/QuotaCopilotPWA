@@ -33,6 +33,8 @@ export class CalendarStore {
   readonly dayNotes = signal<Record<string, string>>({});
   /** Whether weekends count in calculations for the active month. */
   readonly includeWeekends = signal(false);
+  /** Store initialization complete; controls loading state in UI. */
+  readonly ready = signal(false);
 
   // Multi-month/tabs state
   readonly tabs = signal<MonthTab[]>([]);
@@ -249,60 +251,64 @@ export class CalendarStore {
     }
     this.initialized = true;
 
-    const records = await calendarDb.months.toArray();
+    try {
+      const records = await calendarDb.months.toArray();
 
-    if (records.length === 0) {
-      // No saved records: create a fallback tab for today's month
-      const fallbackTab = this.createFallbackTab();
-      const includeWeekends = this.preferences.defaultIncludeWeekends();
+      if (records.length === 0) {
+        // No saved records: create a fallback tab for today's month
+        const fallbackTab = this.createFallbackTab();
+        const includeWeekends = this.preferences.defaultIncludeWeekends();
 
-      this.tabs.set([fallbackTab]);
-      this.setDraft(fallbackTab.key, {
-        totalAiCredits: null,
-        dayNotes: {},
-        includeWeekends,
+        this.tabs.set([fallbackTab]);
+        this.setDraft(fallbackTab.key, {
+          totalAiCredits: null,
+          dayNotes: {},
+          includeWeekends,
+        });
+        this.activeKey.set(fallbackTab.key);
+        this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
+        this.includeWeekends.set(includeWeekends);
+        this.applyCreditsForTab(fallbackTab.key, null);
+        return;
+      }
+
+      // Sort records by year/month chronologically (descending, most recent first)
+      records.sort((a, b) => {
+        if (a.year !== b.year) return b.year - a.year;
+        return b.month - a.month;
       });
-      this.activeKey.set(fallbackTab.key);
-      this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
-      this.includeWeekends.set(includeWeekends);
-      this.applyCreditsForTab(fallbackTab.key, null);
-      return;
+
+      // Build tabs from records, all marked as saved: true
+      const newTabs: MonthTab[] = records.map((record) => ({
+        key: record.key,
+        year: record.year,
+        month: record.month,
+        label: this.generateTabLabel(record.year, record.month),
+        saved: true,
+      }));
+
+      this.tabs.set(newTabs);
+
+      // Seed draftState with persisted data for each tab
+      records.forEach((record) => {
+        this.setDraft(record.key, {
+          totalAiCredits: record.totalAiCredits,
+          dayNotes: { ...record.dayNotes },
+          includeWeekends: record.includeWeekends ?? false,
+        });
+      });
+
+      // Activate the most recent tab (first in sorted array)
+      const mostRecentKey = newTabs[0].key;
+      this.activeKey.set(mostRecentKey);
+      const mostRecentRecord = records[0];
+      this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
+      this.dayNotes.set({ ...mostRecentRecord.dayNotes });
+      this.includeWeekends.set(mostRecentRecord.includeWeekends ?? false);
+      this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
+    } finally {
+      this.ready.set(true);
     }
-
-    // Sort records by year/month chronologically (descending, most recent first)
-    records.sort((a, b) => {
-      if (a.year !== b.year) return b.year - a.year;
-      return b.month - a.month;
-    });
-
-    // Build tabs from records, all marked as saved: true
-    const newTabs: MonthTab[] = records.map((record) => ({
-      key: record.key,
-      year: record.year,
-      month: record.month,
-      label: this.generateTabLabel(record.year, record.month),
-      saved: true,
-    }));
-
-    this.tabs.set(newTabs);
-
-    // Seed draftState with persisted data for each tab
-    records.forEach((record) => {
-      this.setDraft(record.key, {
-        totalAiCredits: record.totalAiCredits,
-        dayNotes: { ...record.dayNotes },
-        includeWeekends: record.includeWeekends ?? false,
-      });
-    });
-
-    // Activate the most recent tab (first in sorted array)
-    const mostRecentKey = newTabs[0].key;
-    this.activeKey.set(mostRecentKey);
-    const mostRecentRecord = records[0];
-    this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
-    this.dayNotes.set({ ...mostRecentRecord.dayNotes });
-    this.includeWeekends.set(mostRecentRecord.includeWeekends ?? false);
-    this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
   }
 
   /**

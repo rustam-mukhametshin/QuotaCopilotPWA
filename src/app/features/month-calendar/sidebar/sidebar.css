@@ -22,6 +22,10 @@
   background-color: var(--bs-secondary-bg);
 }
 
+.placeholder-sidebar-input {
+  height: 38px;
+}
+
 .sidebar #total-ai-credits.is-default-value {
   border-color: var(--bs-success);
   box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);

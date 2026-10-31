@@ -15,7 +15,9 @@ export class MonthCalendar {
 
   constructor() {
     afterNextRender(() => {
-      this.store.initialize();
+      this.store.initialize().catch((error) => {
+        console.error('Failed to initialize calendar store:', error);
+      });
     });
   }
 }
