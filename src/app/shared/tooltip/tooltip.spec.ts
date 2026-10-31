@@ -1,5 +1,5 @@
 import type { DebugElement } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -12,12 +12,12 @@ function mockBootstrap(mock: object): void {
 
 @Component({
   selector: 'app-test-host',
-  template: `<input [appTooltip]="tooltipText" [tooltipPlacement]="placement" />`,
+  template: `<input [appTooltip]="tooltipText()" [tooltipPlacement]="placement" />`,
   standalone: true,
   imports: [Tooltip],
 })
 class TestHostComponent {
-  tooltipText = 'Test tooltip';
+  tooltipText = signal('Test tooltip');
   placement: 'top' | 'right' | 'bottom' | 'left' = 'top';
 }
 
@@ -88,6 +88,20 @@ describe('Tooltip Directive', () => {
     expect(TooltipConstructor).toHaveBeenCalled();
     const config = TooltipConstructor.mock.calls[0][1];
     expect(config.trigger).toBe('hover');
+  });
+
+  it('should update tooltip content when appTooltip input changes', async () => {
+    fixture.detectChanges();
+    mockTooltip.setContent.mockClear();
+
+    component.tooltipText.set('Updated tooltip');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    TestBed.flushEffects();
+
+    expect(mockTooltip.setContent).toHaveBeenCalledWith({
+      '.tooltip-inner': 'Updated tooltip',
+    });
   });
 
   it('should dispose tooltip on component destroy', () => {

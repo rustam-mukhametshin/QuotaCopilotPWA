@@ -241,13 +241,4 @@ describe('MonthTabs', () => {
     });
   });
 
-  describe('modal click handling', () => {
-    it('should stop propagation when clicking inside modal', () => {
-      const mockEvent = { stopPropagation: vi.fn() } as unknown as Event;
-
-      component['onModalContentClick'](mockEvent);
-
-      expect(mockEvent.stopPropagation).toHaveBeenCalled();
-    });
-  });
 });

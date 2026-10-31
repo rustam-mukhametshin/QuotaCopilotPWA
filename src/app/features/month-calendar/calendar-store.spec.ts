@@ -5,6 +5,7 @@ import { calendarDb } from './calendar-db';
 import { vi } from 'vitest';
 import { WeekendPreferences } from '../../settings/weekend-preferences';
 import { DEFAULT_TOTAL_AI_CREDITS_STORAGE_KEY } from '../../settings/credits-preferences';
+import { Today } from '../../shared/clock/today';
 
 interface DraftStateForTest {
   totalAiCredits: number | null;
@@ -883,6 +884,19 @@ describe('CalendarStore', () => {
       expect(store.weeks().flat()).toHaveLength(29);
       expect(store.totalWorkDays()).toBe(21);
       expect(store.perDayCredits()).toBe(100);
+    });
+
+    it('recomputes weeks when Today.date changes', () => {
+      const store = createStore();
+      const today = TestBed.inject(Today);
+      store.reference.set(new Date(2024, 1, 1));
+      today.date.set(new Date(2024, 1, 15));
+
+      expect(store.weeks().flat().find((day) => day.isToday)?.date.getDate()).toBe(15);
+
+      today.date.set(new Date(2024, 1, 16));
+
+      expect(store.weeks().flat().find((day) => day.isToday)?.date.getDate()).toBe(16);
     });
 
     it('setIncludeWeekends changes the active flag, leaves it unsaved and updates the default', async () => {
