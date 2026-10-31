@@ -57,9 +57,16 @@ export function weekdayColumn(date: Date): number {
  * Each counted day carries a 1-based `index` from the start of the month,
  * independent of week boundaries. Weekdays are always counted; weekends are
  * counted only when `includeWeekends` is `true`, otherwise their `index` is `null`.
+ * @param reference - the month to build (default: today)
+ * @param includeWeekends - whether to count weekends (default: false)
+ * @param today - the current date for isToday/isPast flags (default: today)
  */
-export function getMonthWeeks(reference: Date = new Date(), includeWeekends = false): Week[] {
-  const today = startOfDay(new Date());
+export function getMonthWeeks(
+  reference: Date = new Date(),
+  includeWeekends = false,
+  today: Date = new Date(),
+): Week[] {
+  const todayStart = startOfDay(today);
 
   const year = reference.getFullYear();
   const month = reference.getMonth();
@@ -77,7 +84,7 @@ export function getMonthWeeks(reference: Date = new Date(), includeWeekends = fa
       index += 1;
     }
 
-    currentWeek.push(toDayInfo(new Date(date), today, isWeekend, counted ? index : null));
+    currentWeek.push(toDayInfo(new Date(date), todayStart, isWeekend, counted ? index : null));
 
     if (date.getDay() === SUNDAY) {
       weeks.push(currentWeek);

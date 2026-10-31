@@ -5,6 +5,7 @@ import { monthKey, calendarDb } from './calendar-db';
 import type { MonthRecord } from './calendar-db';
 import { WeekendPreferences } from '../../settings/weekend-preferences';
 import { CreditsPreferences } from '../../settings/credits-preferences';
+import { Today } from '../../shared/clock/today';
 
 export const DEFAULT_TOTAL_AI_CREDITS = 10000;
 
@@ -26,6 +27,7 @@ interface DraftState {
 export class CalendarStore {
   private readonly preferences = inject(WeekendPreferences);
   private readonly creditsPreferences = inject(CreditsPreferences);
+  private readonly today = inject(Today);
 
   readonly reference = signal(new Date());
   readonly totalAiCredits = signal<number | null>(null);
@@ -50,7 +52,9 @@ export class CalendarStore {
     () => this.creditsPreferences.defaultTotalAiCredits() ?? DEFAULT_TOTAL_AI_CREDITS,
   );
 
-  readonly weeks = computed<Week[]>(() => getMonthWeeks(this.reference(), this.includeWeekends()));
+  readonly weeks = computed<Week[]>(() =>
+    getMonthWeeks(this.reference(), this.includeWeekends(), this.today.date()),
+  );
 
   /** Weeks to render: weekends are dropped when hidden; calculations always use `weeks`. */
   readonly visibleWeeks = computed<Week[]>(() => {
