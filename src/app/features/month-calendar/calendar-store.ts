@@ -1,7 +1,9 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import type { Week } from './working-days';
 import { getMonthWeeks } from './working-days';
 import { monthKey, calendarDb } from './calendar-db';
+import type { MonthRecord } from './calendar-db';
+import { WeekendPreferences } from '../../settings/weekend-preferences';
 
 export const DEFAULT_TOTAL_AI_CREDITS = 10000;
 
@@ -16,14 +18,19 @@ export interface MonthTab {
 interface DraftState {
   totalAiCredits: number | null;
   dayNotes: Record<string, string>;
+  includeWeekends: boolean;
 }
 
 /** Shared state for the month calendar: reference month, AI credits budget, and derived values. */
 @Injectable({ providedIn: 'root' })
 export class CalendarStore {
+  private readonly preferences = inject(WeekendPreferences);
+
   readonly reference = signal(new Date());
   readonly totalAiCredits = signal<number | null>(null);
   readonly dayNotes = signal<Record<string, string>>({});
+  /** Whether weekends count in calculations for the active month. */
+  readonly includeWeekends = signal(false);
 
   // Multi-month/tabs state
   readonly tabs = signal<MonthTab[]>([]);
@@ -35,7 +42,20 @@ export class CalendarStore {
   private defaultCreditsKeys = new Set<string>();
   private initialized = false;
 
-  readonly weeks = computed<Week[]>(() => getMonthWeeks(this.reference()));
+  readonly weeks = computed<Week[]>(() =>
+    getMonthWeeks(this.reference(), this.includeWeekends()),
+  );
+
+  /** Weeks to render: weekends are dropped when hidden; calculations always use `weeks`. */
+  readonly visibleWeeks = computed<Week[]>(() => {
+    const weeks = this.weeks();
+    if (this.preferences.showWeekends()) {
+      return weeks;
+    }
+    return weeks
+      .map((week) => week.filter((day) => !day.isWeekend))
+      .filter((week) => week.length > 0);
+  });
 
   readonly totalWorkDays = computed<number>(
     () =>
@@ -104,6 +124,10 @@ export class CalendarStore {
       return true;
     }
 
+    if (this.includeWeekends() !== draft.includeWeekends) {
+      return true;
+    }
+
     // Deep compare dayNotes: check keys and values
     const currentNotes = this.dayNotes();
     const draftNotes = draft.dayNotes;
@@ -133,6 +157,15 @@ export class CalendarStore {
     const activeKey = this.activeKey();
     this.defaultCreditsKeys.delete(activeKey);
     this.isDefaultTotalAiCredits.set(false);
+  }
+
+  /**
+   * Change whether weekends count for the active month (left unsaved) and remember
+   * the choice as the default for new months.
+   */
+  setIncludeWeekends(value: boolean): void {
+    this.includeWeekends.set(value);
+    this.preferences.setDefaultIncludeWeekends(value);
   }
 
   private setDraft(key: string, state: DraftState): void {
@@ -205,14 +238,17 @@ export class CalendarStore {
     if (records.length === 0) {
       // No saved records: create a fallback tab for today's month
       const fallbackTab = this.createFallbackTab();
+      const includeWeekends = this.preferences.defaultIncludeWeekends();
 
       this.tabs.set([fallbackTab]);
       this.setDraft(fallbackTab.key, {
         totalAiCredits: null,
         dayNotes: {},
+        includeWeekends,
       });
       this.activeKey.set(fallbackTab.key);
       this.reference.set(new Date(fallbackTab.year, fallbackTab.month - 1, 1));
+      this.includeWeekends.set(includeWeekends);
       this.applyCreditsForTab(fallbackTab.key, null);
       return;
     }
@@ -239,6 +275,7 @@ export class CalendarStore {
       this.setDraft(record.key, {
         totalAiCredits: record.totalAiCredits,
         dayNotes: { ...record.dayNotes },
+        includeWeekends: record.includeWeekends ?? false,
       });
     });
 
@@ -248,6 +285,7 @@ export class CalendarStore {
     const mostRecentRecord = records[0];
     this.reference.set(new Date(mostRecentRecord.year, mostRecentRecord.month - 1, 1));
     this.dayNotes.set({ ...mostRecentRecord.dayNotes });
+    this.includeWeekends.set(mostRecentRecord.includeWeekends ?? false);
     this.applyCreditsForTab(mostRecentKey, mostRecentRecord.totalAiCredits);
   }
 
@@ -262,6 +300,7 @@ export class CalendarStore {
       this.setDraft(currentKey, {
         totalAiCredits: creditsValue,
         dayNotes: { ...this.dayNotes() },
+        includeWeekends: this.includeWeekends(),
       });
     }
 
@@ -277,6 +316,7 @@ export class CalendarStore {
     const draft = this.draftState.get(key);
     this.applyCreditsForTab(key, draft?.totalAiCredits ?? null);
     this.dayNotes.set(draft ? { ...draft.dayNotes } : {});
+    this.includeWeekends.set(draft?.includeWeekends ?? this.preferences.defaultIncludeWeekends());
   }
 
   /**
@@ -302,6 +342,7 @@ export class CalendarStore {
     this.setDraft(key, {
       totalAiCredits: null,
       dayNotes: {},
+      includeWeekends: this.preferences.defaultIncludeWeekends(),
     });
     this.selectTab(key);
   }
@@ -334,14 +375,17 @@ export class CalendarStore {
 
     // Last tab was removed: fall back to an empty tab for the current month
     const fallback = this.createFallbackTab();
+    const includeWeekends = this.preferences.defaultIncludeWeekends();
     this.tabs.set([fallback]);
     this.setDraft(fallback.key, {
       totalAiCredits: null,
       dayNotes: {},
+      includeWeekends,
     });
     this.activeKey.set(fallback.key);
     this.reference.set(new Date(fallback.year, fallback.month - 1, 1));
     this.dayNotes.set({});
+    this.includeWeekends.set(includeWeekends);
     this.applyCreditsForTab(fallback.key, null);
   }
 
@@ -360,12 +404,13 @@ export class CalendarStore {
     }
 
     // Build a MonthRecord from the current live state
-    const record = {
+    const record: MonthRecord = {
       key: activeKey,
       year: tab.year,
       month: tab.month,
       totalAiCredits: this.totalAiCredits(),
       dayNotes: { ...this.dayNotes() },
+      includeWeekends: this.includeWeekends(),
     };
 
     // Write to Dexie
@@ -375,6 +420,7 @@ export class CalendarStore {
     this.setDraft(activeKey, {
       totalAiCredits: record.totalAiCredits,
       dayNotes: record.dayNotes,
+      includeWeekends: this.includeWeekends(),
     });
 
     // Mark the tab as saved
