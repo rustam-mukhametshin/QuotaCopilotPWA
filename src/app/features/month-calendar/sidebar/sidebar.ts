@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
@@ -9,6 +9,7 @@ import { Tooltip } from '../../../shared/tooltip/tooltip';
   imports: [TranslatePipe, Tooltip],
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Sidebar {
   protected readonly store = inject(CalendarStore);

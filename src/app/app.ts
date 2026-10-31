@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CalendarStore } from './features/month-calendar/calendar-store';
 import { formatMonthTitle } from './features/month-calendar/month-labels';
@@ -14,6 +14,7 @@ import { APP_VERSION } from './version';
   styleUrl: './app.css',
   templateUrl: './app.html',
   host: { class: 'app-shell' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   private readonly store = inject(CalendarStore);

@@ -1,5 +1,5 @@
-import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
@@ -7,9 +7,10 @@ import { tweenedNumber } from '../../../shared/motion/tweened-number';
 @Component({
   selector: 'app-credits-progress',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [NgClass, TranslatePipe],
   templateUrl: './credits-progress.html',
   styleUrl: './credits-progress.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreditsProgress {
   protected readonly store = inject(CalendarStore);

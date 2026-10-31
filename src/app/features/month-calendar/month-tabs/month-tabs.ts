@@ -1,5 +1,4 @@
-import { Component, computed, HostListener, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { formatTabLabel } from '../month-labels';
 import { DEFAULT_LANGUAGE } from '../../../language-switcher/languages';
@@ -10,9 +9,11 @@ import { ConfirmDialog } from '../../../shared/confirm-dialog/confirm-dialog';
 @Component({
   selector: 'app-month-tabs',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, ConfirmDialog],
+  imports: [TranslatePipe, ConfirmDialog],
   styleUrl: './month-tabs.css',
   templateUrl: './month-tabs.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '(document:click)': 'onDocumentClick($event)' },
 })
 export class MonthTabs {
   protected readonly store = inject(CalendarStore);
@@ -66,7 +67,6 @@ export class MonthTabs {
     }
   }
 
-  @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     if (!(event.target as Element).closest('.popover')) {
       this.closeActions();

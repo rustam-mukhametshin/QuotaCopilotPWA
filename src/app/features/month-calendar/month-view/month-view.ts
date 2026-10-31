@@ -1,4 +1,4 @@
-import { Component, computed, HostListener, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
@@ -13,6 +13,8 @@ import { Tooltip } from '../../../shared/tooltip/tooltip';
   imports: [TranslatePipe, Tooltip],
   styleUrl: './month-view.css',
   templateUrl: './month-view.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '(document:click)': 'onDocumentClick($event)' },
 })
 export class MonthView {
   private readonly store = inject(CalendarStore);
@@ -56,8 +58,7 @@ export class MonthView {
     this.setNote(date, value);
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event): void {
+  protected onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const isTextarea = target.classList.contains('day__note-textarea');
     const isButton = target.classList.contains('day__note-toggle');
