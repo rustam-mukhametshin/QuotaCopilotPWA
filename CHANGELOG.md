@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.12.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.11.0...quota-copilot-pwa-v0.12.0) (2026-10-31)
+
+
+### Features
+
+* add check script to run tests, format check, and linting ([dbc946e](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/dbc946e7bb1d3429ed1fc01a3787a44e57bf2ac3))
+* add settings modal ([b503fb7](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/b503fb75265975645ce33eae90978a82cf22770c))
+* refactor month view host class for improved styling consistency ([41c4a24](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/41c4a242f38a59a09e9796db7f73486f34f196d6))
+* update package and lock files for Angular and dependencies ([7a16b6f](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/7a16b6f97e694b5e7a1f17936ba13e91ddd29606))
+
 ## [0.11.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.10.0...quota-copilot-pwa-v0.11.0) (2026-10-05)
 
 
