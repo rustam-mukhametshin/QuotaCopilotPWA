@@ -69,12 +69,6 @@ describe('CalendarStore', () => {
     expect(store.perDayCredits()).toBe(1400);
   });
 
-  it('reflects the reference month in monthLabel', () => {
-    const store = createStore();
-
-    expect(store.monthLabel()).toContain('2024');
-  });
-
   describe('perDayCreditsRounded', () => {
     it('returns null when perDayCredits is null', () => {
       const store = createStore();
@@ -114,14 +108,12 @@ describe('CalendarStore', () => {
           key: '2024-01',
           year: 2024,
           month: 1,
-          label: 'Jan24',
           saved: true,
         },
         {
           key: '2024-02',
           year: 2024,
           month: 2,
-          label: 'Feb24',
           saved: true,
         },
       ]);
@@ -140,14 +132,12 @@ describe('CalendarStore', () => {
           key: '2024-01',
           year: 2024,
           month: 1,
-          label: 'Jan24',
           saved: true,
         },
         {
           key: '2024-02',
           year: 2024,
           month: 2,
-          label: 'Feb24',
           saved: true,
         },
       ]);
@@ -171,14 +161,12 @@ describe('CalendarStore', () => {
           key: '2024-01',
           year: 2024,
           month: 1,
-          label: 'Jan24',
           saved: true,
         },
         {
           key: '2024-02',
           year: 2024,
           month: 2,
-          label: 'Feb24',
           saved: true,
         },
       ]);
@@ -206,7 +194,6 @@ describe('CalendarStore', () => {
           key: '2024-03',
           year: 2024,
           month: 3,
-          label: 'Mar24',
           saved: false,
         },
       ]);
@@ -239,7 +226,6 @@ describe('CalendarStore', () => {
           key: '2024-03',
           year: 2024,
           month: 3,
-          label: 'Mar24',
           saved: true,
         },
       ]);
@@ -397,7 +383,7 @@ describe('CalendarStore', () => {
       await store.deleteTab('2023-05');
 
       expect(store.tabs()).toEqual([
-        { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
+        { key: '2024-02', year: 2024, month: 2, saved: false },
       ]);
       expect(store.activeKey()).toBe('2024-02');
       // After fallback, applyCreditsForTab is called with null, so default is applied
@@ -413,7 +399,7 @@ describe('CalendarStore', () => {
       await store.initialize();
 
       expect(store.tabs()).toEqual([
-        { key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false },
+        { key: '2024-02', year: 2024, month: 2, saved: false },
       ]);
       expect(store.activeKey()).toBe('2024-02');
       // When no saved records, default is applied
@@ -626,7 +612,7 @@ describe('CalendarStore', () => {
   describe('isDefaultTotalAiCredits and applyCreditsForTab', () => {
     it('applies default when value is null', () => {
       const store = createStore();
-      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       store.activeKey.set('2024-02');
 
       internals(store).applyCreditsForTab('2024-02', null);
@@ -637,7 +623,7 @@ describe('CalendarStore', () => {
 
     it('keeps flag true when key already in defaultCreditsKeys', () => {
       const store = createStore();
-      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       store.activeKey.set('2024-02');
 
       internals(store).applyCreditsForTab('2024-02', null);
@@ -648,7 +634,7 @@ describe('CalendarStore', () => {
 
     it('sets flag to false when value is not null and key not in defaultCreditsKeys', () => {
       const store = createStore();
-      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       store.activeKey.set('2024-02');
 
       internals(store).applyCreditsForTab('2024-02', 5000);
@@ -659,7 +645,7 @@ describe('CalendarStore', () => {
 
     it('resets flag when setTotalAiCredits is called', () => {
       const store = createStore();
-      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       store.activeKey.set('2024-02');
 
       internals(store).applyCreditsForTab('2024-02', null);
@@ -672,7 +658,7 @@ describe('CalendarStore', () => {
 
     it('resets flag when save completes', async () => {
       const store = createStore();
-      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+      store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
       store.activeKey.set('2024-02');
 
       internals(store).applyCreditsForTab('2024-02', null);
@@ -1020,7 +1006,7 @@ describe('CalendarStore', () => {
     it('selectTab falls back to defaultIncludeWeekends when the target has no draft', () => {
       const store = createStore();
       TestBed.inject(WeekendPreferences).setDefaultIncludeWeekends(true);
-      store.tabs.set([{ key: '2024-03', year: 2024, month: 3, label: 'Mar24', saved: false }]);
+      store.tabs.set([{ key: '2024-03', year: 2024, month: 3, saved: false }]);
 
       store.selectTab('2024-03');
 

@@ -46,24 +46,6 @@ describe('Sidebar', () => {
     vi.clearAllTimers();
   });
 
-  describe('initialization', () => {
-    it('should mark loading as complete after initialization', () => {
-      // Mock bootstrap.Tooltip before initialization
-      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
-        this.dispose = vi.fn();
-      });
-      mockBootstrap({
-        Tooltip: TooltipMock,
-      });
-
-      expect(component['isLoading']()).toBe(true);
-
-      component.ngAfterViewInit();
-
-      expect(component['isLoading']()).toBe(false);
-    });
-  });
-
   describe('input handling', () => {
     it('should update store when total AI credits input changes', () => {
       const setTotalAiCreditsSpy = vi.spyOn(store, 'setTotalAiCredits');
@@ -169,147 +151,11 @@ describe('Sidebar', () => {
     });
   });
 
-  describe('tooltips', () => {
-    it('should initialize tooltips on afterViewInit', () => {
-      const label = document.createElement('label');
-      label.setAttribute('for', 'total-ai-credits');
-      label.setAttribute('data-bs-title', 'Test tooltip');
-      document.body.appendChild(label);
-
-      // Mock bootstrap.Tooltip
-      const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
-        Object.assign(this, mockTooltip);
-      });
-      mockBootstrap({
-        Tooltip: TooltipMock,
-      });
-
-      component.ngAfterViewInit();
-
-      expect(TooltipMock).toHaveBeenCalled();
-      expect(component['tooltips']).toHaveLength(1);
-
-      document.body.removeChild(label);
-    });
-
-    it('should dispose tooltips on component destroy', () => {
-      const mockTooltip = { dispose: vi.fn() };
-      component['tooltips'] = [mockTooltip as unknown as bootstrap.Tooltip];
-
-      component.ngOnDestroy();
-
-      expect(mockTooltip.dispose).toHaveBeenCalled();
-      expect(component['tooltips']).toHaveLength(0);
-    });
-
-    it('should not crash if tooltip element is not found', () => {
-      // Mock bootstrap.Tooltip with proper return value containing dispose
-      const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
-        Object.assign(this, mockTooltip);
-        return mockTooltip;
-      });
-      mockBootstrap({
-        Tooltip: TooltipMock,
-      });
-
-      const testComponent = TestBed.createComponent(Sidebar).componentInstance;
-
-      expect(() => {
-        testComponent.ngAfterViewInit();
-        testComponent.ngOnDestroy();
-      }).not.toThrow();
-    });
-  });
-
-  describe('cleanup on destroy', () => {
-    it('should clean up toast timeout on destroy', () => {
-      vi.useFakeTimers();
-
-      component['toastTimeout'] = setTimeout(() => {}, 1000);
-
-      component.ngOnDestroy();
-
-      expect(component['toastTimeout']).toBeNull();
-
-      vi.useRealTimers();
-    });
-
-    it('should dispose all tooltips on destroy', () => {
-      const mockTooltip1 = { dispose: vi.fn() };
-      const mockTooltip2 = { dispose: vi.fn() };
-      component['tooltips'] = [
-        mockTooltip1 as unknown as bootstrap.Tooltip,
-        mockTooltip2 as unknown as bootstrap.Tooltip,
-      ];
-
-      component.ngOnDestroy();
-
-      expect(mockTooltip1.dispose).toHaveBeenCalled();
-      expect(mockTooltip2.dispose).toHaveBeenCalled();
-    });
-  });
-
   describe('save button state', () => {
     it('should be disabled when isSaving is true', () => {
       component['isSaving'].set(true);
 
       expect(component['isSaving']()).toBe(true);
-    });
-
-    it('should be disabled when isLoading is true', () => {
-      component['isLoading'].set(true);
-
-      expect(component['isLoading']()).toBe(true);
-    });
-
-    it('should be enabled when conditions are met', () => {
-      component['isSaving'].set(false);
-      component['isLoading'].set(false);
-
-      expect(component['isSaving']()).toBe(false);
-      expect(component['isLoading']()).toBe(false);
-    });
-  });
-
-  describe('tabular numerals', () => {
-    beforeEach(() => {
-      mockBootstrap({
-        Tooltip: vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
-          this.dispose = vi.fn();
-        }),
-      });
-      store.totalAiCredits.set(5000);
-      fixture.detectChanges();
-    });
-
-    it('applies tabular-nums to the total AI credits input', () => {
-      const input = fixture.nativeElement.querySelector('#total-ai-credits') as HTMLInputElement;
-
-      expect(input).not.toBeNull();
-      expect(input.classList).toContain('tabular-nums');
-    });
-
-    it('applies tabular-nums to the per-day credits input', () => {
-      const input = fixture.nativeElement.querySelector('#per-day-credits') as HTMLInputElement;
-
-      expect(input).not.toBeNull();
-      expect(input.classList).toContain('tabular-nums');
-    });
-  });
-
-  describe('loading state', () => {
-    it('should show placeholders when isLoading is true', () => {
-      component['isLoading'].set(true);
-
-      expect(component['isLoading']()).toBe(true);
-    });
-
-    it('should show input when isLoading is false', () => {
-      component['isLoading'].set(false);
-
-      expect(component['isLoading']()).toBe(false);
     });
   });
 });

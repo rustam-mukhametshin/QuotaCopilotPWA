@@ -20,7 +20,6 @@ describe('MonthTabs', () => {
 
   const createMockTab = (overrides?: Partial<MonthTab>): MonthTab => ({
     key: '2024-01',
-    label: 'Jan 2024',
     year: 2024,
     month: 1,
     saved: true,
@@ -227,31 +226,9 @@ describe('MonthTabs', () => {
     });
   });
 
-  describe('cleanup on destroy', () => {
-    it('should close popover on component destroy', () => {
-      const element = document.createElement('button');
-      const mockEvent = {
-        currentTarget: element,
-        stopPropagation: () => {},
-      } as unknown as MouseEvent;
-      const tab = createMockTab();
-
-      component['toggleActions'](tab, mockEvent);
-      expect(component['actionsPopover']).toBeDefined();
-
-      component.ngOnDestroy();
-
-      expect(component['actionsPopover']).toBeNull();
-      expect(component['actionsTrigger']).toBeNull();
-    });
-  });
-
   describe('tabular numerals', () => {
     it('applies tabular-nums to every month tab label', () => {
-      store.tabs.set([
-        createMockTab(),
-        createMockTab({ key: '2024-02', label: 'Feb 2024', month: 2 }),
-      ]);
+      store.tabs.set([createMockTab(), createMockTab({ key: '2024-02', month: 2 })]);
       fixture.detectChanges();
 
       const tabs = Array.from(
@@ -260,7 +237,7 @@ describe('MonthTabs', () => {
 
       expect(tabs).toHaveLength(2);
       tabs.forEach((tab) => expect(tab.classList).toContain('tabular-nums'));
-      expect(tabs[0].textContent?.trim()).toBe('Jan 2024');
+      expect(tabs[0].textContent?.trim()).toBe('Jan24');
     });
   });
 

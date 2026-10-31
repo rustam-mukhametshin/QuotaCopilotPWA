@@ -3,12 +3,16 @@ import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { App } from './app';
 import { APP_VERSION } from './version';
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('App', () => {
   let element: HTMLElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [App] });
+    TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideTranslateService()],
+    });
     // Render only the shell template; child feature components are not under test here.
     TestBed.overrideComponent(App, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } });
 

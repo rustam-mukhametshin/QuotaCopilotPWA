@@ -37,7 +37,7 @@ describe('CreditsProgress', () => {
 
   it('renders progress bar with correct aria attributes', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(14000);
 
@@ -52,7 +52,7 @@ describe('CreditsProgress', () => {
 
   it('applies correct progress bar color classes by thresholds', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(14000);
 
@@ -72,7 +72,7 @@ describe('CreditsProgress', () => {
 
   it('does not render when remainingPercent is null', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(null);
 
@@ -85,7 +85,7 @@ describe('CreditsProgress', () => {
 
   it('displays remaining credits text', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(14000);
 
@@ -100,7 +100,7 @@ describe('CreditsProgress', () => {
 
   it('returns "—" for remaining when remainingCredits is null', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(null);
 
@@ -111,7 +111,7 @@ describe('CreditsProgress', () => {
 
   it('returns "—" for total when totalAiCredits is null', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(null);
 
@@ -122,7 +122,7 @@ describe('CreditsProgress', () => {
 
   it('returns 0 for progress percent when remainingPercent is null', () => {
     const store = TestBed.inject(CalendarStore);
-    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
+    store.tabs.set([{ key: '2024-02', year: 2024, month: 2, saved: false }]);
     store.activeKey.set('2024-02');
     store.totalAiCredits.set(null);
 
