@@ -14,10 +14,15 @@ import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
 interface SettingsModalLogic {
   isOpen: () => boolean;
   pendingIncludeWeekends: () => boolean | null;
+  pendingHideWeekends: () => boolean;
+  includeWeekendsChecked: () => boolean;
   onEscape(): void;
   confirmIncludeWeekends(): void;
   cancelIncludeWeekends(): void;
+  confirmHideWeekends(): void;
+  cancelHideWeekends(): void;
   onIncludeWeekendsChange(event: Event): void;
+  onOverlayClick(event: MouseEvent): void;
 }
 
 describe('SettingsModal', () => {
@@ -282,6 +287,184 @@ describe('SettingsModal', () => {
 
       expect(logic.pendingIncludeWeekends()).toBeNull();
       expect(logic.isOpen()).toBe(true);
+    });
+  });
+
+  describe('include weekends requires shown weekends', () => {
+    function hideWeekendsViaCheckbox(): void {
+      showCheckbox().click();
+      fixture.detectChanges();
+    }
+
+    it('includeWeekendsChecked is false while weekends are hidden, even if the month includes them', () => {
+      store.includeWeekends.set(true);
+      preferences.setShowWeekends(false);
+
+      expect(logic.includeWeekendsChecked()).toBe(false);
+    });
+
+    it('includeWeekendsChecked follows includeWeekends while weekends are shown', () => {
+      preferences.setShowWeekends(true);
+
+      store.includeWeekends.set(true);
+      expect(logic.includeWeekendsChecked()).toBe(true);
+
+      store.includeWeekends.set(false);
+      expect(logic.includeWeekendsChecked()).toBe(false);
+    });
+
+    it('hiding weekends with includeWeekends = false applies immediately without a dialog', () => {
+      const spy = vi.spyOn(preferences, 'setShowWeekends');
+      openModal();
+
+      hideWeekendsViaCheckbox();
+
+      expect(spy).toHaveBeenCalledWith(false);
+      expect(preferences.showWeekends()).toBe(false);
+      expect(logic.pendingHideWeekends()).toBe(false);
+      expect(confirmDialog()).toBeNull();
+    });
+
+    it('hiding weekends with includeWeekends = true asks for confirmation and keeps the checkbox on', () => {
+      store.includeWeekends.set(true);
+      const spy = vi.spyOn(preferences, 'setShowWeekends');
+      openModal();
+
+      hideWeekendsViaCheckbox();
+
+      expect(spy).not.toHaveBeenCalled();
+      expect(preferences.showWeekends()).toBe(true);
+      expect(showCheckbox().checked).toBe(true);
+      expect(logic.pendingHideWeekends()).toBe(true);
+      expect(confirmDialog()).not.toBeNull();
+    });
+
+    it('confirmHideWeekends hides weekends, excludes them from the month and clears pending', () => {
+      store.includeWeekends.set(true);
+      preferences.setDefaultIncludeWeekends(true);
+      openModal();
+      hideWeekendsViaCheckbox();
+
+      logic.confirmHideWeekends();
+      fixture.detectChanges();
+
+      expect(preferences.showWeekends()).toBe(false);
+      expect(store.includeWeekends()).toBe(false);
+      expect(preferences.defaultIncludeWeekends()).toBe(false);
+      expect(logic.pendingHideWeekends()).toBe(false);
+      expect(confirmDialog()).toBeNull();
+    });
+
+    it('cancelHideWeekends keeps settings unchanged and clears pending', () => {
+      store.includeWeekends.set(true);
+      preferences.setDefaultIncludeWeekends(true);
+      openModal();
+      hideWeekendsViaCheckbox();
+      const showSpy = vi.spyOn(preferences, 'setShowWeekends');
+      const includeSpy = vi.spyOn(store, 'setIncludeWeekends');
+
+      logic.cancelHideWeekends();
+      fixture.detectChanges();
+
+      expect(showSpy).not.toHaveBeenCalled();
+      expect(includeSpy).not.toHaveBeenCalled();
+      expect(preferences.showWeekends()).toBe(true);
+      expect(store.includeWeekends()).toBe(true);
+      expect(preferences.defaultIncludeWeekends()).toBe(true);
+      expect(logic.pendingHideWeekends()).toBe(false);
+      expect(showCheckbox().checked).toBe(true);
+    });
+
+    it('onIncludeWeekendsChange while weekends are hidden is ignored and reverts the checkbox', () => {
+      preferences.setShowWeekends(false);
+      openModal();
+      const spy = vi.spyOn(store, 'setIncludeWeekends');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+
+      logic.onIncludeWeekendsChange({ target: checkbox } as unknown as Event);
+
+      expect(checkbox.checked).toBe(false);
+      expect(logic.pendingIncludeWeekends()).toBeNull();
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('Escape with a pending hide confirmation closes only the confirmation', () => {
+      store.includeWeekends.set(true);
+      openModal();
+      hideWeekendsViaCheckbox();
+
+      pressEscape();
+
+      expect(logic.pendingHideWeekends()).toBe(false);
+      expect(logic.isOpen()).toBe(true);
+      expect(preferences.showWeekends()).toBe(true);
+      expect(store.includeWeekends()).toBe(true);
+    });
+
+    it('close() resets a pending hide confirmation', () => {
+      store.includeWeekends.set(true);
+      openModal();
+      hideWeekendsViaCheckbox();
+
+      component.close();
+
+      expect(logic.isOpen()).toBe(false);
+      expect(logic.pendingHideWeekends()).toBe(false);
+    });
+  });
+
+  describe('overlay clicks and dropdown closing', () => {
+    it('onOverlayClick closes the modal when the backdrop itself is clicked', () => {
+      openModal();
+      const overlay = el.querySelector<HTMLElement>('.settings-modal__overlay')!;
+
+      logic.onOverlayClick({ target: overlay, currentTarget: overlay } as unknown as MouseEvent);
+
+      expect(logic.isOpen()).toBe(false);
+    });
+
+    it('onOverlayClick keeps the modal open for clicks inside the dialog', () => {
+      openModal();
+      const overlay = el.querySelector<HTMLElement>('.settings-modal__overlay')!;
+      const dialog = el.querySelector<HTMLElement>('.settings-modal__dialog')!;
+
+      logic.onOverlayClick({ target: dialog, currentTarget: overlay } as unknown as MouseEvent);
+
+      expect(logic.isOpen()).toBe(true);
+    });
+
+    it('clicking the overlay element closes the modal', () => {
+      openModal();
+
+      el.querySelector<HTMLElement>('.settings-modal__overlay')!.click();
+      fixture.detectChanges();
+
+      expect(logic.isOpen()).toBe(false);
+    });
+
+    it('clicking inside the dialog does not close the modal', () => {
+      openModal();
+
+      el.querySelector<HTMLElement>('.settings-modal__dialog')!.click();
+      fixture.detectChanges();
+
+      expect(logic.isOpen()).toBe(true);
+    });
+
+    it('clicks inside the dialog bubble up to document', () => {
+      openModal();
+      const listener = vi.fn();
+      document.addEventListener('click', listener);
+
+      try {
+        el.querySelector<HTMLElement>('.settings-modal__dialog')!.click();
+      } finally {
+        document.removeEventListener('click', listener);
+      }
+
+      expect(listener).toHaveBeenCalledTimes(1);
     });
   });
 });
