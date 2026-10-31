@@ -20,6 +20,18 @@
   /* Inherit p-2 (padding), d-flex (display), flex-column, gap-2, border (bootstrap), rounded from .day */
 }
 
+/* Light theme: future days are borderless white cards lifted off the gray page */
+:host-context([data-bs-theme='light'])
+  .day:not(.day--past):not(.day--today):not(.day--placeholder) {
+  border-color: transparent !important;
+  box-shadow: var(--theme-day-card-shadow);
+}
+
+:host-context([data-bs-theme='light'])
+  .day:not(.day--past):not(.day--today):not(.day--placeholder):not(.day--weekend) {
+  background-color: var(--theme-card-bg);
+}
+
 .day--weekend:not(.day--past):not(.day--today) {
   background-color: var(--bs-tertiary-bg);
 }
