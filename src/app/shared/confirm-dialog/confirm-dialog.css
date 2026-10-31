@@ -1,0 +1,29 @@
+.confirm-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-dialog__dialog {
+  max-width: min(28rem, calc(100vw - 2rem));
+  padding: 1.25rem;
+  color: var(--theme-text-primary);
+  background-color: var(--bs-body-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.confirm-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Single leave animation on the overlay, as in settings-modal.css, to avoid flicker. */
+.anim-fade-out .confirm-dialog__dialog {
+  animation: scaleOut var(--motion-duration-fast) var(--motion-easing) forwards;
+}
