@@ -72,7 +72,6 @@ app-month-calendar {
   font-size: 0.85rem;
   color: var(--theme-text-secondary);
   text-align: right;
-  border-top: 1px solid var(--theme-border-color);
   max-width: 1320px;
   width: 100%;
 }
