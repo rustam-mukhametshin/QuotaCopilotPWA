@@ -37,6 +37,16 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
+/* Bootstrap's toast is translucent (85%), so the progress bar and day cards showed through it */
+.sidebar .toast {
+  --bs-toast-bg: var(--bs-body-bg);
+  --bs-toast-header-bg: var(--bs-tertiary-bg);
+  --bs-toast-header-color: var(--bs-body-color);
+  --bs-toast-border-color: var(--bs-border-color);
+  --bs-toast-header-border-color: var(--bs-border-color);
+  --bs-toast-box-shadow: 0 0.5rem 1rem var(--theme-shadow);
+}
+
 @media (prefers-color-scheme: dark) {
   .sidebar #total-ai-credits.is-default-value:focus {
     box-shadow:

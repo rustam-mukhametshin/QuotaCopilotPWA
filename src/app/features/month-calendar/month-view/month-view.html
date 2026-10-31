@@ -38,6 +38,12 @@
                     [attr.data-bs-title]="'monthView.dayTokensTooltip' | translate"
                   />
                 </div>
+              } @else {
+                <!-- Keeps weekend-only weeks (e.g. a month starting on Sunday) as tall as other rows -->
+                <div
+                  class="day__inputs-spacer form-control form-control-sm d-none d-md-block"
+                  aria-hidden="true"
+                ></div>
               }
               <button
                 class="day__note-toggle btn btn-sm position-absolute"
