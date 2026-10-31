@@ -1,6 +1,6 @@
 import { prefersReducedMotion } from '../shared/motion/motion';
 
-export const THEME_MODES = ['light', 'dark', 'auto'] as const;
+export const THEME_MODES = ['light', 'dark', 'dracula', 'auto'] as const;
 
 export type ThemeMode = (typeof THEME_MODES)[number];
 
@@ -11,10 +11,20 @@ export const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
 export const THEME_ICONS: Record<ThemeMode, string> = {
   light: '☀️',
   dark: '🌙',
+  dracula: '🧛',
   auto: '🔄',
 };
 
 export type ResolvedTheme = Exclude<ThemeMode, 'auto'>;
+
+export const APP_THEME_ATTRIBUTE = 'data-app-theme';
+
+export type BootstrapTheme = 'light' | 'dark';
+
+/** Bootstrap only knows light/dark; custom themes reuse its dark mode and recolor on top. */
+export function bootstrapThemeFor(theme: ResolvedTheme): BootstrapTheme {
+  return theme === 'light' ? 'light' : 'dark';
+}
 
 let pendingThemeTransitionTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -37,13 +47,20 @@ export function resolveTheme(mode: ThemeMode): ResolvedTheme {
 export function applyTheme(mode: ThemeMode): void {
   const htmlElement = document.documentElement;
   const newTheme = resolveTheme(mode);
-  const currentTheme = htmlElement.getAttribute('data-bs-theme');
+  const currentBootstrapTheme = htmlElement.getAttribute('data-bs-theme');
+  const currentAppTheme = htmlElement.getAttribute(APP_THEME_ATTRIBUTE);
+  const previousTheme = currentAppTheme ?? currentBootstrapTheme;
 
   // Check if this is an actual theme change (not initial application)
-  const isThemeChange = currentTheme !== null && currentTheme !== newTheme;
+  const isThemeChange = currentBootstrapTheme !== null && previousTheme !== newTheme;
 
   // Apply the theme
-  htmlElement.setAttribute('data-bs-theme', newTheme);
+  htmlElement.setAttribute('data-bs-theme', bootstrapThemeFor(newTheme));
+  if (newTheme === 'dracula') {
+    htmlElement.setAttribute(APP_THEME_ATTRIBUTE, 'dracula');
+  } else {
+    htmlElement.removeAttribute(APP_THEME_ATTRIBUTE);
+  }
 
   // Add transition animation only on actual changes (not on initialization) and when reduced motion is not preferred
   if (isThemeChange && !prefersReducedMotion()) {

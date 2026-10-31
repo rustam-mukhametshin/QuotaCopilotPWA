@@ -59,6 +59,147 @@
   background-color: var(--theme-page-bg);
 }
 
+/* ============================================================================
+   Dracula theme (https://draculatheme.com) — Bootstrap dark mode, recolored
+   ============================================================================ */
+
+[data-bs-theme='dark'][data-app-theme='dracula'] {
+  color-scheme: dark;
+
+  /* App tokens */
+  --theme-bg-primary: #282a36;
+  --theme-bg-secondary: #21222c;
+  --theme-text-primary: #f8f8f2;
+  /* Lighter than Dracula "Comment" (#6272a4): that one gives ~3:1 on #282a36, too low for small text */
+  --theme-text-secondary: #a9b1d6;
+  --theme-border-color: #44475a;
+  --theme-card-bg: #343746;
+  --theme-input-bg: #21222c;
+  --theme-input-text: #f8f8f2;
+  --theme-shadow: rgba(0, 0, 0, 0.4);
+
+  /* Bootstrap surface & text */
+  --bs-body-bg: #282a36;
+  --bs-body-bg-rgb: 40, 42, 54;
+  --bs-body-color: #f8f8f2;
+  --bs-body-color-rgb: 248, 248, 242;
+  --bs-emphasis-color: #ffffff;
+  --bs-emphasis-color-rgb: 255, 255, 255;
+  --bs-secondary-color: rgba(248, 248, 242, 0.7);
+  --bs-secondary-color-rgb: 248, 248, 242;
+  --bs-tertiary-color: rgba(248, 248, 242, 0.5);
+  --bs-secondary-bg: #343746;
+  --bs-secondary-bg-rgb: 52, 55, 70;
+  --bs-tertiary-bg: #21222c;
+  --bs-tertiary-bg-rgb: 33, 34, 44;
+  --bs-border-color: #44475a;
+  --bs-border-color-translucent: rgba(98, 114, 164, 0.35);
+  --bs-heading-color: #f8f8f2;
+
+  /* Accents */
+  --bs-primary: #bd93f9;
+  --bs-primary-rgb: 189, 147, 249;
+  --bs-primary-text-emphasis: #d6bcfb;
+  --bs-primary-bg-subtle: #3b3454;
+  --bs-primary-border-subtle: #7a63a8;
+  --bs-secondary-bg-subtle: #1e1f29;
+  --bs-secondary-text-emphasis: #6272a4;
+  --bs-secondary-border-subtle: #44475a;
+  --bs-success: #50fa7b;
+  --bs-success-rgb: 80, 250, 123;
+  --bs-warning: #ffb86c;
+  --bs-warning-rgb: 255, 184, 108;
+  --bs-danger: #ff5555;
+  --bs-danger-rgb: 255, 85, 85;
+  --bs-info: #8be9fd;
+  --bs-info-rgb: 139, 233, 253;
+  --bs-link-color: #ff79c6;
+  --bs-link-color-rgb: 255, 121, 198;
+  --bs-link-hover-color: #ff92d0;
+  --bs-link-hover-color-rgb: 255, 146, 208;
+  --bs-focus-ring-color: rgba(189, 147, 249, 0.35);
+}
+
+[data-app-theme='dracula'] .btn-primary {
+  --bs-btn-color: #282a36;
+  --bs-btn-bg: #bd93f9;
+  --bs-btn-border-color: #bd93f9;
+  --bs-btn-hover-color: #282a36;
+  --bs-btn-hover-bg: #caa8fa;
+  --bs-btn-hover-border-color: #caa8fa;
+  --bs-btn-active-color: #282a36;
+  --bs-btn-active-bg: #a97ff5;
+  --bs-btn-active-border-color: #a97ff5;
+  --bs-btn-disabled-color: #282a36;
+  --bs-btn-disabled-bg: #bd93f9;
+  --bs-btn-disabled-border-color: #bd93f9;
+  --bs-btn-focus-shadow-rgb: 189, 147, 249;
+}
+
+[data-app-theme='dracula'] .btn-secondary {
+  --bs-btn-color: #f8f8f2;
+  --bs-btn-bg: #44475a;
+  --bs-btn-border-color: #44475a;
+  --bs-btn-hover-color: #f8f8f2;
+  --bs-btn-hover-bg: #565a73;
+  --bs-btn-hover-border-color: #565a73;
+  --bs-btn-active-color: #f8f8f2;
+  --bs-btn-active-bg: #6272a4;
+  --bs-btn-active-border-color: #6272a4;
+  --bs-btn-focus-shadow-rgb: 98, 114, 164;
+}
+
+[data-app-theme='dracula'] .btn-outline-secondary {
+  --bs-btn-color: #f8f8f2;
+  --bs-btn-border-color: #6272a4;
+  --bs-btn-hover-color: #f8f8f2;
+  --bs-btn-hover-bg: #44475a;
+  --bs-btn-hover-border-color: #6272a4;
+  --bs-btn-active-color: #f8f8f2;
+  --bs-btn-active-bg: #44475a;
+  --bs-btn-active-border-color: #6272a4;
+  --bs-btn-focus-shadow-rgb: 98, 114, 164;
+}
+
+[data-app-theme='dracula'] .btn-danger {
+  --bs-btn-color: #282a36;
+  --bs-btn-bg: #ff5555;
+  --bs-btn-border-color: #ff5555;
+  --bs-btn-hover-color: #282a36;
+  --bs-btn-hover-bg: #ff7070;
+  --bs-btn-hover-border-color: #ff7070;
+  --bs-btn-active-color: #282a36;
+  --bs-btn-active-bg: #e64c4c;
+  --bs-btn-active-border-color: #e64c4c;
+  --bs-btn-focus-shadow-rgb: 255, 85, 85;
+}
+
+[data-app-theme='dracula'] .dropdown-menu {
+  --bs-dropdown-bg: #21222c;
+  --bs-dropdown-border-color: #44475a;
+  --bs-dropdown-link-color: #f8f8f2;
+  --bs-dropdown-link-hover-color: #f8f8f2;
+  --bs-dropdown-link-hover-bg: #44475a;
+  --bs-dropdown-link-active-color: #282a36;
+  --bs-dropdown-link-active-bg: #bd93f9;
+}
+
+[data-app-theme='dracula'] .form-control:focus,
+[data-app-theme='dracula'] .form-check-input:focus {
+  border-color: #bd93f9;
+  box-shadow: 0 0 0 0.25rem rgba(189, 147, 249, 0.25);
+}
+
+[data-app-theme='dracula'] .form-check-input:checked {
+  background-color: #bd93f9;
+  border-color: #bd93f9;
+}
+
+/* Bootstrap hardcodes a blue (#86b7fe) knob for focused, unchecked switches */
+[data-app-theme='dracula'] .form-switch .form-check-input:focus:not(:checked) {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23bd93f9'/%3e%3c/svg%3e");
+}
+
 html,
 body {
   height: 100%;
