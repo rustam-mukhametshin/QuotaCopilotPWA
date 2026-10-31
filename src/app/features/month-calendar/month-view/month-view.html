@@ -34,8 +34,7 @@
                     [value]="limitForDay(day.index)"
                     readonly
                     id="day-{{ dayKey(day.date) }}-limit"
-                    data-bs-toggle="tooltip"
-                    [attr.data-bs-title]="'monthView.dayTokensTooltip' | translate"
+                    [appTooltip]="'monthView.dayTokensTooltip' | translate"
                   />
                 </div>
               } @else {

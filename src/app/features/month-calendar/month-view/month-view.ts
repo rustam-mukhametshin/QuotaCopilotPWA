@@ -1,4 +1,3 @@
-import type { AfterViewInit, OnDestroy } from '@angular/core';
 import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
@@ -7,14 +6,15 @@ import type { Week } from '../working-days';
 import { weekdayColumn } from '../working-days';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
 import { WeekendPreferences } from '../../../settings/weekend-preferences';
+import { Tooltip } from '../../../shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-month-view',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, Tooltip],
   styleUrl: './month-view.css',
   templateUrl: './month-view.html',
 })
-export class MonthView implements AfterViewInit, OnDestroy {
+export class MonthView {
   private readonly store = inject(CalendarStore);
   private readonly preferences = inject(WeekendPreferences);
 
@@ -32,36 +32,9 @@ export class MonthView implements AfterViewInit, OnDestroy {
 
   protected readonly tweenedPerDayCredits = tweenedNumber(this.store.perDayCredits);
 
-  private tooltips: bootstrap.Tooltip[] = [];
-
   protected limitForDay(index: number): string {
     const perDay = this.tweenedPerDayCredits();
     return perDay === null ? '—' : Math.round(perDay * index).toString();
-  }
-
-  ngAfterViewInit(): void {
-    this.initializeTooltips();
-  }
-
-  ngOnDestroy(): void {
-    this.cleanupTooltips();
-  }
-
-  private initializeTooltips(): void {
-    const dayInputs = document.querySelectorAll('[data-bs-toggle="tooltip"][id^="day-"]');
-    dayInputs.forEach((input) => {
-      const tooltip = new bootstrap.Tooltip(input, {
-        title: (element) => element.getAttribute('data-bs-title') ?? '',
-        placement: 'top',
-        trigger: 'hover',
-      });
-      this.tooltips.push(tooltip);
-    });
-  }
-
-  private cleanupTooltips(): void {
-    this.tooltips.forEach((tooltip) => tooltip.dispose());
-    this.tooltips = [];
   }
 
   protected noteFor(date: Date): string {
