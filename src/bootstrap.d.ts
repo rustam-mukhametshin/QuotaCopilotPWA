@@ -5,6 +5,7 @@ declare namespace bootstrap {
     html?: boolean;
     placement?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
     trigger?: string;
+    customClass?: string;
   }
 
   interface TooltipOptions {

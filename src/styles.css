@@ -229,3 +229,13 @@ input[readonly] {
     border-color var(--motion-duration-slow) var(--motion-easing),
     box-shadow var(--motion-duration-slow) var(--motion-easing) !important;
 }
+
+/* ============================================================================
+   Month tab actions popover (rendered in <body>, outside component styles)
+   ============================================================================ */
+
+.month-tabs-actions-popover {
+  --bs-popover-body-padding-x: 0.25rem;
+  --bs-popover-body-padding-y: 0.25rem;
+  --bs-popover-max-width: none;
+}

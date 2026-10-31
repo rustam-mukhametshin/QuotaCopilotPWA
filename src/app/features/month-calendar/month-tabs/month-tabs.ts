@@ -75,6 +75,7 @@ export class MonthTabs implements OnDestroy {
       html: true,
       placement: 'bottom',
       trigger: 'manual',
+      customClass: 'month-tabs-actions-popover',
     });
     this.actionsTrigger = trigger;
     this.actionsPopover.show();
@@ -89,7 +90,7 @@ export class MonthTabs implements OnDestroy {
   private createDeleteButton(tab: MonthTab): HTMLButtonElement {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'btn btn-sm btn-link text-danger text-decoration-none w-100 text-start';
+    button.className = 'btn btn-sm btn-link text-danger text-decoration-none px-2 py-1';
     button.textContent = this.translate.instant('monthTabs.delete');
     button.addEventListener('click', () => {
       this.closeActions();
