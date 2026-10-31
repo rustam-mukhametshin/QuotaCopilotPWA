@@ -1,6 +1,6 @@
 import { prefersReducedMotion } from '../shared/motion/motion';
 
-export const THEME_MODES = ['light', 'dark', 'dracula', 'auto'] as const;
+export const THEME_MODES = ['light', 'solarized', 'dark', 'dracula', 'nord', 'auto'] as const;
 
 export type ThemeMode = (typeof THEME_MODES)[number];
 
@@ -10,8 +10,10 @@ export const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
 
 export const THEME_ICONS: Record<ThemeMode, string> = {
   light: '☀️',
+  solarized: '🌅',
   dark: '🌙',
   dracula: '🧛',
+  nord: '❄️',
   auto: '🔄',
 };
 
@@ -21,9 +23,22 @@ export const APP_THEME_ATTRIBUTE = 'data-app-theme';
 
 export type BootstrapTheme = 'light' | 'dark';
 
-/** Bootstrap only knows light/dark; custom themes reuse its dark mode and recolor on top. */
+const BOOTSTRAP_THEME_BY_THEME: Record<ResolvedTheme, BootstrapTheme> = {
+  light: 'light',
+  solarized: 'light',
+  dark: 'dark',
+  dracula: 'dark',
+  nord: 'dark',
+};
+
+/** Bootstrap only knows light/dark; custom themes reuse one of them and recolor on top. */
 export function bootstrapThemeFor(theme: ResolvedTheme): BootstrapTheme {
-  return theme === 'light' ? 'light' : 'dark';
+  return BOOTSTRAP_THEME_BY_THEME[theme];
+}
+
+/** Custom themes (Dracula, Nord, Solarized) are marked with `data-app-theme` on <html>. */
+export function isCustomTheme(theme: ResolvedTheme): boolean {
+  return theme !== bootstrapThemeFor(theme);
 }
 
 let pendingThemeTransitionTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -56,8 +71,8 @@ export function applyTheme(mode: ThemeMode): void {
 
   // Apply the theme
   htmlElement.setAttribute('data-bs-theme', bootstrapThemeFor(newTheme));
-  if (newTheme === 'dracula') {
-    htmlElement.setAttribute(APP_THEME_ATTRIBUTE, 'dracula');
+  if (isCustomTheme(newTheme)) {
+    htmlElement.setAttribute(APP_THEME_ATTRIBUTE, newTheme);
   } else {
     htmlElement.removeAttribute(APP_THEME_ATTRIBUTE);
   }

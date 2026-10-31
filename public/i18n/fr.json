@@ -4,8 +4,10 @@
   },
   "themeSwitcher": {
     "light": "Clair",
+    "solarized": "Solarized Light",
     "dark": "Sombre",
     "dracula": "Dracula",
+    "nord": "Nord",
     "auto": "Automatique",
     "tooltip": "Changer de thème"
   },
