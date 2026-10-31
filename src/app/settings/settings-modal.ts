@@ -30,6 +30,7 @@ export class SettingsModal {
     () => this.showWeekends() && this.includeWeekends(),
   );
   protected readonly pendingHideWeekends = signal(false);
+  protected readonly defaultTotalAiCredits = this.store.defaultTotalAiCredits;
 
   open(): void {
     this.isOpen.set(true);
@@ -106,5 +107,30 @@ export class SettingsModal {
 
   protected cancelIncludeWeekends(): void {
     this.pendingIncludeWeekends.set(null);
+  }
+
+  protected onDefaultCreditsChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const raw = input.value.trim();
+    // An unparsable number input reports an empty value, which must not reset the setting.
+    if (input.validity.badInput) {
+      this.resetDefaultCreditsInput(input);
+      return;
+    }
+    if (raw === '') {
+      this.store.setDefaultTotalAiCredits(null);
+      this.resetDefaultCreditsInput(input);
+      return;
+    }
+    const parsed = Number(raw);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      this.store.setDefaultTotalAiCredits(parsed);
+    } else {
+      this.resetDefaultCreditsInput(input);
+    }
+  }
+
+  private resetDefaultCreditsInput(input: HTMLInputElement): void {
+    input.value = String(this.defaultTotalAiCredits());
   }
 }
