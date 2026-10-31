@@ -31,6 +31,11 @@
   line-height: 1;
 }
 
+.settings-modal__credits-input {
+  width: 7rem;
+  margin-left: auto;
+}
+
 /* Single leave animation on the overlay: separate leave animations on overlay and dialog
    finish at different times, and Angular drops each class early, causing flicker. */
 .anim-fade-out .settings-modal__dialog {

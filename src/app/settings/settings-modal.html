@@ -45,6 +45,29 @@
           </tr>
           <tr>
             <th scope="row">
+              <label for="settings-default-credits">{{
+                'settings.defaultCredits' | translate
+              }}</label>
+              <div id="settings-default-credits-hint" class="form-text fw-normal">
+                {{ 'settings.defaultCreditsHint' | translate }}
+              </div>
+            </th>
+            <td>
+              <input
+                id="settings-default-credits"
+                type="number"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                class="settings-modal__credits-input form-control form-control-sm tabular-nums"
+                aria-describedby="settings-default-credits-hint"
+                [value]="defaultTotalAiCredits()"
+                (change)="onDefaultCreditsChange($event)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
               <label for="settings-show-weekends">{{ 'settings.showWeekends' | translate }}</label>
             </th>
             <td>
