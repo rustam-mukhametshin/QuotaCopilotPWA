@@ -47,6 +47,8 @@
     "hideWeekendsConfirmTitle": "¿Ocultar los fines de semana?",
     "hideWeekendsConfirmText": "Los fines de semana se incluyen en los cálculos de este mes. Al ocultarlos, esta opción se desactivará y el mes se recalculará. Guarde el mes para aplicar los cambios.",
     "includeWeekendsDisabledHint": "Active primero «Mostrar fines de semana»",
+    "defaultCredits": "Créditos de IA por defecto",
+    "defaultCreditsHint": "Se usa en los meses sin total guardado",
     "confirm": "Continuar",
     "cancel": "Cancelar"
   }

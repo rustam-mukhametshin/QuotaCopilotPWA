@@ -47,6 +47,8 @@
     "hideWeekendsConfirmTitle": "Wochenenden ausblenden?",
     "hideWeekendsConfirmText": "Wochenenden werden in den Berechnungen dieses Monats berücksichtigt. Beim Ausblenden wird dies deaktiviert und der Monat neu berechnet. Speichern Sie den Monat, um die Änderungen zu übernehmen.",
     "includeWeekendsDisabledHint": "Aktivieren Sie zuerst „Wochenenden anzeigen“",
+    "defaultCredits": "Standard-AI-Credits",
+    "defaultCreditsHint": "Gilt für Monate ohne gespeicherten Gesamtwert",
     "confirm": "Fortfahren",
     "cancel": "Abbrechen"
   }

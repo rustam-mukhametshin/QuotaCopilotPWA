@@ -47,6 +47,8 @@
     "hideWeekendsConfirmTitle": "Masquer les week-ends ?",
     "hideWeekendsConfirmText": "Les week-ends sont inclus dans les calculs de ce mois. Les masquer désactivera cette option et recalculera le mois. Enregistrez le mois pour appliquer les modifications.",
     "includeWeekendsDisabledHint": "Activez d’abord « Afficher les week-ends »",
+    "defaultCredits": "Crédits IA par défaut",
+    "defaultCreditsHint": "Utilisé pour les mois sans total enregistré",
     "confirm": "Continuer",
     "cancel": "Annuler"
   }

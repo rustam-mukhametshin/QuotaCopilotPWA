@@ -47,6 +47,8 @@
     "hideWeekendsConfirmTitle": "Hide weekends?",
     "hideWeekendsConfirmText": "Weekends are included in this month's calculations. Hiding them will turn this off and recalculate the month. Save the month to apply the changes.",
     "includeWeekendsDisabledHint": "Turn on “Show weekends” first",
+    "defaultCredits": "Default AI credits",
+    "defaultCreditsHint": "Used for months without a saved total",
     "confirm": "Continue",
     "cancel": "Cancel"
   }
