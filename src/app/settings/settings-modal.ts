@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../features/month-calendar/calendar-store';
+import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog';
 import { LanguageSwitcher } from '../language-switcher/language-switcher';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import { WeekendPreferences } from './weekend-preferences';
 
 @Component({
   selector: 'app-settings-modal',
-  imports: [TranslatePipe, ThemeSwitcher, LanguageSwitcher],
+  imports: [TranslatePipe, ThemeSwitcher, LanguageSwitcher, ConfirmDialog],
   templateUrl: './settings-modal.html',
   styleUrl: './settings-modal.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

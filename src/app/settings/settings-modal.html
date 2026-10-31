@@ -86,33 +86,18 @@
           </tr>
         </tbody>
       </table>
-      @if (pendingIncludeWeekends() !== null) {
-        <div
-          class="alert alert-warning mt-3 mb-0"
-          role="alertdialog"
-          aria-labelledby="settings-include-weekends-confirm-title"
-          aria-describedby="settings-include-weekends-confirm-text"
-        >
-          <h3 id="settings-include-weekends-confirm-title" class="h6">
-            {{ 'settings.includeWeekendsConfirmTitle' | translate }}
-          </h3>
-          <p id="settings-include-weekends-confirm-text">
-            {{ 'settings.includeWeekendsConfirmText' | translate }}
-          </p>
-          <div class="d-flex justify-content-end gap-2">
-            <button
-              type="button"
-              class="btn btn-sm btn-secondary"
-              (click)="cancelIncludeWeekends()"
-            >
-              {{ 'settings.cancel' | translate }}
-            </button>
-            <button type="button" class="btn btn-sm btn-warning" (click)="confirmIncludeWeekends()">
-              {{ 'settings.confirm' | translate }}
-            </button>
-          </div>
-        </div>
-      }
     </div>
   </div>
+}
+
+@if (isOpen() && pendingIncludeWeekends() !== null) {
+  <app-confirm-dialog
+    [title]="'settings.includeWeekendsConfirmTitle' | translate"
+    [message]="'settings.includeWeekendsConfirmText' | translate"
+    [confirmLabel]="'settings.confirm' | translate"
+    [cancelLabel]="'settings.cancel' | translate"
+    confirmVariant="warning"
+    (confirmed)="confirmIncludeWeekends()"
+    (cancelled)="cancelIncludeWeekends()"
+  />
 }
