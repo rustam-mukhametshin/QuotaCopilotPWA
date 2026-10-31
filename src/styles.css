@@ -200,6 +200,67 @@
   --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23bd93f9'/%3e%3c/svg%3e");
 }
 
+/* ============================================================================
+   Nord theme (https://www.nordtheme.com) — Bootstrap dark mode, recolored
+   ============================================================================ */
+
+[data-bs-theme='dark'][data-app-theme='nord'] {
+  color-scheme: dark;
+
+  /* App tokens */
+  --theme-bg-primary: #2e3440;
+  --theme-bg-secondary: #3b4252;
+  --theme-text-primary: #eceff4;
+  /* Lighter than nord3 (#4c566a), which is unreadable as text on #2e3440 */
+  --theme-text-secondary: #aab4c5;
+  --theme-border-color: #4c566a;
+  --theme-card-bg: #3b4252;
+  --theme-input-bg: #3b4252;
+  --theme-input-text: #eceff4;
+  --theme-shadow: rgba(0, 0, 0, 0.35);
+
+  /* Bootstrap surface & text */
+  --bs-body-bg: #2e3440;
+  --bs-body-bg-rgb: 46, 52, 64;
+  --bs-body-color: #d8dee9;
+  --bs-body-color-rgb: 216, 222, 233;
+  --bs-emphasis-color: #eceff4;
+  --bs-emphasis-color-rgb: 236, 239, 244;
+  --bs-secondary-color: rgba(216, 222, 233, 0.75);
+  --bs-secondary-color-rgb: 216, 222, 233;
+  --bs-tertiary-color: rgba(216, 222, 233, 0.5);
+  --bs-secondary-bg: #3b4252;
+  --bs-secondary-bg-rgb: 59, 66, 82;
+  --bs-tertiary-bg: #353b49;
+  --bs-tertiary-bg-rgb: 53, 59, 73;
+  --bs-border-color: #4c566a;
+  --bs-border-color-translucent: rgba(76, 86, 106, 0.6);
+  --bs-heading-color: #eceff4;
+
+  /* Accents */
+  --bs-primary: #88c0d0;
+  --bs-primary-rgb: 136, 192, 208;
+  --bs-primary-text-emphasis: #a9d4e0;
+  --bs-primary-bg-subtle: #2f4552;
+  --bs-primary-border-subtle: #5e8a99;
+  --bs-secondary-bg-subtle: #292e39;
+  --bs-secondary-text-emphasis: #9aa5b8;
+  --bs-secondary-border-subtle: #434c5e;
+  --bs-success: #a3be8c;
+  --bs-success-rgb: 163, 190, 140;
+  --bs-warning: #ebcb8b;
+  --bs-warning-rgb: 235, 203, 139;
+  --bs-danger: #bf616a;
+  --bs-danger-rgb: 191, 97, 106;
+  --bs-info: #8fbcbb;
+  --bs-info-rgb: 143, 188, 187;
+  --bs-link-color: #81a1c1;
+  --bs-link-color-rgb: 129, 161, 193;
+  --bs-link-hover-color: #95b2cf;
+  --bs-link-hover-color-rgb: 149, 178, 207;
+  --bs-focus-ring-color: rgba(136, 192, 208, 0.35);
+}
+
 html,
 body {
   height: 100%;
