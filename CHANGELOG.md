@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.16.0...quota-copilot-pwa-v0.17.0) (2026-10-31)
+
+
+### Features
+
+* add Nord theme button styles and dropdown menu customization ([d4e6f71](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/d4e6f716d8d8da80f81990135db936738e2c71e8))
+* add Nord theme support with Bootstrap dark mode styles ([4386def](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/4386defc7b07933d01e16a8e410084e0d37eba03))
+* add Solarized Light theme support with Bootstrap light mode styles ([f46c821](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/f46c82143c7178aa077b5f1b670d3619928ca4e4))
+* add Solarized theme button styles and dropdown menu customization ([3e0b550](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/3e0b550c0951d5f84b054b66cd72dc251471e91f))
+* add support for 'Solarized' and 'Nord' themes in theme switcher ([a2b16ad](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/a2b16adf8227395c757e4ae259a4c16c0d66a0a9))
+* update sidebar styles for dark theme support and adjust emphasis color ([021a334](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/021a334f3ee215ea6c2492ee3e434c5b4db42ae9))
+
 ## [0.16.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.15.0...quota-copilot-pwa-v0.16.0) (2026-10-31)
 
 
