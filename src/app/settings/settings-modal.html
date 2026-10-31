@@ -69,6 +69,11 @@
               <div id="settings-include-weekends-hint" class="form-text fw-normal">
                 {{ 'settings.includeWeekendsHint' | translate }}
               </div>
+              @if (!showWeekends()) {
+                <div id="settings-include-weekends-disabled-hint" class="form-text fw-normal">
+                  {{ 'settings.includeWeekendsDisabledHint' | translate }}
+                </div>
+              }
             </th>
             <td>
               <div class="form-check form-switch mb-0">
@@ -77,8 +82,13 @@
                   class="form-check-input"
                   type="checkbox"
                   role="switch"
-                  aria-describedby="settings-include-weekends-hint"
-                  [checked]="includeWeekends()"
+                  [attr.aria-describedby]="
+                    showWeekends()
+                      ? 'settings-include-weekends-hint'
+                      : 'settings-include-weekends-hint settings-include-weekends-disabled-hint'
+                  "
+                  [checked]="includeWeekendsChecked()"
+                  [disabled]="!showWeekends()"
                   (change)="onIncludeWeekendsChange($event)"
                 />
               </div>
@@ -99,5 +109,17 @@
     confirmVariant="warning"
     (confirmed)="confirmIncludeWeekends()"
     (cancelled)="cancelIncludeWeekends()"
+  />
+}
+
+@if (isOpen() && pendingHideWeekends()) {
+  <app-confirm-dialog
+    [title]="'settings.hideWeekendsConfirmTitle' | translate"
+    [message]="'settings.hideWeekendsConfirmText' | translate"
+    [confirmLabel]="'settings.confirm' | translate"
+    [cancelLabel]="'settings.cancel' | translate"
+    confirmVariant="warning"
+    (confirmed)="confirmHideWeekends()"
+    (cancelled)="cancelHideWeekends()"
   />
 }
