@@ -7,6 +7,8 @@ export interface MonthRecord {
   month: number; // 1-12
   totalAiCredits: number | null;
   dayNotes: Record<string, string>; // YYYY-MM-DD -> note text
+  // Not indexed, so no schema version bump; missing in older records, which means `false`.
+  includeWeekends?: boolean;
 }
 
 export class CalendarDb extends Dexie {
