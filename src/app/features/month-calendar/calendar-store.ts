@@ -112,10 +112,6 @@ export class CalendarStore {
     return Math.max(0, Math.min(100, percent));
   });
 
-  readonly monthLabel = computed<string>(() =>
-    this.reference().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-  );
-
   readonly hasUnsavedChanges = computed<boolean>(() => {
     this.draftVersion(); // Track draft state changes
     const key = this.activeKey();
