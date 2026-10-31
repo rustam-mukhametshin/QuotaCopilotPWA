@@ -4,7 +4,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CalendarStore } from '../calendar-store';
 import { dayKey } from '../calendar-db';
 import type { Week } from '../working-days';
+import { weekdayColumn } from '../working-days';
 import { tweenedNumber } from '../../../shared/motion/tweened-number';
+import { WeekendPreferences } from '../../../settings/weekend-preferences';
 
 @Component({
   selector: 'app-month-view',
@@ -14,8 +16,11 @@ import { tweenedNumber } from '../../../shared/motion/tweened-number';
 })
 export class MonthView implements AfterViewInit, OnDestroy {
   private readonly store = inject(CalendarStore);
+  private readonly preferences = inject(WeekendPreferences);
 
-  protected readonly weeks = this.store.weeks;
+  protected readonly weeks = this.store.visibleWeeks;
+  protected readonly columns = computed(() => (this.preferences.showWeekends() ? 7 : 5));
+  protected readonly dayKey = dayKey;
   protected readonly activeNoteKey = signal<string | null>(null);
 
   protected readonly monthKey = computed(() => {
@@ -101,19 +106,17 @@ export class MonthView implements AfterViewInit, OnDestroy {
     if (weekIndex !== 0 || week.length === 0) {
       return [];
     }
-    const firstDayOfWeek = week[0].date.getDay(); // 1=Mon, 2=Tue, etc.
-    const placeholdersNeeded = firstDayOfWeek - 1;
-    const result =
-      placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
-    return result;
+    return this.range(weekdayColumn(week[0].date));
   }
 
   protected placeholdersAfterWeek(week: Week, weekIndex: number, totalWeeks: number): number[] {
     if (weekIndex !== totalWeeks - 1 || week.length === 0) {
       return [];
     }
-    const lastDayOfWeek = week[week.length - 1].date.getDay();
-    const placeholdersNeeded = 5 - lastDayOfWeek;
-    return placeholdersNeeded > 0 ? Array.from({ length: placeholdersNeeded }, (_, i) => i) : [];
+    return this.range(this.columns() - 1 - weekdayColumn(week[week.length - 1].date));
+  }
+
+  private range(length: number): number[] {
+    return Array.from({ length: Math.max(0, length) }, (_, i) => i);
   }
 }

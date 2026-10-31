@@ -20,6 +20,10 @@
   /* Inherit p-2 (padding), d-flex (display), flex-column, gap-1, border (bootstrap), rounded from .day */
 }
 
+.day--weekend:not(.day--past):not(.day--today) {
+  background-color: var(--bs-tertiary-bg);
+}
+
 .day--past input {
   background-color: var(--bs-secondary-bg);
 }
