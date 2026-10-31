@@ -23,6 +23,7 @@ interface SettingsModalLogic {
   cancelHideWeekends(): void;
   onIncludeWeekendsChange(event: Event): void;
   onOverlayClick(event: MouseEvent): void;
+  onDefaultCreditsChange(event: Event): void;
 }
 
 describe('SettingsModal', () => {
@@ -465,6 +466,65 @@ describe('SettingsModal', () => {
       }
 
       expect(listener).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('default credits (Step 6)', () => {
+    function changeEvent(
+      value: string,
+      badInput = false,
+    ): { event: Event; input: HTMLInputElement } {
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.value = value;
+      Object.defineProperty(input, 'validity', { value: { badInput } });
+      const event = new Event('change');
+      Object.defineProperty(event, 'target', { value: input });
+      return { event, input };
+    }
+
+    it('saves a positive number', () => {
+      const spy = vi.spyOn(store, 'setDefaultTotalAiCredits');
+      const { event } = changeEvent('5000');
+
+      logic.onDefaultCreditsChange(event);
+
+      expect(spy).toHaveBeenCalledWith(5000);
+      expect(store.defaultTotalAiCredits()).toBe(5000);
+    });
+
+    it('resets the setting to 10000 on empty input', () => {
+      store.setDefaultTotalAiCredits(5000);
+      const spy = vi.spyOn(store, 'setDefaultTotalAiCredits');
+      const { event, input } = changeEvent('  ');
+
+      logic.onDefaultCreditsChange(event);
+
+      expect(spy).toHaveBeenCalledWith(null);
+      expect(input.value).toBe('10000');
+    });
+
+    it.each(['0', '-3'])('does not save %j and restores the current value', (raw) => {
+      store.setDefaultTotalAiCredits(5000);
+      const spy = vi.spyOn(store, 'setDefaultTotalAiCredits');
+      const { event, input } = changeEvent(raw);
+
+      logic.onDefaultCreditsChange(event);
+
+      expect(spy).not.toHaveBeenCalled();
+      expect(input.value).toBe('5000');
+    });
+
+    it('does not save on badInput and restores the current value', () => {
+      store.setDefaultTotalAiCredits(5000);
+      const spy = vi.spyOn(store, 'setDefaultTotalAiCredits');
+      const { event, input } = changeEvent('', true);
+
+      logic.onDefaultCreditsChange(event);
+
+      expect(spy).not.toHaveBeenCalled();
+      expect(input.value).toBe('5000');
+      expect(store.defaultTotalAiCredits()).toBe(5000);
     });
   });
 });

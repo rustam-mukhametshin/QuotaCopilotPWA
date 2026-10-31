@@ -4,6 +4,7 @@ import type { MonthRecord } from './calendar-db';
 import { calendarDb } from './calendar-db';
 import { vi } from 'vitest';
 import { WeekendPreferences } from '../../settings/weekend-preferences';
+import { DEFAULT_TOTAL_AI_CREDITS_STORAGE_KEY } from '../../settings/credits-preferences';
 
 interface DraftStateForTest {
   totalAiCredits: number | null;
@@ -706,6 +707,126 @@ describe('CalendarStore', () => {
 
       expect(store.totalAiCredits()).toBe(5000);
       expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+  });
+
+  describe('configurable default credits', () => {
+    function setPreference(value: number): void {
+      localStorage.setItem(DEFAULT_TOTAL_AI_CREDITS_STORAGE_KEY, String(value));
+    }
+
+    it('defaultTotalAiCredits falls back to 10000 when the setting is not set', () => {
+      const store = createStore();
+
+      expect(store.defaultTotalAiCredits()).toBe(10000);
+    });
+
+    it('defaultTotalAiCredits equals the setting when it is set', () => {
+      setPreference(5000);
+      const store = createStore();
+
+      expect(store.defaultTotalAiCredits()).toBe(5000);
+    });
+
+    it('initialize without records uses the setting', async () => {
+      setPreference(5000);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('addMonthTab shows the setting for a new month', () => {
+      setPreference(5000);
+      const store = createStore();
+
+      store.addMonthTab(2024, 3);
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('a saved record with null totalAiCredits shows the setting', async () => {
+      setPreference(5000);
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([
+        { key: '2024-02', year: 2024, month: 2, totalAiCredits: null, dayNotes: {} },
+      ]);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('setDefaultTotalAiCredits updates the active default tab immediately', () => {
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+
+      store.setDefaultTotalAiCredits(7000);
+
+      expect(store.totalAiCredits()).toBe(7000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+      expect(localStorage.getItem(DEFAULT_TOTAL_AI_CREDITS_STORAGE_KEY)).toBe('7000');
+    });
+
+    it('setDefaultTotalAiCredits(null) restores 10000 on the active default tab', () => {
+      setPreference(5000);
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+
+      store.setDefaultTotalAiCredits(null);
+
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('setDefaultTotalAiCredits does not change a user-entered value', () => {
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+      store.setTotalAiCredits('3000');
+
+      store.setDefaultTotalAiCredits(7000);
+
+      expect(store.totalAiCredits()).toBe(3000);
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+
+    it('setDefaultTotalAiCredits does not change a tab saved with a number', async () => {
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([
+        { key: '2024-02', year: 2024, month: 2, totalAiCredits: 5000, dayNotes: {} },
+      ]);
+      const store = createStore();
+      await store.initialize();
+
+      store.setDefaultTotalAiCredits(7000);
+
+      expect(store.totalAiCredits()).toBe(5000);
+      expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+
+    it('an inactive default tab shows the new setting after selectTab', () => {
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      store.addMonthTab(2024, 2);
+      store.setTotalAiCredits('3000');
+
+      store.setDefaultTotalAiCredits(7000);
+      store.selectTab('2024-01');
+
+      expect(store.totalAiCredits()).toBe(7000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+    });
+
+    it('selectTab from a default tab still drafts totalAiCredits as null', () => {
+      setPreference(5000);
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      store.addMonthTab(2024, 2);
+
+      expect(drafts(store).get('2024-01')?.totalAiCredits).toBeNull();
     });
   });
   describe('weekends', () => {
