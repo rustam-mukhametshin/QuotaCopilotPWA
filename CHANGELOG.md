@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.15.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.14.0...quota-copilot-pwa-v0.15.0) (2026-10-31)
+
+
+### Features
+
+* add 'Dracula' theme option to theme switcher in localization files ([afada04](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/afada048cdba23efc0b363446453b24baeaacada))
+* add 'Dracula' theme support to theme switcher and styles ([db7d4e8](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/db7d4e8faa6a957ad3a8aa80a7a9c21396f46a17))
+* add spacer for weekend-only weeks in month view and update toast styles ([5ec4238](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/5ec423859be11b72d577f3bc751b795bdb003f58))
+* enhance light theme styles for future days in month view ([76e3692](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/76e3692b982ecd4758d987c4d6f8b5ee3586062c))
+* hide spacer for day inputs in month view ([66a89d4](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/66a89d4db51918ba66f10624a8e7d6f7e57e28c0))
+* update light theme styles for future days in month view ([3efdd84](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/3efdd84585b1f4d6f677bad111573fc27e2d039c))
+
 ## [0.14.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.13.0...quota-copilot-pwa-v0.14.0) (2026-10-31)
 
 
