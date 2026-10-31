@@ -83,9 +83,10 @@
   --bs-body-bg-rgb: 40, 42, 54;
   --bs-body-color: #f8f8f2;
   --bs-body-color-rgb: 248, 248, 242;
-  --bs-emphasis-color: #ffffff;
-  --bs-emphasis-color-rgb: 255, 255, 255;
-  --bs-secondary-color: rgba(248, 248, 242, 0.7);
+  --bs-emphasis-color: #f8f8f2;
+  --bs-emphasis-color-rgb: 248, 248, 242;
+  /* 0.8 rather than Bootstrap's 0.75: dimmed past-day inputs (opacity 0.7) need it to reach 4.5:1 */
+  --bs-secondary-color: rgba(248, 248, 242, 0.8);
   --bs-secondary-color-rgb: 248, 248, 242;
   --bs-tertiary-color: rgba(248, 248, 242, 0.5);
   --bs-secondary-bg: #343746;

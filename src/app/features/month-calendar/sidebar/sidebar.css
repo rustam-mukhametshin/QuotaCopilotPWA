@@ -47,12 +47,10 @@
   --bs-toast-box-shadow: 0 0.5rem 1rem var(--theme-shadow);
 }
 
-@media (prefers-color-scheme: dark) {
-  .sidebar #total-ai-credits.is-default-value:focus {
-    box-shadow:
-      0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25),
-      inset 0 1px 0 rgba(0, 0, 0, 0.2);
-  }
+:host-context([data-bs-theme='dark']) .sidebar #total-ai-credits.is-default-value:focus {
+  box-shadow:
+    0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25),
+    inset 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 768px) {
