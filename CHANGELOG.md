@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.14.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.13.0...quota-copilot-pwa-v0.14.0) (2026-10-31)
+
+
+### Features
+
+* add confirmation and handling for hiding weekends in settings modal ([beb2014](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/beb2014dde30db1419bf410035f76761441dd847))
+* add confirmation dialog for hiding weekends in settings modal ([9d540b3](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/9d540b3923017ce6eda3c7aae26067edac1fa6da))
+* add confirmation handling for hiding weekends in settings modal ([b6cc9ea](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/b6cc9ea64d10375a7fc827c79e9046877582141c))
+* add confirmation messages for hiding weekends in calculations ([2abeff4](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/2abeff4197da8faa6bb51558582b8488b7208f6c))
+* add custom class option for tooltips and style adjustments for month tab actions ([ab406bf](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/ab406bf23a55b5e0b64b6d17be1faa45f334b994))
+* add lint and prettier hooks for automatic code formatting ([c8256e9](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/c8256e9d923a5157b5e4babf0a2c757ee0fa5521))
+* adjust tooltip width for improved responsiveness in month view ([5553e47](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/5553e477436a80570794d001f92fb835d4a3f8d9))
+* update settings modal to close on overlay click ([442f0f2](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/442f0f283142e15980a21391bda0cb36223feeb6))
+
 ## [0.13.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.12.0...quota-copilot-pwa-v0.13.0) (2026-10-31)
 
 
