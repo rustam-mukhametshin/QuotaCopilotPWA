@@ -261,6 +261,85 @@
   --bs-focus-ring-color: rgba(136, 192, 208, 0.35);
 }
 
+[data-app-theme='nord'] .btn-primary {
+  --bs-btn-color: #2e3440;
+  --bs-btn-bg: #88c0d0;
+  --bs-btn-border-color: #88c0d0;
+  --bs-btn-hover-color: #2e3440;
+  --bs-btn-hover-bg: #9fcfdc;
+  --bs-btn-hover-border-color: #9fcfdc;
+  --bs-btn-active-color: #2e3440;
+  --bs-btn-active-bg: #77b0c1;
+  --bs-btn-active-border-color: #77b0c1;
+  --bs-btn-disabled-color: #2e3440;
+  --bs-btn-disabled-bg: #88c0d0;
+  --bs-btn-disabled-border-color: #88c0d0;
+  --bs-btn-focus-shadow-rgb: 136, 192, 208;
+}
+
+[data-app-theme='nord'] .btn-secondary {
+  --bs-btn-color: #eceff4;
+  --bs-btn-bg: #4c566a;
+  --bs-btn-border-color: #4c566a;
+  --bs-btn-hover-color: #eceff4;
+  --bs-btn-hover-bg: #5a6478;
+  --bs-btn-hover-border-color: #5a6478;
+  --bs-btn-active-color: #eceff4;
+  --bs-btn-active-bg: #616e88;
+  --bs-btn-active-border-color: #616e88;
+  --bs-btn-focus-shadow-rgb: 97, 110, 136;
+}
+
+[data-app-theme='nord'] .btn-outline-secondary {
+  --bs-btn-color: #eceff4;
+  --bs-btn-border-color: #616e88;
+  --bs-btn-hover-color: #eceff4;
+  --bs-btn-hover-bg: #434c5e;
+  --bs-btn-hover-border-color: #616e88;
+  --bs-btn-active-color: #eceff4;
+  --bs-btn-active-bg: #434c5e;
+  --bs-btn-active-border-color: #616e88;
+  --bs-btn-focus-shadow-rgb: 97, 110, 136;
+}
+
+[data-app-theme='nord'] .btn-danger {
+  --bs-btn-color: #eceff4;
+  --bs-btn-bg: #bf616a;
+  --bs-btn-border-color: #bf616a;
+  --bs-btn-hover-color: #eceff4;
+  --bs-btn-hover-bg: #c97880;
+  --bs-btn-hover-border-color: #c97880;
+  --bs-btn-active-color: #eceff4;
+  --bs-btn-active-bg: #a9535b;
+  --bs-btn-active-border-color: #a9535b;
+  --bs-btn-focus-shadow-rgb: 191, 97, 106;
+}
+
+[data-app-theme='nord'] .dropdown-menu {
+  --bs-dropdown-bg: #3b4252;
+  --bs-dropdown-border-color: #4c566a;
+  --bs-dropdown-link-color: #eceff4;
+  --bs-dropdown-link-hover-color: #eceff4;
+  --bs-dropdown-link-hover-bg: #434c5e;
+  --bs-dropdown-link-active-color: #2e3440;
+  --bs-dropdown-link-active-bg: #88c0d0;
+}
+
+[data-app-theme='nord'] .form-control:focus,
+[data-app-theme='nord'] .form-check-input:focus {
+  border-color: #88c0d0;
+  box-shadow: 0 0 0 0.25rem rgba(136, 192, 208, 0.25);
+}
+
+[data-app-theme='nord'] .form-check-input:checked {
+  background-color: #88c0d0;
+  border-color: #88c0d0;
+}
+
+[data-app-theme='nord'] .form-switch .form-check-input:focus:not(:checked) {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2388c0d0'/%3e%3c/svg%3e");
+}
+
 html,
 body {
   height: 100%;
