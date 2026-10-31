@@ -11,7 +11,6 @@ import { tweenedNumber } from '../../../shared/motion/tweened-number';
   imports: [TranslatePipe],
   styleUrl: './month-view.css',
   templateUrl: './month-view.html',
-  host: { class: 'month-view-host' },
 })
 export class MonthView implements AfterViewInit, OnDestroy {
   private readonly store = inject(CalendarStore);
