@@ -38,6 +38,13 @@
     "title": "Settings",
     "close": "Close",
     "theme": "Theme",
-    "language": "Language"
+    "language": "Language",
+    "showWeekends": "Show weekends",
+    "includeWeekends": "Include weekends in calculations",
+    "includeWeekendsHint": "Applies to the current month",
+    "includeWeekendsConfirmTitle": "Recalculate the month?",
+    "includeWeekendsConfirmText": "All calculations for the current month will be recalculated. Save the month to apply the changes. Previously saved months will stay unchanged.",
+    "confirm": "Continue",
+    "cancel": "Cancel"
   }
 }

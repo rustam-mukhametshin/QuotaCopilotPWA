@@ -38,6 +38,13 @@
     "title": "Configuración",
     "close": "Cerrar",
     "theme": "Tema",
-    "language": "Idioma"
+    "language": "Idioma",
+    "showWeekends": "Mostrar fines de semana",
+    "includeWeekends": "Incluir fines de semana en los cálculos",
+    "includeWeekendsHint": "Se aplica al mes actual",
+    "includeWeekendsConfirmTitle": "¿Recalcular el mes?",
+    "includeWeekendsConfirmText": "Todos los cálculos del mes actual se recalcularán. Guarde el mes para aplicar los cambios. Los meses guardados anteriormente no cambiarán.",
+    "confirm": "Continuar",
+    "cancel": "Cancelar"
   }
 }

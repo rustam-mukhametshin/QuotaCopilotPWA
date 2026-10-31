@@ -38,6 +38,13 @@
     "title": "Einstellungen",
     "close": "Schließen",
     "theme": "Design",
-    "language": "Sprache"
+    "language": "Sprache",
+    "showWeekends": "Wochenenden anzeigen",
+    "includeWeekends": "Wochenenden in Berechnungen einbeziehen",
+    "includeWeekendsHint": "Gilt für den aktuellen Monat",
+    "includeWeekendsConfirmTitle": "Monat neu berechnen?",
+    "includeWeekendsConfirmText": "Alle Berechnungen für den aktuellen Monat werden neu berechnet. Speichern Sie den Monat, um die Änderungen zu übernehmen. Bereits gespeicherte Monate bleiben unverändert.",
+    "confirm": "Fortfahren",
+    "cancel": "Abbrechen"
   }
 }

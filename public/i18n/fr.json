@@ -38,6 +38,13 @@
     "title": "Paramètres",
     "close": "Fermer",
     "theme": "Thème",
-    "language": "Langue"
+    "language": "Langue",
+    "showWeekends": "Afficher les week-ends",
+    "includeWeekends": "Inclure les week-ends dans les calculs",
+    "includeWeekendsHint": "S’applique au mois en cours",
+    "includeWeekendsConfirmTitle": "Recalculer le mois ?",
+    "includeWeekendsConfirmText": "Tous les calculs du mois en cours seront recalculés. Enregistrez le mois pour appliquer les modifications. Les mois enregistrés précédemment resteront inchangés.",
+    "confirm": "Continuer",
+    "cancel": "Annuler"
   }
 }
