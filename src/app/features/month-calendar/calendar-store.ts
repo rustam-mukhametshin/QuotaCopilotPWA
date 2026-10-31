@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 import type { Week } from './working-days';
-import { getWorkingWeeksOfMonth } from './working-days';
+import { getMonthWeeks } from './working-days';
 import { monthKey, calendarDb } from './calendar-db';
 
 export const DEFAULT_TOTAL_AI_CREDITS = 10000;
@@ -35,10 +35,13 @@ export class CalendarStore {
   private defaultCreditsKeys = new Set<string>();
   private initialized = false;
 
-  readonly weeks = computed<Week[]>(() => getWorkingWeeksOfMonth(this.reference()));
+  readonly weeks = computed<Week[]>(() => getMonthWeeks(this.reference()));
 
-  readonly totalWorkDays = computed<number>(() =>
-    this.weeks().reduce((sum, week) => sum + week.length, 0),
+  readonly totalWorkDays = computed<number>(
+    () =>
+      this.weeks()
+        .flat()
+        .filter((day) => day.index !== null).length,
   );
 
   readonly perDayCredits = computed<number | null>(() => {
@@ -54,7 +57,7 @@ export class CalendarStore {
 
   readonly elapsedWorkDays = computed<number>(() => {
     const allDays = this.weeks().flat();
-    return allDays.filter((day) => day.isPast || day.isToday).length;
+    return allDays.filter((day) => day.index !== null && (day.isPast || day.isToday)).length;
   });
 
   readonly plannedSpentCredits = computed<number | null>(() => {
