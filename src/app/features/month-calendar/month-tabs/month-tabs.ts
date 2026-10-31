@@ -5,11 +5,12 @@ import { formatTabLabel } from '../month-labels';
 import { DEFAULT_LANGUAGE } from '../../../language-switcher/languages';
 import type { MonthTab } from '../calendar-store';
 import { CalendarStore } from '../calendar-store';
+import { ConfirmDialog } from '../../../shared/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-month-tabs',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, ConfirmDialog],
   styleUrl: './month-tabs.css',
   templateUrl: './month-tabs.html',
 })
@@ -114,9 +115,5 @@ export class MonthTabs {
 
     await this.store.deleteTab(tab.key);
     this.pendingDeleteTab.set(null);
-  }
-
-  protected onModalContentClick(event: Event): void {
-    event.stopPropagation();
   }
 }

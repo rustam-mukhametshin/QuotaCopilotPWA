@@ -43,38 +43,16 @@
     />
   }
   @if (pendingDeleteTab(); as tab) {
-    <div
-      class="month-tabs__confirm-overlay"
-      (click)="cancelDelete()"
+    <app-confirm-dialog
+      [title]="'monthTabs.confirmDeleteTitle' | translate"
+      [message]="'monthTabs.confirmDelete' | translate: { label: labelFor(tab) }"
+      [confirmLabel]="'monthTabs.delete' | translate"
+      [cancelLabel]="'monthTabs.cancel' | translate"
+      confirmVariant="danger"
+      (confirmed)="confirmDelete()"
+      (cancelled)="cancelDelete()"
       animate.enter="anim-fade-in"
       animate.leave="anim-fade-out"
-    >
-      <div
-        class="month-tabs__confirm-modal"
-        (click)="onModalContentClick($event)"
-        animate.enter="anim-scale-in"
-        animate.leave="anim-scale-out"
-      >
-        <p class="month-tabs__confirm-text">
-          {{ 'monthTabs.confirmDelete' | translate: { label: labelFor(tab) } }}
-        </p>
-        <div class="month-tabs__confirm-actions">
-          <button
-            type="button"
-            class="month-tabs__confirm-cancel-btn btn btn-sm btn-outline-secondary"
-            (click)="cancelDelete()"
-          >
-            {{ 'monthTabs.cancel' | translate }}
-          </button>
-          <button
-            type="button"
-            class="month-tabs__confirm-delete-btn btn btn-sm btn-danger"
-            (click)="confirmDelete()"
-          >
-            {{ 'monthTabs.delete' | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
+    ></app-confirm-dialog>
   }
 </div>
