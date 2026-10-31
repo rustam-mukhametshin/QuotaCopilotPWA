@@ -14,7 +14,7 @@ app-month-calendar {
   width: 100%;
   max-width: 1320px;
   margin-inline: auto;
-  padding: 1rem 1rem 0;
+  padding: 1rem 0 1rem 0;
   flex-wrap: wrap;
 }
 
