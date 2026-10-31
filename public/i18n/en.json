@@ -5,6 +5,7 @@
   "themeSwitcher": {
     "light": "Light",
     "dark": "Dark",
+    "dracula": "Dracula",
     "auto": "Auto",
     "tooltip": "Switch theme"
   },

@@ -5,6 +5,7 @@
   "themeSwitcher": {
     "light": "Claro",
     "dark": "Oscuro",
+    "dracula": "Dracula",
     "auto": "Automático",
     "tooltip": "Cambiar tema"
   },

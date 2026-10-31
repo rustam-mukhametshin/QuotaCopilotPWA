@@ -5,6 +5,7 @@
   "themeSwitcher": {
     "light": "Hell",
     "dark": "Dunkel",
+    "dracula": "Dracula",
     "auto": "Automatisch",
     "tooltip": "Farbschema wechseln"
   },
