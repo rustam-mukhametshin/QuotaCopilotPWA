@@ -32,6 +32,11 @@
   background-color: var(--theme-card-bg);
 }
 
+:host-context([data-bs-theme='light']) .day:not(.day--past):not(.day--today) .form-control {
+  border-color: transparent;
+  background-color: var(--theme-day-input-bg);
+}
+
 .day--weekend:not(.day--past):not(.day--today) {
   background-color: var(--bs-tertiary-bg);
 }
