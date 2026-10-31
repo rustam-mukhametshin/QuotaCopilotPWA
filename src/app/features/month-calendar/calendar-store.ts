@@ -4,6 +4,7 @@ import { getMonthWeeks } from './working-days';
 import { monthKey, calendarDb } from './calendar-db';
 import type { MonthRecord } from './calendar-db';
 import { WeekendPreferences } from '../../settings/weekend-preferences';
+import { CreditsPreferences } from '../../settings/credits-preferences';
 
 export const DEFAULT_TOTAL_AI_CREDITS = 10000;
 
@@ -25,6 +26,7 @@ interface DraftState {
 @Injectable({ providedIn: 'root' })
 export class CalendarStore {
   private readonly preferences = inject(WeekendPreferences);
+  private readonly creditsPreferences = inject(CreditsPreferences);
 
   readonly reference = signal(new Date());
   readonly totalAiCredits = signal<number | null>(null);
@@ -41,6 +43,11 @@ export class CalendarStore {
   private draftVersion = signal(0);
   private defaultCreditsKeys = new Set<string>();
   private initialized = false;
+
+  /** Total shown for months without a saved value: the user's setting or the built-in fallback. */
+  readonly defaultTotalAiCredits = computed<number>(
+    () => this.creditsPreferences.defaultTotalAiCredits() ?? DEFAULT_TOTAL_AI_CREDITS,
+  );
 
   readonly weeks = computed<Week[]>(() => getMonthWeeks(this.reference(), this.includeWeekends()));
 
@@ -166,6 +173,17 @@ export class CalendarStore {
     this.preferences.setDefaultIncludeWeekends(value);
   }
 
+  /**
+   * Change the global default total; the active month picks it up immediately if it
+   * still shows the default. Inactive default tabs get it on `selectTab`.
+   */
+  setDefaultTotalAiCredits(value: number | null): void {
+    this.creditsPreferences.setDefaultTotalAiCredits(value);
+    if (this.defaultCreditsKeys.has(this.activeKey())) {
+      this.totalAiCredits.set(this.defaultTotalAiCredits());
+    }
+  }
+
   private setDraft(key: string, state: DraftState): void {
     this.draftState.set(key, state);
     this.draftVersion.update((v) => v + 1);
@@ -183,7 +201,7 @@ export class CalendarStore {
    */
   private applyCreditsForTab(key: string, value: number | null): void {
     if (value === null) {
-      this.totalAiCredits.set(DEFAULT_TOTAL_AI_CREDITS);
+      this.totalAiCredits.set(this.defaultTotalAiCredits());
       this.defaultCreditsKeys.add(key);
       this.isDefaultTotalAiCredits.set(true);
     } else if (this.defaultCreditsKeys.has(key)) {
