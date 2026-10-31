@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.13.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.12.0...quota-copilot-pwa-v0.13.0) (2026-10-31)
+
+
+### Features
+
+* add confirmation dialog component with customizable labels and styles ([2449427](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/244942720792d4c46c662c3fb6afdb8daab3df09))
+* add weekend preferences management and update related tests ([ceb645a](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/ceb645a55149e007db5539bf7cc66cb8a835d18c))
+* integrate confirmation dialog for weekend inclusion settings ([a0f4529](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/a0f4529b0ad9cf2e1736d36c6b5c751127ad0eca))
+
 ## [0.12.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.11.0...quota-copilot-pwa-v0.12.0) (2026-10-31)
 
 
