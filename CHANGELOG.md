@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.18.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.17.0...quota-copilot-pwa-v0.18.0) (2026-10-31)
+
+
+### Features
+
+* add confirmation title and validation message for total AI credits in localization files ([371770d](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/371770d7eef4ee0f9b998507b0015689e59adab5))
+* add tests for Today class to verify date updates on midnight and visibility change ([0f2cc40](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/0f2cc4048205065ab5e5e0f4ef945532520da644))
+* add validation for total AI credits input and update save conditions ([c211458](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/c2114588c5af5428dcd1a4b623e3a00c5249df3b))
+* enhance calendar functionality by introducing Today service for reactive date management and updating week calculations ([a9fb65a](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/a9fb65ad7db0a66330ea1a2ad51f1422156687f2))
+* enhance calendar store initialization and loading state management ([e0c3050](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/e0c3050b0938b3cf54e4cbf971d153bd58d7f6d1))
+* enhance performance by implementing OnPush change detection strategy across multiple components ([e4d7b3a](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/e4d7b3ad8011dbdb96197de28a6baac1e8032b91))
+* implement Angular directive for Bootstrap tooltip with dynamic content ([539a81c](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/539a81cfefb90a420d6bf06cdbecfa5fbc2a35b3))
+* implement month label formatting and update calendar store monthLabel computation ([e98ead3](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/e98ead3f412540012ce7620a8998530b782786fb))
+* refactor month label handling by removing generateTabLabel and using formatTabLabel for improved clarity ([52e6eee](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/52e6eeeb0c2ac8abb9745130d361d1d505e96ba7))
+* refactor note handling by replacing date ISO strings with day keys for improved consistency ([9d71c22](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/9d71c22bd1b24188f22684789333be218fa11d85))
+* refactor tab state management by introducing helper functions for loading and activating fallback tabs ([9d6eceb](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/9d6ecebb43b123905d11b3bd28f33cc7ccfdf0d1))
+* replace Bootstrap tooltip with custom Angular directive for improved accessibility and maintainability ([62315d1](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/62315d10dce75a7c3aa6fd51a3d36e1b3778d600))
+* replace Bootstrap tooltip with custom Angular directive for improved tooltip management ([5b1e02f](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/5b1e02f62bc6b74398ba206d2e9c2ee1290d4cda))
+* replace confirmation modal with reusable confirm dialog component in month tabs ([fbbb99f](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/fbbb99fdfb339c5cde2e536f7d6013ef859ccea9))
+* update test specifications to remove label fields and enhance tooltip handling ([7838798](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/78387981a3e6a775d08ea19a87e81ace78239a3a))
+
 ## [0.17.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.16.0...quota-copilot-pwa-v0.17.0) (2026-10-31)
 
 
