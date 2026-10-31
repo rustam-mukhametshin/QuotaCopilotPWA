@@ -18,9 +18,17 @@
         type="number"
         class="form-control tabular-nums"
         [class.is-default-value]="store.isDefaultTotalAiCredits()"
+        [class.is-invalid]="store.totalAiCreditsInvalid()"
         [value]="store.totalAiCredits() ?? ''"
         (input)="onTotalAiCreditsInput($event)"
-        [attr.aria-describedby]="store.isDefaultTotalAiCredits() ? 'total-ai-credits-hint' : null"
+        min="1"
+        [attr.aria-describedby]="
+          store.isDefaultTotalAiCredits()
+            ? 'total-ai-credits-hint'
+            : store.totalAiCreditsInvalid()
+              ? 'total-ai-credits-invalid'
+              : null
+        "
         animate.enter="anim-fade-in"
       />
       @if (store.isDefaultTotalAiCredits()) {
@@ -31,6 +39,16 @@
         >
           {{ 'sidebar.defaultCreditsHint' | translate }}
         </small>
+      }
+      @if (store.totalAiCreditsInvalid()) {
+        <div
+          id="total-ai-credits-invalid"
+          class="invalid-feedback"
+          style="display: block"
+          animate.enter="anim-fade-in"
+        >
+          {{ 'sidebar.totalAiCreditsInvalid' | translate }}
+        </div>
       }
     }
   </div>
@@ -53,7 +71,7 @@
   </div>
   <button
     class="btn btn-primary"
-    [disabled]="!store.hasUnsavedChanges() || isSaving() || !store.ready()"
+    [disabled]="!store.canSave() || isSaving() || !store.ready()"
     (click)="onSave()"
   >
     {{ (isSaving() ? 'sidebar.saving' : 'sidebar.save') | translate }}

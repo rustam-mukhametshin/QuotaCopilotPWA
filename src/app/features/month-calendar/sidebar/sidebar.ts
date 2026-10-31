@@ -26,8 +26,8 @@ export class Sidebar {
   }
 
   protected onTotalAiCreditsInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.store.setTotalAiCredits(value);
+    const input = event.target as HTMLInputElement;
+    this.store.setTotalAiCredits(input.value);
   }
 
   protected async onSave(): Promise<void> {

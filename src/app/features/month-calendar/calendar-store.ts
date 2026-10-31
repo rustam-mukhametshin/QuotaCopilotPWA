@@ -36,6 +36,8 @@ export class CalendarStore {
   readonly includeWeekends = signal(false);
   /** Store initialization complete; controls loading state in UI. */
   readonly ready = signal(false);
+  /** Total AI credits field is invalid (≤0 or non-numeric). */
+  readonly totalAiCreditsInvalid = signal(false);
 
   // Multi-month/tabs state
   readonly tabs = signal<MonthTab[]>([]);
@@ -156,9 +158,24 @@ export class CalendarStore {
     return false;
   });
 
+  readonly canSave = computed<boolean>(
+    () => this.hasUnsavedChanges() && !this.totalAiCreditsInvalid(),
+  );
+
   setTotalAiCredits(value: string): void {
-    const parsed = value.trim() === '' ? null : Number(value);
-    this.totalAiCredits.set(parsed !== null && !Number.isNaN(parsed) ? parsed : null);
+    if (value.trim() === '') {
+      this.totalAiCredits.set(null);
+      this.totalAiCreditsInvalid.set(false);
+    } else {
+      const parsed = Number(value);
+      if (!Number.isFinite(parsed) || parsed <= 0) {
+        this.totalAiCredits.set(null);
+        this.totalAiCreditsInvalid.set(true);
+      } else {
+        this.totalAiCredits.set(parsed);
+        this.totalAiCreditsInvalid.set(false);
+      }
+    }
     // User changed the value: remove from default credits and mark flag as false
     const activeKey = this.activeKey();
     this.defaultCreditsKeys.delete(activeKey);
@@ -212,6 +229,7 @@ export class CalendarStore {
       this.totalAiCredits.set(value);
       this.isDefaultTotalAiCredits.set(false);
     }
+    this.totalAiCreditsInvalid.set(false);
   }
 
   /**
@@ -405,7 +423,7 @@ export class CalendarStore {
    */
   async save(): Promise<void> {
     const activeKey = this.activeKey();
-    if (!activeKey) {
+    if (!activeKey || this.totalAiCreditsInvalid()) {
       return;
     }
 
