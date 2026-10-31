@@ -3,11 +3,33 @@ import { CalendarStore } from './calendar-store';
 import type { MonthRecord } from './calendar-db';
 import { calendarDb } from './calendar-db';
 import { vi } from 'vitest';
+import { WeekendPreferences } from '../../settings/weekend-preferences';
+
+interface DraftStateForTest {
+  totalAiCredits: number | null;
+  dayNotes: Record<string, string>;
+  includeWeekends?: boolean;
+}
+
+/** Access to private members of CalendarStore for white-box tests. */
+interface CalendarStoreInternals {
+  draftState: Map<string, DraftStateForTest>;
+  applyCreditsForTab(key: string, value: number | null): void;
+}
+
+function internals(store: CalendarStore): CalendarStoreInternals {
+  return store as unknown as CalendarStoreInternals;
+}
+
+function drafts(store: CalendarStore): Map<string, DraftStateForTest> {
+  return internals(store).draftState;
+}
 
 describe('CalendarStore', () => {
   beforeEach(() => {
     // 2024-02-15 is a Thursday; February 2024 has 21 working days.
     vi.setSystemTime(new Date(2024, 1, 15));
+    localStorage.clear();
     // IndexedDB is not available in the test environment: stub Dexie table calls.
     vi.spyOn(calendarDb.months, 'put').mockResolvedValue('');
     vi.spyOn(calendarDb.months, 'delete').mockResolvedValue(undefined);
@@ -18,6 +40,7 @@ describe('CalendarStore', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
+    localStorage.clear();
   });
 
   function createStore(): CalendarStore {
@@ -129,7 +152,7 @@ describe('CalendarStore', () => {
       ]);
 
       // Manually set up draft state
-      (store as any).draftState.set('2024-01', {
+      drafts(store).set('2024-01', {
         totalAiCredits: 1000,
         dayNotes: { '2024-01-15': 'Test note' },
       });
@@ -159,7 +182,7 @@ describe('CalendarStore', () => {
         },
       ]);
 
-      (store as any).draftState.set('2024-01', {
+      drafts(store).set('2024-01', {
         totalAiCredits: null,
         dayNotes: {},
       });
@@ -254,6 +277,7 @@ describe('CalendarStore', () => {
         month: 2,
         totalAiCredits: 150,
         dayNotes: { '2024-02-01': 'Note' },
+        includeWeekends: false,
       });
       expect(store.tabs()[0].saved).toBe(true);
     });
@@ -604,7 +628,7 @@ describe('CalendarStore', () => {
       store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
       store.activeKey.set('2024-02');
 
-      (store as any).applyCreditsForTab('2024-02', null);
+      internals(store).applyCreditsForTab('2024-02', null);
 
       expect(store.totalAiCredits()).toBe(10000);
       expect(store.isDefaultTotalAiCredits()).toBe(true);
@@ -615,8 +639,8 @@ describe('CalendarStore', () => {
       store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
       store.activeKey.set('2024-02');
 
-      (store as any).applyCreditsForTab('2024-02', null);
-      (store as any).applyCreditsForTab('2024-02', 10000);
+      internals(store).applyCreditsForTab('2024-02', null);
+      internals(store).applyCreditsForTab('2024-02', 10000);
 
       expect(store.isDefaultTotalAiCredits()).toBe(true);
     });
@@ -626,7 +650,7 @@ describe('CalendarStore', () => {
       store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
       store.activeKey.set('2024-02');
 
-      (store as any).applyCreditsForTab('2024-02', 5000);
+      internals(store).applyCreditsForTab('2024-02', 5000);
 
       expect(store.totalAiCredits()).toBe(5000);
       expect(store.isDefaultTotalAiCredits()).toBe(false);
@@ -637,7 +661,7 @@ describe('CalendarStore', () => {
       store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
       store.activeKey.set('2024-02');
 
-      (store as any).applyCreditsForTab('2024-02', null);
+      internals(store).applyCreditsForTab('2024-02', null);
       expect(store.isDefaultTotalAiCredits()).toBe(true);
 
       store.setTotalAiCredits('3000');
@@ -650,7 +674,7 @@ describe('CalendarStore', () => {
       store.tabs.set([{ key: '2024-02', year: 2024, month: 2, label: 'Feb24', saved: false }]);
       store.activeKey.set('2024-02');
 
-      (store as any).applyCreditsForTab('2024-02', null);
+      internals(store).applyCreditsForTab('2024-02', null);
       expect(store.isDefaultTotalAiCredits()).toBe(true);
 
       await store.save();
@@ -682,6 +706,260 @@ describe('CalendarStore', () => {
 
       expect(store.totalAiCredits()).toBe(5000);
       expect(store.isDefaultTotalAiCredits()).toBe(false);
+    });
+  });
+  describe('weekends', () => {
+    function record(key: string, extra: Partial<MonthRecord> = {}): MonthRecord {
+      const [year, month] = key.split('-').map(Number);
+      return { key, year, month, totalAiCredits: 2100, dayNotes: {}, ...extra };
+    }
+
+    it('counts only weekdays when weekends are excluded', () => {
+      const store = createStore();
+      store.totalAiCredits.set(2100);
+
+      expect(store.includeWeekends()).toBe(false);
+      expect(store.totalWorkDays()).toBe(21);
+      expect(store.perDayCredits()).toBe(100);
+    });
+
+    it('counts every day of the month when weekends are included', () => {
+      const store = createStore();
+      store.totalAiCredits.set(2900);
+
+      store.includeWeekends.set(true);
+
+      expect(store.totalWorkDays()).toBe(29);
+      expect(store.perDayCredits()).toBe(100);
+    });
+
+    it('counts elapsed weekend days only when weekends are included', () => {
+      const store = createStore();
+      // Feb 1..15 2024: 11 weekdays + 4 weekend days
+      expect(store.elapsedWorkDays()).toBe(11);
+
+      store.includeWeekends.set(true);
+
+      expect(store.elapsedWorkDays()).toBe(15);
+    });
+
+    it('visibleWeeks contains weekends when they are shown', () => {
+      const store = createStore();
+
+      const days = store.visibleWeeks().flat();
+
+      expect(days).toHaveLength(29);
+      expect(days.some((d) => d.isWeekend)).toBe(true);
+    });
+
+    it('visibleWeeks drops weekends and empty weeks when they are hidden', () => {
+      vi.setSystemTime(new Date(2024, 8, 15)); // Sep 2024 starts on Sunday
+      const store = createStore();
+      const prefs = TestBed.inject(WeekendPreferences);
+
+      prefs.setShowWeekends(false);
+
+      const weeks = store.visibleWeeks();
+      expect(weeks.flat().some((d) => d.isWeekend)).toBe(false);
+      expect(weeks.flat()).toHaveLength(21);
+      expect(weeks.every((w) => w.length > 0)).toBe(true);
+      expect(weeks[0][0].date.getDate()).toBe(2);
+    });
+
+    it('calculations do not depend on showWeekends', () => {
+      const store = createStore();
+      const prefs = TestBed.inject(WeekendPreferences);
+      store.totalAiCredits.set(2100);
+
+      prefs.setShowWeekends(false);
+
+      expect(store.weeks().flat()).toHaveLength(29);
+      expect(store.totalWorkDays()).toBe(21);
+      expect(store.perDayCredits()).toBe(100);
+    });
+
+    it('setIncludeWeekends changes the active flag, leaves it unsaved and updates the default', async () => {
+      const store = createStore();
+      const prefs = TestBed.inject(WeekendPreferences);
+      store.addMonthTab(2024, 2);
+      await store.save();
+      expect(store.hasUnsavedChanges()).toBe(false);
+
+      store.setIncludeWeekends(true);
+
+      expect(store.includeWeekends()).toBe(true);
+      expect(store.hasUnsavedChanges()).toBe(true);
+      expect(prefs.defaultIncludeWeekends()).toBe(true);
+      expect(calendarDb.months.put).toHaveBeenCalledTimes(1);
+    });
+
+    it('hasUnsavedChanges is false again after reverting the flag', async () => {
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+      await store.save();
+
+      store.setIncludeWeekends(true);
+      store.setIncludeWeekends(false);
+
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('save writes includeWeekends to Dexie and clears unsaved changes', async () => {
+      const store = createStore();
+      store.addMonthTab(2024, 2);
+      store.setTotalAiCredits('2900');
+      store.setIncludeWeekends(true);
+
+      await store.save();
+
+      expect(calendarDb.months.put).toHaveBeenCalledWith(
+        expect.objectContaining({ key: '2024-02', includeWeekends: true }),
+      );
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('initialize reads the flag from the most recent record', async () => {
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([
+        record('2024-01'),
+        record('2024-02', { includeWeekends: true }),
+      ]);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.activeKey()).toBe('2024-02');
+      expect(store.includeWeekends()).toBe(true);
+      expect(store.totalWorkDays()).toBe(29);
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('initialize treats a record without the flag as excluding weekends', async () => {
+      localStorage.setItem('include-weekends-default', 'true');
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([record('2024-02')]);
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.includeWeekends()).toBe(false);
+      expect(store.totalWorkDays()).toBe(21);
+      expect(store.hasUnsavedChanges()).toBe(false);
+    });
+
+    it('initialize uses defaultIncludeWeekends for the fallback tab', async () => {
+      localStorage.setItem('include-weekends-default', 'true');
+      const store = createStore();
+
+      await store.initialize();
+
+      expect(store.includeWeekends()).toBe(true);
+      expect(drafts(store).get('2024-02')?.includeWeekends).toBe(true);
+    });
+
+    it('switching tabs keeps the unsaved flag in the draft and restores each tab flag', async () => {
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([
+        record('2024-01'),
+        record('2024-02'),
+      ]);
+      const store = createStore();
+      await store.initialize();
+
+      store.setIncludeWeekends(true);
+      store.selectTab('2024-01');
+
+      expect(store.includeWeekends()).toBe(false);
+      expect(store.totalWorkDays()).toBe(23);
+
+      store.selectTab('2024-02');
+
+      expect(store.includeWeekends()).toBe(true);
+      expect(store.totalWorkDays()).toBe(29);
+      expect(calendarDb.months.put).not.toHaveBeenCalled();
+    });
+
+    it('does not change the flag of another saved month', async () => {
+      vi.mocked(calendarDb.months.toArray).mockResolvedValue([
+        record('2024-01', { includeWeekends: true }),
+        record('2024-02'),
+      ]);
+      const store = createStore();
+      await store.initialize();
+
+      store.setIncludeWeekends(true);
+      await store.save();
+      store.setIncludeWeekends(false);
+      store.selectTab('2024-01');
+
+      expect(store.includeWeekends()).toBe(true);
+      expect(calendarDb.months.put).toHaveBeenCalledTimes(1);
+      expect(calendarDb.months.put).toHaveBeenCalledWith(
+        expect.objectContaining({ key: '2024-02', includeWeekends: true }),
+      );
+    });
+
+    it('selectTab falls back to defaultIncludeWeekends when the target has no draft', () => {
+      const store = createStore();
+      TestBed.inject(WeekendPreferences).setDefaultIncludeWeekends(true);
+      store.tabs.set([{ key: '2024-03', year: 2024, month: 3, label: 'Mar24', saved: false }]);
+
+      store.selectTab('2024-03');
+
+      expect(store.includeWeekends()).toBe(true);
+    });
+
+    it('addMonthTab uses defaultIncludeWeekends for the new month', () => {
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      expect(store.includeWeekends()).toBe(false);
+
+      store.setIncludeWeekends(true);
+      store.addMonthTab(2024, 3);
+
+      expect(store.activeKey()).toBe('2024-03');
+      expect(store.includeWeekends()).toBe(true);
+    });
+
+    it('fallback tab after deleting the last tab uses defaultIncludeWeekends', async () => {
+      const store = createStore();
+      store.addMonthTab(2023, 5);
+      TestBed.inject(WeekendPreferences).setDefaultIncludeWeekends(true);
+
+      await store.deleteTab('2023-05');
+
+      expect(store.activeKey()).toBe('2024-02');
+      expect(store.includeWeekends()).toBe(true);
+      expect(drafts(store).get('2024-02')?.includeWeekends).toBe(true);
+    });
+
+    it('fallback tab after deleting the last tab excludes weekends by default', async () => {
+      const store = createStore();
+      store.addMonthTab(2023, 5);
+      store.includeWeekends.set(true);
+
+      await store.deleteTab('2023-05');
+
+      expect(store.includeWeekends()).toBe(false);
+    });
+
+    it('keeps default credits drafted as null when the flag is toggled and tabs switch', () => {
+      const store = createStore();
+      store.addMonthTab(2024, 1);
+      store.addMonthTab(2024, 2);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+
+      store.setIncludeWeekends(true);
+      store.selectTab('2024-01');
+
+      expect(drafts(store).get('2024-02')).toEqual({
+        totalAiCredits: null,
+        dayNotes: {},
+        includeWeekends: true,
+      });
+
+      store.selectTab('2024-02');
+
+      expect(store.totalAiCredits()).toBe(10000);
+      expect(store.isDefaultTotalAiCredits()).toBe(true);
+      expect(store.includeWeekends()).toBe(true);
     });
   });
 });

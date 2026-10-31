@@ -7,6 +7,11 @@ import { TranslateService, TranslatePipe, provideTranslateService } from '@ngx-t
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHttpClient } from '@angular/common/http';
 
+/** Installs a fake global `bootstrap` (declared as a namespace, so it can't be assigned directly). */
+function mockBootstrap(mock: object): void {
+  (globalThis as unknown as { bootstrap: unknown }).bootstrap = mock;
+}
+
 describe('MonthTabs', () => {
   let component: MonthTabs;
   let fixture: ComponentFixture<MonthTabs>;
@@ -26,12 +31,12 @@ describe('MonthTabs', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
     // Mock bootstrap before component creation
-    (globalThis as any).bootstrap = {
-      Popover: vi.fn(function (this: any, element: HTMLElement, options: any) {
+    mockBootstrap({
+      Popover: vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         this.show = vi.fn();
         this.dispose = vi.fn();
       }),
-    };
+    });
 
     TestBed.configureTestingModule({
       imports: [MonthTabs, TranslatePipe],
@@ -172,7 +177,7 @@ describe('MonthTabs', () => {
 
     it('should create a delete button with correct text', () => {
       const tab = createMockTab();
-      const translateSpy = vi.spyOn(translateService, 'instant').mockReturnValue('Delete');
+      vi.spyOn(translateService, 'instant').mockReturnValue('Delete');
 
       const button = component['createDeleteButton'](tab);
 

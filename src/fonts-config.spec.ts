@@ -9,7 +9,11 @@ interface NodeFs {
 }
 
 function readProjectFile(relativePath: string): string {
-  const proc = (globalThis as any).process;
+  const proc = (
+    globalThis as unknown as {
+      process: { cwd(): string; getBuiltinModule(id: string): unknown };
+    }
+  ).process;
   const fs = proc.getBuiltinModule('node:fs') as NodeFs;
   return fs.readFileSync(`${proc.cwd()}/${relativePath}`, 'utf-8');
 }

@@ -185,7 +185,10 @@ describe('LanguageSwitcher', () => {
     });
 
     it('should call selectLanguage when dropdown item is clicked', () => {
-      const selectLanguageSpy = vi.spyOn(component as any, 'selectLanguage');
+      const selectLanguageSpy = vi.spyOn(
+        component as unknown as { selectLanguage: (code: string) => void },
+        'selectLanguage',
+      );
       fixture.detectChanges();
 
       const compiled = fixture.nativeElement as HTMLElement;

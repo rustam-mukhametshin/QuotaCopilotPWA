@@ -66,7 +66,7 @@ describe('CreditsProgress', () => {
     // spent: ~667 * 9 = ~6000
     // remaining: ~8000 / 14000 = ~57% -> should be bg-success
 
-    const classes = (component as any).progressBarClass();
+    const classes = component['progressBarClass']();
     expect(['bg-success', 'bg-warning', 'bg-danger', '']).toContain(classes);
   });
 

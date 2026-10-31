@@ -6,6 +6,7 @@ import type { DayInfo, Week } from '../working-days';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHttpClient } from '@angular/common/http';
+import { WeekendPreferences } from '../../../settings/weekend-preferences';
 
 /** Access to protected members of MonthView for logic-only tests (template is never rendered). */
 interface MonthViewLogic {
@@ -18,10 +19,19 @@ interface MonthViewLogic {
   activeNoteKey: () => string | null;
   placeholdersBeforeWeek(week: Week, weekIndex: number): number[];
   placeholdersAfterWeek(week: Week, weekIndex: number, totalWeeks: number): number[];
+  columns: () => number;
+  weeks: () => Week[];
 }
 
-function day(year: number, month: number, date: number, index = 1): DayInfo {
-  return { date: new Date(year, month - 1, date), isToday: false, isPast: false, index };
+function day(year: number, month: number, date: number, index: number | null = 1): DayInfo {
+  const value = new Date(year, month - 1, date);
+  const isWeekend = value.getDay() === 0 || value.getDay() === 6;
+  return { date: value, isToday: false, isPast: false, isWeekend, index };
+}
+
+/** Installs a fake global `bootstrap` (declared as a namespace, so it can't be assigned directly). */
+function mockBootstrap(mock: object): void {
+  (globalThis as unknown as { bootstrap: unknown }).bootstrap = mock;
 }
 
 function clickEventOn(className: string): Event {
@@ -35,9 +45,11 @@ function clickEventOn(className: string): Event {
 describe('MonthView (logic)', () => {
   let store: CalendarStore;
   let view: MonthViewLogic;
+  let preferences: WeekendPreferences;
 
   beforeEach(() => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    localStorage.clear();
     TestBed.configureTestingModule({
       imports: [MonthView, TranslatePipe],
       providers: [
@@ -50,12 +62,14 @@ describe('MonthView (logic)', () => {
       ],
     });
     store = TestBed.inject(CalendarStore);
+    preferences = TestBed.inject(WeekendPreferences);
     store.reference.set(new Date(2024, 1, 1)); // February 2024: 21 working days
     view = TestBed.createComponent(MonthView).componentInstance as unknown as MonthViewLogic;
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    localStorage.clear();
   });
 
   describe('limitForDay', () => {
@@ -155,11 +169,44 @@ describe('MonthView (logic)', () => {
     });
   });
 
+  describe('columns and weeks', () => {
+    it('uses 7 columns when weekends are shown and 5 when hidden', () => {
+      expect(view.columns()).toBe(7);
+
+      preferences.setShowWeekends(false);
+
+      expect(view.columns()).toBe(5);
+    });
+
+    it('takes weeks from store.visibleWeeks', () => {
+      expect(view.weeks()).toBe(store.visibleWeeks());
+      expect(view.weeks().flat()).toHaveLength(29);
+
+      preferences.setShowWeekends(false);
+
+      expect(view.weeks()).toBe(store.visibleWeeks());
+      expect(view.weeks().flat()).toHaveLength(21);
+    });
+  });
+
   describe('placeholdersBeforeWeek', () => {
     it('returns Mon..(first day - 1) placeholders for the first week', () => {
       const week = [day(2024, 2, 1), day(2024, 2, 2)]; // Thu, Fri
 
       expect(view.placeholdersBeforeWeek(week, 0)).toHaveLength(3);
+    });
+
+    it('returns the same count with hidden weekends', () => {
+      preferences.setShowWeekends(false);
+      const week = [day(2024, 2, 1), day(2024, 2, 2)]; // Thu, Fri
+
+      expect(view.placeholdersBeforeWeek(week, 0)).toHaveLength(3);
+    });
+
+    it('returns 6 placeholders when the first week starts on Sunday', () => {
+      const week = [day(2024, 9, 1, null)]; // Sun
+
+      expect(view.placeholdersBeforeWeek(week, 0)).toHaveLength(6);
     });
 
     it('returns none when the first week starts on Monday', () => {
@@ -180,13 +227,27 @@ describe('MonthView (logic)', () => {
   });
 
   describe('placeholdersAfterWeek', () => {
-    it('returns (last day + 1)..Fri placeholders for the last week', () => {
+    it('returns (last day + 1)..Sun placeholders for the last week with 7 columns', () => {
+      const week = [day(2024, 2, 26), day(2024, 2, 29)]; // Mon .. Thu
+
+      expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(3);
+    });
+
+    it('returns (last day + 1)..Fri placeholders for the last week with 5 columns', () => {
+      preferences.setShowWeekends(false);
       const week = [day(2024, 2, 26), day(2024, 2, 29)]; // Mon .. Thu
 
       expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(1);
     });
 
-    it('returns none when the last week ends on Friday', () => {
+    it('returns none when the last week ends on Sunday with 7 columns', () => {
+      const week = [day(2024, 3, 25), day(2024, 3, 31, null)]; // Mon .. Sun
+
+      expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(0);
+    });
+
+    it('returns none when the last week ends on Friday with 5 columns', () => {
+      preferences.setShowWeekends(false);
       const week = [day(2024, 5, 31)]; // Fri
 
       expect(view.placeholdersAfterWeek(week, 4, 5)).toHaveLength(0);
@@ -202,15 +263,22 @@ describe('MonthView (logic)', () => {
       expect(view.placeholdersAfterWeek([], 0, 1)).toHaveLength(0);
     });
 
-    it('pads every week of the store month to exactly 5 cells', () => {
-      const weeks = store.weeks();
+    it.each([
+      [true, 7],
+      [false, 5],
+    ])('pads every visible week to %s → %i cells', (showWeekends, expected) => {
+      preferences.setShowWeekends(showWeekends);
+      [new Date(2024, 1, 1), new Date(2024, 8, 1), new Date(2024, 2, 1)].forEach((ref) => {
+        store.reference.set(ref);
+        const weeks = view.weeks();
 
-      weeks.forEach((week: Week, i: number) => {
-        const total =
-          view.placeholdersBeforeWeek(week, i).length +
-          week.length +
-          view.placeholdersAfterWeek(week, i, weeks.length).length;
-        expect(total).toBe(5);
+        weeks.forEach((week: Week, i: number) => {
+          const total =
+            view.placeholdersBeforeWeek(week, i).length +
+            week.length +
+            view.placeholdersAfterWeek(week, i, weeks.length).length;
+          expect(total).toBe(expected);
+        });
       });
     });
   });
@@ -218,12 +286,12 @@ describe('MonthView (logic)', () => {
   describe('tooltips', () => {
     it('should initialize tooltips for day inputs on afterViewInit', () => {
       const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: any) {
+      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         Object.assign(this, mockTooltip);
       });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       // Create mock day inputs
       const input = document.createElement('input');
@@ -245,20 +313,23 @@ describe('MonthView (logic)', () => {
       const mockTooltip2 = { dispose: vi.fn() };
 
       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
-      (monthViewComponent as any).tooltips = [mockTooltip1, mockTooltip2];
+      (monthViewComponent as unknown as { tooltips: unknown[] }).tooltips = [
+        mockTooltip1,
+        mockTooltip2,
+      ];
 
       monthViewComponent.ngOnDestroy();
 
       expect(mockTooltip1.dispose).toHaveBeenCalled();
       expect(mockTooltip2.dispose).toHaveBeenCalled();
-      expect((monthViewComponent as any).tooltips).toHaveLength(0);
+      expect((monthViewComponent as unknown as { tooltips: unknown[] }).tooltips).toHaveLength(0);
     });
 
     it('should not crash if no day inputs are found', () => {
       const TooltipMock = vi.fn();
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       const monthViewComponent = TestBed.createComponent(MonthView).componentInstance;
 
@@ -269,12 +340,12 @@ describe('MonthView (logic)', () => {
 
     it('should pass correct tooltip configuration', () => {
       const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: any) {
+      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         Object.assign(this, mockTooltip);
       });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       const input = document.createElement('input');
       input.setAttribute('id', 'day-1-limit');
@@ -299,11 +370,11 @@ describe('MonthView (logic)', () => {
 
   describe('tabular numerals (template)', () => {
     function render(): HTMLElement {
-      (globalThis as any).bootstrap = {
-        Tooltip: vi.fn(function (this: any) {
+      mockBootstrap({
+        Tooltip: vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
           this.dispose = vi.fn();
         }),
-      };
+      });
       const fixture = TestBed.createComponent(MonthView);
       fixture.detectChanges();
       return fixture.nativeElement as HTMLElement;
@@ -312,7 +383,7 @@ describe('MonthView (logic)', () => {
     it('applies tabular-nums to every day number', () => {
       const dayNumbers = Array.from(render().querySelectorAll('.day__number'));
 
-      expect(dayNumbers).toHaveLength(21);
+      expect(dayNumbers).toHaveLength(29);
       dayNumbers.forEach((el) => expect(el.classList).toContain('tabular-nums'));
     });
 
@@ -332,11 +403,55 @@ describe('MonthView (logic)', () => {
       limits.forEach((input) => expect(input.classList).toContain('tabular-nums'));
     });
 
-    it('applies tabular-nums to the limit input of a specific day index', () => {
-      const input = render().querySelector<HTMLInputElement>('#day-5-limit');
+    it('applies tabular-nums to the limit input of a specific day', () => {
+      const input = render().querySelector<HTMLInputElement>('#day-2024-02-05-limit');
 
       expect(input).not.toBeNull();
       expect(input!.classList).toContain('tabular-nums');
+    });
+  });
+
+  describe('weekends (template)', () => {
+    function render(): HTMLElement {
+      mockBootstrap({
+        Tooltip: vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
+          this.dispose = vi.fn();
+        }),
+      });
+      const fixture = TestBed.createComponent(MonthView);
+      fixture.detectChanges();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('marks weekend days with day--weekend', () => {
+      const weekends = render().querySelectorAll('.day--weekend');
+
+      expect(weekends).toHaveLength(8);
+    });
+
+    it('renders no index or limit for excluded weekends', () => {
+      const weekend = render().querySelector('.day--weekend')!;
+
+      expect(weekend.querySelector('.day__index')).toBeNull();
+      expect(weekend.querySelector('input[id$="-limit"]')).toBeNull();
+    });
+
+    it('renders index and limit for weekends when they are included', () => {
+      store.includeWeekends.set(true);
+
+      const el = render();
+
+      expect(el.querySelectorAll('input[id$="-limit"]')).toHaveLength(29);
+      expect(el.querySelector('#day-2024-02-03-limit')).not.toBeNull();
+    });
+
+    it('hides weekend days when showWeekends is off', () => {
+      preferences.setShowWeekends(false);
+
+      const el = render();
+
+      expect(el.querySelectorAll('.day__number')).toHaveLength(21);
+      expect(el.querySelectorAll('.day--weekend')).toHaveLength(0);
     });
   });
 });

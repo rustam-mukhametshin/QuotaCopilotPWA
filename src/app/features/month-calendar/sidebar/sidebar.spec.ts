@@ -7,6 +7,11 @@ import { TranslateService, TranslatePipe, provideTranslateService } from '@ngx-t
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHttpClient } from '@angular/common/http';
 
+/** Installs a fake global `bootstrap` (declared as a namespace, so it can't be assigned directly). */
+function mockBootstrap(mock: object): void {
+  (globalThis as unknown as { bootstrap: unknown }).bootstrap = mock;
+}
+
 describe('Sidebar', () => {
   let component: Sidebar;
   let fixture: ComponentFixture<Sidebar>;
@@ -44,12 +49,12 @@ describe('Sidebar', () => {
   describe('initialization', () => {
     it('should mark loading as complete after initialization', () => {
       // Mock bootstrap.Tooltip before initialization
-      const TooltipMock = vi.fn(function (this: any) {
+      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         this.dispose = vi.fn();
       });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       expect(component['isLoading']()).toBe(true);
 
@@ -173,12 +178,12 @@ describe('Sidebar', () => {
 
       // Mock bootstrap.Tooltip
       const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: any) {
+      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         Object.assign(this, mockTooltip);
       });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       component.ngAfterViewInit();
 
@@ -190,7 +195,7 @@ describe('Sidebar', () => {
 
     it('should dispose tooltips on component destroy', () => {
       const mockTooltip = { dispose: vi.fn() };
-      component['tooltips'] = [mockTooltip as any];
+      component['tooltips'] = [mockTooltip as unknown as bootstrap.Tooltip];
 
       component.ngOnDestroy();
 
@@ -201,13 +206,13 @@ describe('Sidebar', () => {
     it('should not crash if tooltip element is not found', () => {
       // Mock bootstrap.Tooltip with proper return value containing dispose
       const mockTooltip = { dispose: vi.fn() };
-      const TooltipMock = vi.fn(function (this: any) {
+      const TooltipMock = vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
         Object.assign(this, mockTooltip);
         return mockTooltip;
       });
-      (globalThis as any).bootstrap = {
-        Tooltip: TooltipMock as any,
-      };
+      mockBootstrap({
+        Tooltip: TooltipMock,
+      });
 
       const testComponent = TestBed.createComponent(Sidebar).componentInstance;
 
@@ -234,7 +239,10 @@ describe('Sidebar', () => {
     it('should dispose all tooltips on destroy', () => {
       const mockTooltip1 = { dispose: vi.fn() };
       const mockTooltip2 = { dispose: vi.fn() };
-      component['tooltips'] = [mockTooltip1 as any, mockTooltip2 as any];
+      component['tooltips'] = [
+        mockTooltip1 as unknown as bootstrap.Tooltip,
+        mockTooltip2 as unknown as bootstrap.Tooltip,
+      ];
 
       component.ngOnDestroy();
 
@@ -267,11 +275,11 @@ describe('Sidebar', () => {
 
   describe('tabular numerals', () => {
     beforeEach(() => {
-      (globalThis as any).bootstrap = {
-        Tooltip: vi.fn(function (this: any) {
+      mockBootstrap({
+        Tooltip: vi.fn(function (this: { show?: unknown; dispose?: unknown }) {
           this.dispose = vi.fn();
         }),
-      };
+      });
       store.totalAiCredits.set(5000);
       fixture.detectChanges();
     });
