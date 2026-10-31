@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.15.0...quota-copilot-pwa-v0.16.0) (2026-10-31)
+
+
+### Features
+
+* add padding to header, footer, and month calendar for improved layout ([c6ccb0b](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/commit/c6ccb0b951d2f36d094e7c323f7044289c522c28))
+
 ## [0.15.0](https://github.com/rustam-mukhametshin/QuotaCopilotPWA/compare/quota-copilot-pwa-v0.14.0...quota-copilot-pwa-v0.15.0) (2026-10-31)
 
 
