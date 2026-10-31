@@ -340,6 +340,74 @@
   --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2388c0d0'/%3e%3c/svg%3e");
 }
 
+/* ============================================================================
+   Solarized Light theme (https://ethanschoonover.com/solarized) — Bootstrap
+   light mode, recolored. Light-theme rules (gray page, white day cards) still
+   apply, so only their tokens are overridden here.
+   ============================================================================ */
+
+[data-bs-theme='light'][data-app-theme='solarized'] {
+  color-scheme: light;
+
+  /* App tokens */
+  --theme-bg-primary: #fdf6e3;
+  --theme-bg-secondary: #f5efdc;
+  --theme-text-primary: #073642;
+  --theme-text-secondary: #657b83;
+  --theme-border-color: #ddd6c1;
+  --theme-card-bg: #fdf6e3;
+  --theme-input-bg: #fdf6e3;
+  --theme-input-text: #073642;
+  --theme-shadow: rgba(88, 110, 117, 0.15);
+
+  /* Light-theme tokens (page background and future day cards) */
+  --theme-page-bg: #eee8d5;
+  --theme-day-card-shadow: 0 1px 2px rgba(88, 110, 117, 0.08), 0 1px 3px rgba(88, 110, 117, 0.14);
+  --theme-day-input-bg: #f2ecd9;
+
+  /* Bootstrap surface & text */
+  --bs-body-bg: #fdf6e3;
+  --bs-body-bg-rgb: 253, 246, 227;
+  /* base01 instead of base00 (#657b83): base00 is ~4:1 on base3, too low for body text */
+  --bs-body-color: #586e75;
+  --bs-body-color-rgb: 88, 110, 117;
+  --bs-emphasis-color: #073642;
+  --bs-emphasis-color-rgb: 7, 54, 66;
+  --bs-secondary-color: rgba(88, 110, 117, 0.8);
+  --bs-secondary-color-rgb: 88, 110, 117;
+  --bs-tertiary-color: rgba(88, 110, 117, 0.55);
+  --bs-secondary-bg: #eee8d5;
+  --bs-secondary-bg-rgb: 238, 232, 213;
+  --bs-tertiary-bg: #f7f1df;
+  --bs-tertiary-bg-rgb: 247, 241, 223;
+  --bs-border-color: #ddd6c1;
+  --bs-border-color-translucent: rgba(88, 110, 117, 0.18);
+  --bs-heading-color: #073642;
+
+  /* Accents */
+  --bs-primary: #268bd2;
+  --bs-primary-rgb: 38, 139, 210;
+  --bs-primary-text-emphasis: #1a5f8f;
+  --bs-primary-bg-subtle: #dbe7e9;
+  --bs-primary-border-subtle: #9cc6e4;
+  --bs-secondary-bg-subtle: #e6dfc8;
+  --bs-secondary-text-emphasis: #586e75;
+  --bs-secondary-border-subtle: #d3cbb3;
+  --bs-success: #859900;
+  --bs-success-rgb: 133, 153, 0;
+  --bs-warning: #b58900;
+  --bs-warning-rgb: 181, 137, 0;
+  --bs-danger: #dc322f;
+  --bs-danger-rgb: 220, 50, 47;
+  --bs-info: #2aa198;
+  --bs-info-rgb: 42, 161, 152;
+  --bs-link-color: #268bd2;
+  --bs-link-color-rgb: 38, 139, 210;
+  --bs-link-hover-color: #1f74b0;
+  --bs-link-hover-color-rgb: 31, 116, 176;
+  --bs-focus-ring-color: rgba(38, 139, 210, 0.25);
+}
+
 html,
 body {
   height: 100%;
