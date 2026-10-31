@@ -29,6 +29,7 @@ declare namespace bootstrap {
     static getInstance(element: Element): Tooltip | null;
     show(): void;
     hide(): void;
+    setContent(content: Record<string, string | Element | null>): void;
     dispose(): void;
   }
 }
