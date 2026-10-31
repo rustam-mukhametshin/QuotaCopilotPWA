@@ -2,12 +2,11 @@ import { Component, inject } from '@angular/core';
 import { CalendarStore } from './features/month-calendar/calendar-store';
 import { MonthCalendar } from './features/month-calendar/month-calendar/month-calendar';
 import { CreditsProgress } from './features/month-calendar/credits-progress/credits-progress';
-import { LanguageSwitcher } from './language-switcher/language-switcher';
-import { ThemeSwitcher } from './theme-switcher/theme-switcher';
+import { SettingsModal } from './settings/settings-modal';
 import { APP_VERSION } from './version';
 
 @Component({
-  imports: [MonthCalendar, CreditsProgress, LanguageSwitcher, ThemeSwitcher],
+  imports: [MonthCalendar, CreditsProgress, SettingsModal],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

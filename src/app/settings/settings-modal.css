@@ -1,0 +1,38 @@
+.settings-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.settings-modal__dialog {
+  min-width: 320px;
+  max-width: calc(100vw - 2rem);
+  padding: 1.25rem;
+  color: var(--theme-text-primary);
+  background-color: var(--bs-body-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.settings-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.settings-modal__trigger {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Single leave animation on the overlay: separate leave animations on overlay and dialog
+   finish at different times, and Angular drops each class early, causing flicker. */
+.anim-fade-out .settings-modal__dialog {
+  animation: scaleOut var(--motion-duration-fast) var(--motion-easing) forwards;
+}

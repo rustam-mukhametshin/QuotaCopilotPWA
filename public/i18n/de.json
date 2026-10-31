@@ -32,5 +32,12 @@
   "creditsProgress": {
     "remaining": "Verbleibend {{remaining}} von {{total}}",
     "ariaLabel": "Fortschritt bei KI-Credits"
+  },
+  "settings": {
+    "open": "Einstellungen",
+    "title": "Einstellungen",
+    "close": "Schließen",
+    "theme": "Design",
+    "language": "Sprache"
   }
 }

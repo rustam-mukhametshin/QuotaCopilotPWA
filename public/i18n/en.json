@@ -32,5 +32,12 @@
   "creditsProgress": {
     "remaining": "Remaining {{remaining}} of {{total}}",
     "ariaLabel": "AI credits progress"
+  },
+  "settings": {
+    "open": "Settings",
+    "title": "Settings",
+    "close": "Close",
+    "theme": "Theme",
+    "language": "Language"
   }
 }

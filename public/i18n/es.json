@@ -32,5 +32,12 @@
   "creditsProgress": {
     "remaining": "Restante {{remaining}} de {{total}}",
     "ariaLabel": "Progreso de créditos de IA"
+  },
+  "settings": {
+    "open": "Configuración",
+    "title": "Configuración",
+    "close": "Cerrar",
+    "theme": "Tema",
+    "language": "Idioma"
   }
 }

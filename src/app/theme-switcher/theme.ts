@@ -61,3 +61,12 @@ export function applyTheme(mode: ThemeMode): void {
     }, 250); // Duration should match --motion-duration-slow
   }
 }
+
+/** Re-applies the theme on OS color-scheme changes while the saved mode is 'auto'. */
+export function followSystemThemeInAutoMode(): void {
+  window.matchMedia(DARK_SCHEME_QUERY).addEventListener('change', () => {
+    if (readSavedThemeMode() === 'auto') {
+      applyTheme('auto');
+    }
+  });
+}

@@ -1,0 +1,51 @@
+<button
+  type="button"
+  class="settings-modal__trigger btn btn-sm btn-outline-secondary"
+  aria-haspopup="dialog"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-label]="'settings.open' | translate"
+  [attr.title]="'settings.open' | translate"
+  (click)="open()"
+>
+  <span aria-hidden="true">⚙</span>
+</button>
+
+@if (isOpen()) {
+  <div
+    class="settings-modal__overlay"
+    (click)="close()"
+    animate.enter="anim-fade-in"
+    animate.leave="anim-fade-out"
+  >
+    <div
+      class="settings-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-modal-title"
+      (click)="onModalContentClick($event)"
+      animate.enter="anim-scale-in"
+    >
+      <div class="settings-modal__header">
+        <h2 id="settings-modal-title" class="h5 mb-0">{{ 'settings.title' | translate }}</h2>
+        <button
+          type="button"
+          class="btn-close"
+          [attr.aria-label]="'settings.close' | translate"
+          (click)="close()"
+        ></button>
+      </div>
+      <table class="table align-middle mb-0">
+        <tbody>
+          <tr>
+            <th scope="row">{{ 'settings.theme' | translate }}</th>
+            <td><app-theme-switcher /></td>
+          </tr>
+          <tr>
+            <th scope="row">{{ 'settings.language' | translate }}</th>
+            <td><app-language-switcher /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
