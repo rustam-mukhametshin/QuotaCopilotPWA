@@ -15,11 +15,13 @@
     "actions": "Tab actions",
     "delete": "Delete",
     "cancel": "Cancel",
-    "confirmDelete": "Delete tab {{label}}?"
+    "confirmDelete": "Delete tab {{label}}?",
+    "confirmDeleteTitle": "Delete tab?"
   },
   "sidebar": {
     "totalAiCredits": "Total AI credits",
     "totalAiCreditsTooltip": "Total budget of AI credits per month",
+    "totalAiCreditsInvalid": "Enter a number greater than 0",
     "defaultCreditsHint": "Default value — update it if needed",
     "perDay": "Per day",
     "save": "Save",

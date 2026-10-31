@@ -15,11 +15,13 @@
     "actions": "Actions de l'onglet",
     "delete": "Supprimer",
     "cancel": "Annuler",
-    "confirmDelete": "Supprimer l'onglet {{label}} ?"
+    "confirmDelete": "Supprimer l'onglet {{label}} ?",
+    "confirmDeleteTitle": "Supprimer l'onglet ?"
   },
   "sidebar": {
     "totalAiCredits": "Crédits IA au total",
     "totalAiCreditsTooltip": "Budget total de crédits IA par mois",
+    "totalAiCreditsInvalid": "Entrez un nombre supérieur à 0",
     "defaultCreditsHint": "Valeur par défaut — mettez-la à jour si nécessaire",
     "perDay": "Par jour",
     "save": "Enregistrer",

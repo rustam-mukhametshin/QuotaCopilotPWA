@@ -15,11 +15,13 @@
     "actions": "Tab-Aktionen",
     "delete": "Löschen",
     "cancel": "Abbrechen",
-    "confirmDelete": "Tab {{label}} löschen?"
+    "confirmDelete": "Tab {{label}} löschen?",
+    "confirmDeleteTitle": "Tab löschen?"
   },
   "sidebar": {
     "totalAiCredits": "KI-Credits gesamt",
     "totalAiCreditsTooltip": "Gesamtbudget an KI-Credits pro Monat",
+    "totalAiCreditsInvalid": "Geben Sie eine Zahl größer als 0 ein",
     "defaultCreditsHint": "Standardwert — passen Sie ihn nach Bedarf an",
     "perDay": "Pro Tag",
     "save": "Speichern",

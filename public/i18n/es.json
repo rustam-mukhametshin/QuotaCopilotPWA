@@ -15,11 +15,13 @@
     "actions": "Acciones de la pestaña",
     "delete": "Eliminar",
     "cancel": "Cancelar",
-    "confirmDelete": "¿Eliminar la pestaña {{label}}?"
+    "confirmDelete": "¿Eliminar la pestaña {{label}}?",
+    "confirmDeleteTitle": "¿Eliminar la pestaña?"
   },
   "sidebar": {
     "totalAiCredits": "Créditos de IA totales",
     "totalAiCreditsTooltip": "Presupuesto total de créditos de IA por mes",
+    "totalAiCreditsInvalid": "Ingrese un número mayor a 0",
     "defaultCreditsHint": "Valor por defecto — actualícelo si es necesario",
     "perDay": "Por día",
     "save": "Guardar",
