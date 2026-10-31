@@ -13,7 +13,7 @@
 @if (isOpen()) {
   <div
     class="settings-modal__overlay"
-    (click)="close()"
+    (click)="onOverlayClick($event)"
     animate.enter="anim-fade-in"
     animate.leave="anim-fade-out"
   >
@@ -22,7 +22,6 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-modal-title"
-      (click)="onModalContentClick($event)"
       animate.enter="anim-scale-in"
     >
       <div class="settings-modal__header">

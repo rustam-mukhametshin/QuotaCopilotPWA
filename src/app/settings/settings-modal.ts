@@ -41,8 +41,11 @@ export class SettingsModal {
     this.isOpen.set(false);
   }
 
-  protected onModalContentClick(event: Event): void {
-    event.stopPropagation();
+  /** Backdrop-only close; dialog clicks must reach `document` so Bootstrap closes dropdowns. */
+  protected onOverlayClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.close();
+    }
   }
 
   protected onEscape(): void {
