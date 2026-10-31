@@ -42,9 +42,7 @@ export class CalendarStore {
   private defaultCreditsKeys = new Set<string>();
   private initialized = false;
 
-  readonly weeks = computed<Week[]>(() =>
-    getMonthWeeks(this.reference(), this.includeWeekends()),
-  );
+  readonly weeks = computed<Week[]>(() => getMonthWeeks(this.reference(), this.includeWeekends()));
 
   /** Weeks to render: weekends are dropped when hidden; calculations always use `weeks`. */
   readonly visibleWeeks = computed<Week[]>(() => {

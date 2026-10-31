@@ -44,8 +44,75 @@
             <th scope="row">{{ 'settings.language' | translate }}</th>
             <td><app-language-switcher /></td>
           </tr>
+          <tr>
+            <th scope="row">
+              <label for="settings-show-weekends">{{ 'settings.showWeekends' | translate }}</label>
+            </th>
+            <td>
+              <div class="form-check form-switch mb-0">
+                <input
+                  id="settings-show-weekends"
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  [checked]="showWeekends()"
+                  (change)="onShowWeekendsChange($event)"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <label for="settings-include-weekends">{{
+                'settings.includeWeekends' | translate
+              }}</label>
+              <div id="settings-include-weekends-hint" class="form-text fw-normal">
+                {{ 'settings.includeWeekendsHint' | translate }}
+              </div>
+            </th>
+            <td>
+              <div class="form-check form-switch mb-0">
+                <input
+                  id="settings-include-weekends"
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  aria-describedby="settings-include-weekends-hint"
+                  [checked]="includeWeekends()"
+                  (change)="onIncludeWeekendsChange($event)"
+                />
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
+      @if (pendingIncludeWeekends() !== null) {
+        <div
+          class="alert alert-warning mt-3 mb-0"
+          role="alertdialog"
+          aria-labelledby="settings-include-weekends-confirm-title"
+          aria-describedby="settings-include-weekends-confirm-text"
+        >
+          <h3 id="settings-include-weekends-confirm-title" class="h6">
+            {{ 'settings.includeWeekendsConfirmTitle' | translate }}
+          </h3>
+          <p id="settings-include-weekends-confirm-text">
+            {{ 'settings.includeWeekendsConfirmText' | translate }}
+          </p>
+          <div class="d-flex justify-content-end gap-2">
+            <button
+              type="button"
+              class="btn btn-sm btn-secondary"
+              (click)="cancelIncludeWeekends()"
+            >
+              {{ 'settings.cancel' | translate }}
+            </button>
+            <button type="button" class="btn btn-sm btn-warning" (click)="confirmIncludeWeekends()">
+              {{ 'settings.confirm' | translate }}
+            </button>
+          </div>
+        </div>
+      }
     </div>
   </div>
 }
