@@ -44,6 +44,9 @@
     "includeWeekendsHint": "Applies to the current month",
     "includeWeekendsConfirmTitle": "Recalculate the month?",
     "includeWeekendsConfirmText": "All calculations for the current month will be recalculated. Save the month to apply the changes. Previously saved months will stay unchanged.",
+    "hideWeekendsConfirmTitle": "Hide weekends?",
+    "hideWeekendsConfirmText": "Weekends are included in this month's calculations. Hiding them will turn this off and recalculate the month. Save the month to apply the changes.",
+    "includeWeekendsDisabledHint": "Turn on “Show weekends” first",
     "confirm": "Continue",
     "cancel": "Cancel"
   }

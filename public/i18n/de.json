@@ -44,6 +44,9 @@
     "includeWeekendsHint": "Gilt für den aktuellen Monat",
     "includeWeekendsConfirmTitle": "Monat neu berechnen?",
     "includeWeekendsConfirmText": "Alle Berechnungen für den aktuellen Monat werden neu berechnet. Speichern Sie den Monat, um die Änderungen zu übernehmen. Bereits gespeicherte Monate bleiben unverändert.",
+    "hideWeekendsConfirmTitle": "Wochenenden ausblenden?",
+    "hideWeekendsConfirmText": "Wochenenden werden in den Berechnungen dieses Monats berücksichtigt. Beim Ausblenden wird dies deaktiviert und der Monat neu berechnet. Speichern Sie den Monat, um die Änderungen zu übernehmen.",
+    "includeWeekendsDisabledHint": "Aktivieren Sie zuerst „Wochenenden anzeigen“",
     "confirm": "Fortfahren",
     "cancel": "Abbrechen"
   }

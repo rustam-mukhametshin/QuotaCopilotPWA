@@ -44,6 +44,9 @@
     "includeWeekendsHint": "Se aplica al mes actual",
     "includeWeekendsConfirmTitle": "¿Recalcular el mes?",
     "includeWeekendsConfirmText": "Todos los cálculos del mes actual se recalcularán. Guarde el mes para aplicar los cambios. Los meses guardados anteriormente no cambiarán.",
+    "hideWeekendsConfirmTitle": "¿Ocultar los fines de semana?",
+    "hideWeekendsConfirmText": "Los fines de semana se incluyen en los cálculos de este mes. Al ocultarlos, esta opción se desactivará y el mes se recalculará. Guarde el mes para aplicar los cambios.",
+    "includeWeekendsDisabledHint": "Active primero «Mostrar fines de semana»",
     "confirm": "Continuar",
     "cancel": "Cancelar"
   }
